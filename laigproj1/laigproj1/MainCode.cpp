@@ -14,7 +14,8 @@
 //posicao de visualizacao
 float VposX = 20.0;
 float VposY = 10.0;
-float Vangle = 40.0;
+float VangleX = 40.0;
+float VangleY = 0.0;
 float zoom = 50;
 
 //definicao das listas
@@ -550,8 +551,8 @@ void display(void)
 		//glTranslatef( obj_pos[0], obj_pos[1], -obj_pos[2] );
 
 	// roda a cena para ficar em perspectiva
-	glRotated( Vangle, 1.0,0.0,0.0 );		// 20 graus em torno de X
-	//glRotated(-45.0, 0.0,1.0,0.0 );		//-45 graus em torno de Y
+	glRotated( VangleX, 1.0,0.0,0.0 );		// 20 graus em torno de X
+	glRotated( VangleY, 0.0,1.0,0.0 );		//-45 graus em torno de Y
 
 	// roda a cena de acordo com o botao (esfera) de rotacao
 	glMultMatrixf( view_rotate );
@@ -816,13 +817,18 @@ void keyboard(unsigned char key, int x, int y)
 	  case 'h':
 		 VposY -= 1.0;
 		 break;	
-	  case 't':
-		 Vangle += 1.0;
+	  case '8':
+		 VangleX += 1.0;
 		 break;	
-	  case 'g':
-		 Vangle -= 1.0;
+	  case '2':
+		 VangleX -= 1.0;
 		 break;	
-
+	  case '6':
+		 VangleY += 1.0;
+		 break;	
+	  case '4':
+		 VangleY -= 1.0;
+		 break;	
    }
 }
 
