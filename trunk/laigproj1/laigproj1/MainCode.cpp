@@ -150,15 +150,15 @@ float light0_specular[] =  {6.0, 6.0, 6.0, 1.0};
 float light0_kc = 0.0;
 float light0_kl = 1.0;
 float light0_kq = 0.0;
-float light0x = 22.5;
-float light0y = 5.0;
-float light0z = 10.0;
+float light0x = holo1X+4*raioPoste;
+float light0y = alturaPoste-2*raioPoste;
+float light0z = holo1Z-4*raioPoste;
 float symb_light0_radius = 0.2;
 int symb_light0_slices = 8;
 int symb_light0_stacks =8;
 
 // fonte (global) de luz ambiente 
-float light_ambient[] = {0.6, 0.6, 0.6, 1.0}; /* Set the background ambient lighting. */
+float light_ambient[] = {0.4, 0.4, 0.4, 1.0}; /* Set the background ambient lighting. */
 
 
 // variaveis para a janela
