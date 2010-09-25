@@ -44,6 +44,9 @@
     <None Include="tile.bmp">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="heliport.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RGBpixmap.h">
