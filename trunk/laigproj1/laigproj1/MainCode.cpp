@@ -579,13 +579,10 @@ void display(void)
 	glEnd();
 
 	*/
+	
+	glCallList(1);
+	glCallList(2);
 
-	desenhaChao();
-	desenhaArvoreT1(glQ, arv1X, arv1Z, heightA1);
-	desenhaArvoreT1(glQ, arv2X, arv2Z, heightA2);
-	desenhaArvoreT2(glQ, arv3X, arv3Z, heightA3);
-	desenhaArvoreT2(glQ, arv4X, arv4Z, heightA4);
-	desenhaHospital(glQ);
 	// swapping the buffers causes the rendering above to be shown
 	glutSwapBuffers();
 	glFlush();
@@ -740,6 +737,23 @@ void inicializacao()
 
 	pixmap.readBMPFile("tile.bmp");
 	pixmap.setTexture(7);
+
+	GLUquadric* glQ;	// nec. p/ criar sup. quadraticas (cilindros, esferas...)
+	glQ = gluNewQuadric();
+
+	glNewList(1, GL_COMPILE);
+	desenhaChao();
+	desenhaArvoreT1(glQ, arv1X, arv1Z, heightA1);
+	desenhaArvoreT1(glQ, arv2X, arv2Z, heightA2);
+	desenhaArvoreT2(glQ, arv3X, arv3Z, heightA3);
+	desenhaArvoreT2(glQ, arv4X, arv4Z, heightA4);
+	glEndList();
+
+	glNewList(2, GL_COMPILE);
+	desenhaHospital(glQ);
+	glEndList();
+
+
 }
 
 
