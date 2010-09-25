@@ -54,6 +54,8 @@ float heightA3 = 5.5;
 float arv4X = 7.5;
 float arv4Z = -20.0;
 float heightA4 = 6.5;
+float normal1AT2[3] = {0.0,0.0,1.0};
+float normal2AT2[3] = {1.0,0.0,1.0};
 
 // escala das texturas
 float escala = 15.0;
@@ -113,7 +115,7 @@ float telhadoComp = 13.0;
 float telhadoAresta = 6.5;
 float telhadoAlt = 1.0;
 float escalaLetr = 0.02;
-float tamanhoLetr = 2.5;
+float tamanhoLetr = 3.0;
 
 const int TRUE  = 1;
 const int FALSE = 0;
@@ -192,18 +194,18 @@ void desenhaRecXZ2(float x1, float z1, float x2, float z2, int imagem)
 	glEnd();
 }
 
-void desenhaTrianguloXY(float x1, float y1, float x2, float y2, int imagem)
+void desenhaTrianguloXY(float x1, float y1, float x2, float y2, int imagem, float normal[3])
 {
 	glBindTexture(GL_TEXTURE_2D, imagem);
 	glBegin(GL_POLYGON);
-		glNormal3d(0.0,0.0,1.0);  // esta normal fica comum aos 4 vertices
+		glNormal3d(normal[0],normal[1],normal[2]);  // esta normal fica comum aos 4 vertices
 		glTexCoord2f(0.0,0.0); glVertex3d(-x2, y1, 0.0);
 		glTexCoord2f(escala/2,escala); glVertex3d(x2,y1,0.0);
 		glTexCoord2f(escala/2,0.0); glVertex3d(0.0, y2, 0.0);
 	glEnd();
 
 	glBegin(GL_POLYGON);
-		glNormal3d(0.0,0.0,-1.0);  // esta normal fica comum aos 4 vertices
+		glNormal3d(-normal[0],-normal[1],-normal[2]);  // esta normal fica comum aos 4 vertices
 		glTexCoord2f(escala/2,escala); glVertex3d(x2,y1,0.0);
 		glTexCoord2f(0.0,0.0); glVertex3d(-x2, y1, 0.0);
 		glTexCoord2f(escala/2,0.0); glVertex3d(0.0, y2, 0.0);
@@ -487,32 +489,32 @@ void desenhaArvoreT2(GLUquadric * quad, float posX, float posZ, float height)
 	glRotatef(-90.0, 1.0, 0.0, 0.0);
 	gluCylinder(quad, raioTInf, raioTSup, height, slicesT1, stacksT1);
 	glPopMatrix();
-
+	
 	// folhagem 1
 	glPushMatrix();
 	glTranslatef(posX, height-height/razTroncFolha, posZ);
-	desenhaTrianguloXY(0.0,0.0,height/rAltuLargA2,height/razTroncFolha, 6);
+	desenhaTrianguloXY(0.0,0.0,height/rAltuLargA2,height/razTroncFolha, 6, normal1AT2);
 	glPopMatrix();
-
+	
 	// folhagem 2
 	glPushMatrix();
 	glTranslatef(posX, height-height/razTroncFolha, posZ);
 	glRotatef(-90.0, 0.0, 1.0, 0.0);
-	desenhaTrianguloXY(0.0,0.0,height/rAltuLargA2, height/razTroncFolha, 6);
+	desenhaTrianguloXY(0.0,0.0,height/rAltuLargA2, height/razTroncFolha, 6, normal1AT2);
 	glPopMatrix();
-
+	
 	// folhagem 3
 	glPushMatrix();
 	glTranslatef(posX, height-height/razTroncFolha, posZ);
 	glRotatef(45.0, 0.0, 1.0, 0.0);
-	desenhaTrianguloXY(0.0,0.0,height/rAltuLargA2,height/razTroncFolha, 6);
+	desenhaTrianguloXY(0.0,0.0,height/rAltuLargA2,height/razTroncFolha, 6, normal2AT2);
 	glPopMatrix();
-
+	
 	// folhagem 4
 	glPushMatrix();
 	glTranslatef(posX, height-height/razTroncFolha, posZ);
 	glRotatef(-45.0, 0.0, 1.0, 0.0);
-	desenhaTrianguloXY(0.0,0.0,height/rAltuLargA2,height/razTroncFolha, 6);
+	desenhaTrianguloXY(0.0,0.0,height/rAltuLargA2,height/razTroncFolha, 6, normal2AT2);
 	glPopMatrix();
 
 	glDisable(GL_TEXTURE_2D);
