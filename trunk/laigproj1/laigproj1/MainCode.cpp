@@ -47,7 +47,6 @@ float stacksT1 = 20.0;
 float alturaA1 = 2.0;
 float escalaTB = 4.0;
 
-
 // dimensoes da arvore de tipo 2
 float tamFolhaX = 1.0;
 float tamFolhaY = 4.0;
@@ -58,6 +57,7 @@ float rAltuLargA2 = 3.0;
 // dimensoes e cor do hospital
 float corHospital[3] = {1.0,0.9,0.61};
 float corPorta[3] = {0.54,0.27,0.0};
+float corLetreiro[3] = {0.0,1.0,0.0};
 float hospAlt = 11.5;
 float hospLarg = 11.5;
 float hospProf = 7.0;
@@ -67,6 +67,8 @@ float telhadoLarg = 8.5;
 float telhadoComp = 13.0;
 float telhadoAresta = 6.5;
 float telhadoAlt = 1.0;
+float escalaLetr = 0.02;
+float tamanhoLetr = 2.5;
 
 const int TRUE  = 1;
 const int FALSE = 0;
@@ -190,7 +192,26 @@ void desenhaHospital(GLUquadric * quad)
 	glEnd();
 	glPopMatrix();
 	
+	//letreiro HJS
+	glPushMatrix();
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
+	glEnable(GL_LINE_SMOOTH);
+	glLineWidth(tamanhoLetr);
+	glTranslatef((PosChaoCX1+PosChaoCX2)/2-104.76*escalaLetr,hospAlt,3*(PosChaoZ2/4)+telhadoLarg/2);
+	glScalef(escalaLetr, escalaLetr, escalaLetr);
+	glColor3f(corLetreiro[0], corLetreiro[1], corLetreiro[2]);
+	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'H');
+	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'S');
+	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'J');
+	glPopMatrix();
+
 	glDisable(GL_COLOR_MATERIAL);
+	// Definicao de material a usar daqui em diante (valores declarados acima)
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat1_shininess);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  mat1_specular);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   mat1_diffuse);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat1_ambient);
 	
 	//telhado
 	glPushMatrix();
