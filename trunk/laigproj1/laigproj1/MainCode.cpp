@@ -183,7 +183,7 @@ void desenhaHospital(GLUquadric * quad)
 	
 	// porta
 	glPushMatrix();
-	glTranslatef((PosChaoCX1+PosChaoCX2)/2-larguraPorta/2,0.0,(PosChaoZ2/4)*3+(hospProf/2));
+	glTranslatef((PosChaoCX1+PosChaoCX2)/2-larguraPorta/2,0.0,(PosChaoZ2/4)*3+(hospProf/2)+0.01);
 	glColor3f(corPorta[0], corPorta[1], corPorta[2]);
 	glBegin(GL_POLYGON);
 		glNormal3d(0.0,0.0,1.0);  // esta normal fica comum aos 4 vertices
