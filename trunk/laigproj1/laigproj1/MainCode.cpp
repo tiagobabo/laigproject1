@@ -11,6 +11,7 @@
 #define INITIALPOS_X 200
 #define INITIALPOS_Y 50
 #define zoom 50
+float corFundo[3] = {0.41, 0.76, 0.98};
 
 // dimensoes do chao
 float PosChaoZ1 = 0.0;
@@ -363,6 +364,7 @@ void desenhaArvoreT2(GLUquadric * quad, float posX, float posZ, float height)
 
 void display(void)
 {
+
 	// ****** declaracoes internas 'a funcao display() ******
 	
 	float temp;
@@ -405,6 +407,7 @@ void display(void)
 	// e' o caso dos eixos e da esfera que simboliza a fonte de luz...
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 	glEnable(GL_COLOR_MATERIAL);
+
 
 	// cilindro representativo do eixo X
 	glColor3f(1.0,0.0,0.0);		// vermelho
@@ -567,6 +570,7 @@ void display(void)
 	glEnd();
 
 	*/
+
 	desenhaChao();
 	desenhaArvoreT1(glQ, arv1X, arv1Z, heightA1);
 	desenhaArvoreT1(glQ, arv2X, arv2Z, heightA2);
@@ -677,7 +681,7 @@ void inicializacao()
 	glLightModeli (GL_LIGHT_MODEL_LOCAL_VIEWER, 1);
 	
 	// por defeito a cor de fundo e o preto
-	// glClearColor(1.0,1.0,1.0,1.0);    // cor de fundo a branco
+	glClearColor(corFundo[0], corFundo[1], corFundo[2], 1.0);    // cor de fundo a branco
 
 
 	// declaracoes para a fonte luz GL_LIGHT0
