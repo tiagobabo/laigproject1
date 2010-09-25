@@ -59,6 +59,19 @@ float raioHolo1 = 0.65;
 float raioHolo2 = 0.35;
 float alturaHolo = 0.7;
 
+// dimensoes do heliporto
+float heliComp = 10.5;
+float heliLarg = 7.5;
+GLfloat ctrlpoints[4][3] = {	{  -heliComp/2, 0.0, heliLarg/2},
+								{  heliComp/2, 0.0, heliLarg/2},
+								{  heliComp/2, 0.0, -heliLarg/2},
+								{  -heliComp/2, 0.0, -heliLarg/2}};
+
+GLfloat nrmlcompon[4][3] = {	{  0.0, -1.0, 0.0},
+								{  0.0, -1.0, 0.0}, 
+								{  0.0, 1.0, 0.0},
+								{  0.0, 1.0, 0.0} };
+
 // dimensoes da arvore de tipo 1
 float raioTInf = 0.3;
 float raioTSup = 0.0;
@@ -392,7 +405,23 @@ void desenhaHolofotes(GLUquadric * quad)
 
 void desenhaHeliporto()
 {
+	glMap2f(GL_MAP2_VERTEX_3, 0.0, 1.0, 3, 2,  0.0, 1.0, 6, 2,  &ctrlpoints[0][0]);
+	glMap2f(GL_MAP2_NORMAL,   0.0, 1.0, 3, 2,  0.0, 1.0, 6, 2,  &nrmlcompon[0][0]);
+	//glMap2f(GL_MAP2_COLOR_4,  0.0, 1.0, 4, 2,  0.0, 1.0, 8, 2,  &colorpoints[0][0]);
+	//glMap2f(GL_MAP2_TEXTURE_COORD_2,  0.0, 1.0, 2, 2,  0.0, 1.0, 4, 2,  &textpoints[0][0]);
 
+	// os interpoladores activam-se:
+	glEnable(GL_MAP2_VERTEX_3);
+	glEnable(GL_MAP2_NORMAL);
+	glEnable(GL_MAP2_COLOR_4);
+	glEnable(GL_MAP2_TEXTURE_COORD_2);
+
+	glMapGrid2f(40, 0.0,1.0, 60, 0.0,1.0); 
+
+	//glShadeModel(GL_FLAT);					// GL_FLAT, GL_SMOOTH
+	glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, 1);
+	glEvalMesh2(GL_FILL, 0,40, 0,60);		// GL_POINT, GL_LINE, GL_FILL
 }
 
 void desenhaChao()
@@ -688,6 +717,8 @@ void display(void)
 	glCallList(hospital);
 
 	desenhaHolofotes(glQ);
+	desenhaHeliporto();
+	
 	// swapping the buffers causes the rendering above to be shown
 	glutSwapBuffers();
 	glFlush();
