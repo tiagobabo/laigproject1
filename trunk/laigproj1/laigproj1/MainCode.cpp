@@ -15,6 +15,7 @@
 //definicao das listas
 int chaoEArvores = 1;
 int hospital = 2;
+int heliporto = 3;
 
 float corFundo[3] = {0.41, 0.76, 0.98};
 
@@ -144,7 +145,7 @@ float light0_kc = 0.0;
 float light0_kl = 1.0;
 float light0_kq = 0.0;
 float light0x = 22.5;
-float light0y = 10.0;
+float light0y = 5.0;
 float light0z = 10.0;
 float symb_light0_radius = 0.2;
 int symb_light0_slices = 8;
@@ -515,7 +516,7 @@ void display(void)
 
 	// ****** declaracoes internas 'a funcao display() ******
 	
-	float temp;
+	//float temp;
 
 	GLUquadric* glQ;	// nec. p/ criar sup. quadraticas (cilindros, esferas...)
 
@@ -722,9 +723,7 @@ void display(void)
 	//chamada das funções
 	glCallList(chaoEArvores);
 	glCallList(hospital);
-
-	desenhaHolofotes(glQ);
-	desenhaHeliporto();
+	glCallList(heliporto);
 	
 	// swapping the buffers causes the rendering above to be shown
 	glutSwapBuffers();
@@ -901,8 +900,12 @@ void inicializacao()
 	glNewList(hospital, GL_COMPILE);
 	desenhaHospital(glQ);
 	glEndList();
-
-
+	
+	
+	glNewList(heliporto, GL_COMPILE);
+	desenhaHolofotes(glQ);
+	desenhaHeliporto();
+	glEndList();
 }
 
 
