@@ -216,12 +216,6 @@ void desenhaHospital(GLUquadric * quad)
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  mat1_specular);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   mat1_diffuse);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat1_ambient);
-	
-	// Definicao de material a usar daqui em diante (valores declarados acima)
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat1_shininess);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  mat1_specular);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   mat1_diffuse);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat1_ambient);
 
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, 7);
