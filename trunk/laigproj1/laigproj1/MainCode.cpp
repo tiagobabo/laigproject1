@@ -11,6 +11,11 @@
 #define INITIALPOS_X 200
 #define INITIALPOS_Y 50
 #define zoom 50
+
+//definicao das listas
+int chaoEArvores = 1;
+int hospital = 2;
+
 float corFundo[3] = {0.41, 0.76, 0.98};
 
 // dimensoes do chao
@@ -636,8 +641,9 @@ void display(void)
 
 	*/
 	
-	glCallList(1);
-	glCallList(2);
+	//chamada das funções
+	glCallList(chaoEArvores);
+	glCallList(hospital);
 
 	desenhaHolofotes(glQ);
 	// swapping the buffers causes the rendering above to be shown
@@ -798,7 +804,7 @@ void inicializacao()
 	GLUquadric* glQ;	// nec. p/ criar sup. quadraticas (cilindros, esferas...)
 	glQ = gluNewQuadric();
 
-	glNewList(1, GL_COMPILE);
+	glNewList(chaoEArvores, GL_COMPILE);
 	desenhaChao();
 	desenhaArvoreT1(glQ, arv1X, arv1Z, heightA1);
 	desenhaArvoreT1(glQ, arv2X, arv2Z, heightA2);
@@ -806,7 +812,7 @@ void inicializacao()
 	desenhaArvoreT2(glQ, arv4X, arv4Z, heightA4);
 	glEndList();
 
-	glNewList(2, GL_COMPILE);
+	glNewList(hospital, GL_COMPILE);
 	desenhaHospital(glQ);
 	glEndList();
 
