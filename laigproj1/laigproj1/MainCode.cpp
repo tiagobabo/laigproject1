@@ -315,39 +315,76 @@ void desenhaHolofotes(GLUquadric * quad)
 	gluQuadricTexture(quad, GL_TRUE);
 
 	// postes dos holofotes
+	// poste1
 	glPushMatrix();
 	glTranslatef(holo1X,0.0,holo1Z);
 	glRotatef(-90.0, 1.0, 0.0, 0.0);
 	gluCylinder(quad, raioPoste, raioPoste, alturaPoste, slicesT1, stacksT1);
+	glTranslatef(0.0,0.0,alturaPoste);
+	gluDisk(quad,0.0,raioPoste,slicesT1, stacksT1);
 	glPopMatrix();
-
+	// poste2
 	glPushMatrix();
 	glTranslatef(holo2X,0.0,holo1Z);
 	glRotatef(-90.0, 1.0, 0.0, 0.0);
 	gluCylinder(quad, raioPoste, raioPoste, alturaPoste, slicesT1, stacksT1);
+	glTranslatef(0.0,0.0,alturaPoste);
+	gluDisk(quad,0.0,raioPoste,slicesT1, stacksT1);
 	glPopMatrix();
-
-	glPushMatrix();
-	glTranslatef(holo1X,0.0,holo2Z);
-	glRotatef(-90.0, 1.0, 0.0, 0.0);
-	gluCylinder(quad, raioPoste, raioPoste, alturaPoste, slicesT1, stacksT1);
-	glPopMatrix();
-
+	// poste3
 	glPushMatrix();
 	glTranslatef(holo2X,0.0,holo2Z);
 	glRotatef(-90.0, 1.0, 0.0, 0.0);
 	gluCylinder(quad, raioPoste, raioPoste, alturaPoste, slicesT1, stacksT1);
+	glTranslatef(0.0,0.0,alturaPoste);
+	gluDisk(quad,0.0,raioPoste,slicesT1, stacksT1);
+	glPopMatrix();
+	// poste4
+	glPushMatrix();
+	glTranslatef(holo1X,0.0,holo2Z);
+	glRotatef(-90.0, 1.0, 0.0, 0.0);
+	gluCylinder(quad, raioPoste, raioPoste, alturaPoste, slicesT1, stacksT1);
+	glTranslatef(0.0,0.0,alturaPoste);
+	gluDisk(quad,0.0,raioPoste,slicesT1, stacksT1);
 	glPopMatrix();
 
 	// holofotes
+	// holofote1
 	glPushMatrix();
-	glTranslatef(holo1X,alturaPoste,holo1Z);
+	glTranslatef(holo1X+2*raioPoste,alturaPoste,holo1Z-2*raioPoste);
 	glRotatef(-45.0, 0.0, 1.0, 0.0);
 	glRotatef(-45.0, 1.0, 0.0, 0.0);
 	gluCylinder(quad, raioHolo1, raioHolo2, alturaHolo, slicesT1, stacksT1);
-	gluDisk(quad,0.0,raioHolo1,slicesT1, stacksT1);
+	glTranslatef(0.0,0.0,alturaHolo);
+	gluDisk(quad,0.0,raioHolo2,slicesT1, stacksT1);
 	glPopMatrix();
-
+	// holofote2
+	glPushMatrix();
+	glTranslatef(holo2X-2*raioPoste,alturaPoste,holo1Z-2*raioPoste);
+	glRotatef(45.0, 0.0, 1.0, 0.0);
+	glRotatef(-45.0, 1.0, 0.0, 0.0);
+	gluCylinder(quad, raioHolo1, raioHolo2, alturaHolo, slicesT1, stacksT1);
+	glTranslatef(0.0,0.0,alturaHolo);
+	gluDisk(quad,0.0,raioHolo2,slicesT1, stacksT1);
+	glPopMatrix();
+	// holofote3
+	glPushMatrix();
+	glTranslatef(holo2X-2*raioPoste,alturaPoste,holo2Z+2*raioPoste);
+	glRotatef(135.0, 0.0, 1.0, 0.0);
+	glRotatef(-45.0, 1.0, 0.0, 0.0);
+	gluCylinder(quad, raioHolo1, raioHolo2, alturaHolo, slicesT1, stacksT1);
+	glTranslatef(0.0,0.0,alturaHolo);
+	gluDisk(quad,0.0,raioHolo2,slicesT1, stacksT1);
+	glPopMatrix();
+	// holofote4
+	glPushMatrix();
+	glTranslatef(holo1X+2*raioPoste,alturaPoste,holo2Z+2*raioPoste);
+	glRotatef(-135.0, 0.0, 1.0, 0.0);
+	glRotatef(-45.0, 1.0, 0.0, 0.0);
+	gluCylinder(quad, raioHolo1, raioHolo2, alturaHolo, slicesT1, stacksT1);
+	glTranslatef(0.0,0.0,alturaHolo);
+	gluDisk(quad,0.0,raioHolo2,slicesT1, stacksT1);
+	glPopMatrix();
 }
 
 void desenhaHeliporto()
