@@ -244,14 +244,7 @@ void desenhaHospital(GLUquadric * quad)
 	float vQuad2[3] = {-(telhadoComp-telhadoAresta)/2-telhadoComp/2, telhadoAlt, -telhadoLarg/2};
 	float vQuadNor[3] = {vQuad1[1]*vQuad2[2]-vQuad1[2]*vQuad2[1], vQuad1[2]*vQuad2[0]-vQuad1[0]*vQuad2[2], vQuad1[0]*vQuad2[1]-vQuad1[1]*vQuad2[0]}; 
 	float normaVecQuad = sqrt(vQuadNor[0]*vQuadNor[0]+vQuadNor[1]*vQuadNor[1]+vQuadNor[2]*vQuadNor[2]);
-	for(i=0; i < 3; i++) vQuadNor[i] = vQuadNor[i]/normaVecQuad;
 	
-	
-	//std::cout << vQuadNor[0] << "\r";
-	//std::cout << vQuadNor[1] << "\r";
-	//std::cout << vQuadNor[2] << "\r";
-	//if(vQuadNor[0] > 1.0) std::cout << "true\r"; else std::cout << "false\r";
-
 	glPushMatrix();
 	glTranslatef((PosChaoCX1+PosChaoCX2)/2,hospAlt,3*(PosChaoZ2/4)+telhadoLarg/2);
 	glBegin(GL_POLYGON);
