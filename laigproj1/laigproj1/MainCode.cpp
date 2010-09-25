@@ -313,7 +313,9 @@ void desenhaHospital(GLUquadric * quad)
 void desenhaHolofotes(GLUquadric * quad)
 {
 	gluQuadricTexture(quad, GL_TRUE);
-
+	
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, 8);
 	// postes dos holofotes
 	// poste1
 	glPushMatrix();
@@ -348,6 +350,7 @@ void desenhaHolofotes(GLUquadric * quad)
 	gluDisk(quad,0.0,raioPoste,slicesT1, stacksT1);
 	glPopMatrix();
 
+	glDisable(GL_TEXTURE_2D);
 	// holofotes
 	// holofote1
 	glPushMatrix();
@@ -839,6 +842,9 @@ void inicializacao()
 
 	pixmap.readBMPFile("tile.bmp");
 	pixmap.setTexture(7);
+
+	pixmap.readBMPFile("metal.bmp");
+	pixmap.setTexture(8);
 
 	GLUquadric* glQ;	// nec. p/ criar sup. quadraticas (cilindros, esferas...)
 	glQ = gluNewQuadric();
