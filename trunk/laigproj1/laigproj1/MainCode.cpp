@@ -10,7 +10,12 @@
 #define DIMY 800
 #define INITIALPOS_X 200
 #define INITIALPOS_Y 50
-#define zoom 50
+
+//posicao de visualizacao
+float VposX = 20.0;
+float VposY = 10.0;
+float Vangle = 40.0;
+float zoom = 50;
 
 //definicao das listas
 int chaoEArvores = 1;
@@ -539,13 +544,13 @@ void display(void)
 	
 	// afasta a cena de 25 unidades mais a distância que...
 	// ...decorre da utilizacao do botao de afastamento (pseudo-zoom)
-    glTranslatef( obj_pos[0]-20, obj_pos[1]-10, -obj_pos[2]-zoom );
+    glTranslatef( obj_pos[0]-VposX, obj_pos[1]-VposY, -obj_pos[2]-zoom );
 		// tambem se poderia ter feito:
 		//glTranslated(0.0,0.0,-25.0);
 		//glTranslatef( obj_pos[0], obj_pos[1], -obj_pos[2] );
 
 	// roda a cena para ficar em perspectiva
-	glRotated( 40.0, 1.0,0.0,0.0 );		// 20 graus em torno de X
+	glRotated( Vangle, 1.0,0.0,0.0 );		// 20 graus em torno de X
 	//glRotated(-45.0, 0.0,1.0,0.0 );		//-45 graus em torno de Y
 
 	// roda a cena de acordo com o botao (esfera) de rotacao
@@ -792,7 +797,32 @@ void keyboard(unsigned char key, int x, int y)
 		 break;	
 	  case 's':
 		 light0z += 0.1;
+		 break;
+	  case 'l':
+		 VposX += 0.1;
 		 break;	
+	  case 'j':
+		 VposX -= 0.1;
+		 break;	
+	  case 'k':
+		 zoom += 0.1;
+		 break;	
+	  case 'i':
+		 zoom -= 0.1;
+		 break;	
+	  case 'y':
+		 VposY += 1.0;
+		 break;	
+	  case 'h':
+		 VposY -= 1.0;
+		 break;	
+	  case 't':
+		 Vangle += 1.0;
+		 break;	
+	  case 'g':
+		 Vangle -= 1.0;
+		 break;	
+
    }
 }
 
