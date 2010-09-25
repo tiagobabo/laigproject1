@@ -23,6 +23,12 @@ float PosChaoCX2 = 30.0;
 float PosChaoDX1 = 30.0;
 float PosChaoDX2 = 45.0;
 
+// posicao dos holofotes
+float holo1X = 17.25;
+float holo1Z = -3.75;
+float holo2X = 27.75;
+float holo2Z = -11.25;
+
 //posicao das arvores e alturas desenhadas
 float arv1X = 5.0;
 float arv1Z = -25.0;
@@ -40,6 +46,13 @@ float heightA4 = 6.5;
 // escala das texturas
 float escala = 15.0;
 float escalaT = 2.0;
+
+// dimensoes dos holofotes
+float raioPoste = 0.3;
+float alturaPoste = 4.7;
+float raioHolo1 = 1.3;
+float raioHolo2 = 0.7;
+float alturaHolo = 0.7;
 
 // dimensoes da arvore de tipo 1
 float raioTInf = 0.3;
@@ -203,11 +216,11 @@ void desenhaHospital(GLUquadric * quad)
 	glTranslatef((PosChaoCX1+PosChaoCX2)/2-104.76*escalaLetr,hospAlt,3*(PosChaoZ2/4)+telhadoLarg/2);
 	glScalef(escalaLetr, escalaLetr, escalaLetr);
 	glColor3f(corLetreiro[0], corLetreiro[1], corLetreiro[2]);
-	//glDisable(GL_LIGHT0);
+	glDisable(GL_LIGHT0);
 	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'H');
 	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'S');
 	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'J');
-	//glEnable(GL_LIGHT0);
+	glEnable(GL_LIGHT0);
 	glPopMatrix();
 
 	glDisable(GL_COLOR_MATERIAL);
@@ -290,6 +303,49 @@ void desenhaHospital(GLUquadric * quad)
 	glDisable(GL_TEXTURE_2D);
 	//glEnable(GL_DEPTH_TEST);
 	
+}
+
+void desenhaHolofotes(GLUquadric * quad)
+{
+	gluQuadricTexture(quad, GL_TRUE);
+
+	// postes dos holofotes
+	glPushMatrix();
+	glTranslatef(holo1X,0.0,holo1Z);
+	glRotatef(-90.0, 1.0, 0.0, 0.0);
+	gluCylinder(quad, raioPoste, raioPoste, alturaPoste, slicesT1, stacksT1);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(holo2X,0.0,holo1Z);
+	glRotatef(-90.0, 1.0, 0.0, 0.0);
+	gluCylinder(quad, raioPoste, raioPoste, alturaPoste, slicesT1, stacksT1);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(holo1X,0.0,holo2Z);
+	glRotatef(-90.0, 1.0, 0.0, 0.0);
+	gluCylinder(quad, raioPoste, raioPoste, alturaPoste, slicesT1, stacksT1);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(holo2X,0.0,holo2Z);
+	glRotatef(-90.0, 1.0, 0.0, 0.0);
+	gluCylinder(quad, raioPoste, raioPoste, alturaPoste, slicesT1, stacksT1);
+	glPopMatrix();
+
+	// holofotes
+	glPushMatrix();
+	glTranslatef(holo1X,alturaPoste,holo1Z);
+	glRotatef(-45.0, 0.0, 1.0, 0.0);
+	glRotatef(-45.0, 1.0, 0.0, 0.0);
+	gluCylinder(quad, raioHolo1, raioHolo2, alturaHolo, slicesT1, stacksT1);
+	glPopMatrix();
+}
+
+void desenhaHeliporto()
+{
+
 }
 
 void desenhaChao()
@@ -583,6 +639,7 @@ void display(void)
 	glCallList(1);
 	glCallList(2);
 
+	desenhaHolofotes(glQ);
 	// swapping the buffers causes the rendering above to be shown
 	glutSwapBuffers();
 	glFlush();
