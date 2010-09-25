@@ -10,7 +10,7 @@
 #define DIMY 800
 #define INITIALPOS_X 200
 #define INITIALPOS_Y 50
-#define zoom 50
+#define zoom 20
 
 //definicao das listas
 int chaoEArvores = 1;
@@ -53,7 +53,7 @@ float escala = 15.0;
 float escalaT = 2.0;
 
 // dimensoes dos holofotes
-float raioPoste = 0.3;
+float raioPoste = 0.15;
 float alturaPoste = 4.7;
 float raioHolo1 = 0.65;
 float raioHolo2 = 0.35;
@@ -354,7 +354,7 @@ void desenhaHolofotes(GLUquadric * quad)
 	// holofotes
 	// holofote1
 	glPushMatrix();
-	glTranslatef(holo1X+2*raioPoste,alturaPoste,holo1Z-2*raioPoste);
+	glTranslatef(holo1X+4*raioPoste,alturaPoste-2*raioPoste,holo1Z-4*raioPoste);
 	glRotatef(-45.0, 0.0, 1.0, 0.0);
 	glRotatef(-45.0, 1.0, 0.0, 0.0);
 	gluCylinder(quad, raioHolo1, raioHolo2, alturaHolo, slicesT1, stacksT1);
@@ -363,7 +363,7 @@ void desenhaHolofotes(GLUquadric * quad)
 	glPopMatrix();
 	// holofote2
 	glPushMatrix();
-	glTranslatef(holo2X-2*raioPoste,alturaPoste,holo1Z-2*raioPoste);
+	glTranslatef(holo2X-4*raioPoste,alturaPoste-2*raioPoste,holo1Z-4*raioPoste);
 	glRotatef(45.0, 0.0, 1.0, 0.0);
 	glRotatef(-45.0, 1.0, 0.0, 0.0);
 	gluCylinder(quad, raioHolo1, raioHolo2, alturaHolo, slicesT1, stacksT1);
@@ -372,7 +372,7 @@ void desenhaHolofotes(GLUquadric * quad)
 	glPopMatrix();
 	// holofote3
 	glPushMatrix();
-	glTranslatef(holo2X-2*raioPoste,alturaPoste,holo2Z+2*raioPoste);
+	glTranslatef(holo2X-4*raioPoste,alturaPoste-2*raioPoste,holo2Z+4*raioPoste);
 	glRotatef(135.0, 0.0, 1.0, 0.0);
 	glRotatef(-45.0, 1.0, 0.0, 0.0);
 	gluCylinder(quad, raioHolo1, raioHolo2, alturaHolo, slicesT1, stacksT1);
@@ -381,7 +381,7 @@ void desenhaHolofotes(GLUquadric * quad)
 	glPopMatrix();
 	// holofote4
 	glPushMatrix();
-	glTranslatef(holo1X+2*raioPoste,alturaPoste,holo2Z+2*raioPoste);
+	glTranslatef(holo1X+4*raioPoste,alturaPoste-2*raioPoste,holo2Z+4*raioPoste);
 	glRotatef(-135.0, 0.0, 1.0, 0.0);
 	glRotatef(-45.0, 1.0, 0.0, 0.0);
 	gluCylinder(quad, raioHolo1, raioHolo2, alturaHolo, slicesT1, stacksT1);
