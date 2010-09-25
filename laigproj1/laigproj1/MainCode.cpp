@@ -39,6 +39,7 @@ float heightA4 = 6.5;
 
 // escala das texturas
 float escala = 15.0;
+float escalaT = 2.0;
 
 // dimensoes da arvore de tipo 1
 float raioTInf = 0.3;
@@ -216,11 +217,21 @@ void desenhaHospital(GLUquadric * quad)
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   mat1_diffuse);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat1_ambient);
 	
+	// Definicao de material a usar daqui em diante (valores declarados acima)
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat1_shininess);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  mat1_specular);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   mat1_diffuse);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat1_ambient);
+
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, 7);
+
 	//telhado
 	glPushMatrix();
 	glTranslatef((PosChaoCX1+PosChaoCX2)/2,hospAlt,3*(PosChaoZ2/4));
-	desenhaRecXZ2(-telhadoComp/2, telhadoLarg/2, telhadoComp/2, -telhadoLarg/2, 1);
+	desenhaRecXZ2(-telhadoComp/2, telhadoLarg/2, telhadoComp/2, -telhadoLarg/2, 7);
 	glPopMatrix();
+	
 	
 	//triangulos
 	//calcular o vector normal dos triângulos
@@ -234,23 +245,24 @@ void desenhaHospital(GLUquadric * quad)
 	glPushMatrix();
 	glTranslatef((PosChaoCX1+PosChaoCX2)/2-telhadoComp/2,hospAlt,3*(PosChaoZ2/4));
 	glBegin(GL_POLYGON);
-		glNormal3d(vTriNor[0],vTriNor[1],vTriNor[2]);  // esta normal fica comum aos 4 vertices
-		glVertex3d(0.0, 0.0, -telhadoLarg/2);
-		glVertex3d(0.0,0.0,telhadoLarg/2);
-		glVertex3d((telhadoComp-telhadoAresta)/2, telhadoAlt, 0.0);
+		glNormal3d(vTriNor[0],vTriNor[1],vTriNor[2]);  // esta normal fica comum aos 3 vertices
+		glTexCoord2f(0.0,0.0);	glVertex3d(0.0, 0.0, -telhadoLarg/2);
+		glTexCoord2f(escalaT,0.0);	glVertex3d(0.0,0.0,telhadoLarg/2);
+		glTexCoord2f(escalaT/2,escalaT);	glVertex3d((telhadoComp-telhadoAresta)/2, telhadoAlt, 0.0);
 	glEnd();
 	glPopMatrix();
 	
 	glPushMatrix();
 	glTranslatef((PosChaoCX1+PosChaoCX2)/2+telhadoComp/2,hospAlt,3*(PosChaoZ2/4));
 	glBegin(GL_POLYGON);
-		glNormal3d(-vTriNor[0],vTriNor[1],vTriNor[2]);  // esta normal fica comum aos 4 vertices
-		glVertex3d(0.0, 0.0, -telhadoLarg/2);
-		glVertex3d(-(telhadoComp-telhadoAresta)/2, telhadoAlt, 0.0);
-		glVertex3d(0.0,0.0,telhadoLarg/2);
+		glNormal3d(-vTriNor[0],vTriNor[1],vTriNor[2]);  // esta normal fica comum aos 3 vertices
+		glTexCoord2f(0.0,0.0); glVertex3d(0.0, 0.0, -telhadoLarg/2);
+		glTexCoord2f(escalaT/2,escalaT); glVertex3d(-(telhadoComp-telhadoAresta)/2, telhadoAlt, 0.0);
+		glTexCoord2f(escalaT,0.0); glVertex3d(0.0,0.0,telhadoLarg/2);
 	glEnd();
 	glPopMatrix();
 	
+
 	//quadrilateros
 	//calcular o vector normal dos quadrilateros
 	float vQuad1[3] = {1.0, 0.0, 0.0};
@@ -263,10 +275,10 @@ void desenhaHospital(GLUquadric * quad)
 	glTranslatef((PosChaoCX1+PosChaoCX2)/2,hospAlt,3*(PosChaoZ2/4)+telhadoLarg/2);
 	glBegin(GL_POLYGON);
 		glNormal3d(vQuadNor[0],vQuadNor[1],vQuadNor[2]);  // esta normal fica comum aos 4 vertices
-		glVertex3d(-telhadoComp/2, 0.0, 0.0);
-		glVertex3d(telhadoComp/2, 0.0, 0.0);
-		glVertex3d((telhadoComp-telhadoAresta)/2,telhadoAlt,-telhadoLarg/2);
-		glVertex3d(-(telhadoComp-telhadoAresta)/2,telhadoAlt,-telhadoLarg/2);
+		glTexCoord2f(0.0,0.0); glVertex3d(-telhadoComp/2, 0.0, 0.0);
+		glTexCoord2f(escalaT,0.0); glVertex3d(telhadoComp/2, 0.0, 0.0);
+		glTexCoord2f(3*(escalaT/4),escalaT); glVertex3d((telhadoComp-telhadoAresta)/2,telhadoAlt,-telhadoLarg/2);
+		glTexCoord2f(escalaT/4,escalaT); glVertex3d(-(telhadoComp-telhadoAresta)/2,telhadoAlt,-telhadoLarg/2);
 	glEnd();
 	glPopMatrix();
 	
@@ -274,13 +286,14 @@ void desenhaHospital(GLUquadric * quad)
 	glTranslatef((PosChaoCX1+PosChaoCX2)/2,hospAlt,3*(PosChaoZ2/4)-telhadoLarg/2);
 	glBegin(GL_POLYGON);
 		glNormal3d(vQuadNor[0],vQuadNor[1],-vQuadNor[2]);  // esta normal fica comum aos 4 vertices
-		glVertex3d(-telhadoComp/2, 0.0, 0.0);
-		glVertex3d(-(telhadoComp-telhadoAresta)/2,telhadoAlt,telhadoLarg/2);
-		glVertex3d((telhadoComp-telhadoAresta)/2,telhadoAlt,telhadoLarg/2);
-		glVertex3d(telhadoComp/2, 0.0, 0.0);
+		glTexCoord2f(0.0,0.0); glVertex3d(-telhadoComp/2, 0.0, 0.0);
+		glTexCoord2f(escalaT/4,escalaT); glVertex3d(-(telhadoComp-telhadoAresta)/2,telhadoAlt,telhadoLarg/2);
+		glTexCoord2f(3*(escalaT/4),escalaT); glVertex3d((telhadoComp-telhadoAresta)/2,telhadoAlt,telhadoLarg/2);
+		glTexCoord2f(escalaT,0.0); glVertex3d(telhadoComp/2, 0.0, 0.0);
 	glEnd();
 	glPopMatrix();
 	
+	glDisable(GL_TEXTURE_2D);
 	//glEnable(GL_DEPTH_TEST);
 	
 }
@@ -730,6 +743,9 @@ void inicializacao()
 
 	pixmap.readBMPFile("leaf2.bmp");
 	pixmap.setTexture(6);
+
+	pixmap.readBMPFile("tile.bmp");
+	pixmap.setTexture(7);
 }
 
 
