@@ -55,8 +55,8 @@ float escalaT = 2.0;
 // dimensoes dos holofotes
 float raioPoste = 0.3;
 float alturaPoste = 4.7;
-float raioHolo1 = 1.3;
-float raioHolo2 = 0.7;
+float raioHolo1 = 0.65;
+float raioHolo2 = 0.35;
 float alturaHolo = 0.7;
 
 // dimensoes da arvore de tipo 1
@@ -345,6 +345,8 @@ void desenhaHolofotes(GLUquadric * quad)
 	glRotatef(-45.0, 0.0, 1.0, 0.0);
 	glRotatef(-45.0, 1.0, 0.0, 0.0);
 	gluCylinder(quad, raioHolo1, raioHolo2, alturaHolo, slicesT1, stacksT1);
+	glTranslatef(0.0,alturaHolo,0.0);
+	gluDisk(quad,0.0,raioHolo2,slicesT1, stacksT1);
 	glPopMatrix();
 }
 
