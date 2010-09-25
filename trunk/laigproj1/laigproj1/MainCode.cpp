@@ -63,12 +63,12 @@ float alturaHolo = 0.7;
 float heliComp = 10.5;
 float heliLarg = 7.5;
 GLfloat ctrlpoints[4][3] = {	{  -heliComp/2, 0.0, heliLarg/2},
+								{  -heliComp/2, 0.0, -heliLarg/2},
 								{  heliComp/2, 0.0, heliLarg/2},
-								{  heliComp/2, 0.0, -heliLarg/2},
-								{  -heliComp/2, 0.0, -heliLarg/2}};
+								{  heliComp/2, 0.0, -heliLarg/2}};
 
-GLfloat nrmlcompon[4][3] = {	{  0.0, -1.0, 0.0},
-								{  0.0, -1.0, 0.0}, 
+GLfloat nrmlcompon[4][3] = {	{  0.0, 1.0, 0.0},
+								{  0.0, 1.0, 0.0}, 
 								{  0.0, 1.0, 0.0},
 								{  0.0, 1.0, 0.0} };
 
@@ -139,7 +139,7 @@ float light0_kc = 0.0;
 float light0_kl = 1.0;
 float light0_kq = 0.0;
 float light0x = 22.5;
-float light0y = 20.0;
+float light0y = 10.0;
 float light0z = 10.0;
 float symb_light0_radius = 0.2;
 int symb_light0_slices = 8;
@@ -413,14 +413,10 @@ void desenhaHeliporto()
 	// os interpoladores activam-se:
 	glEnable(GL_MAP2_VERTEX_3);
 	glEnable(GL_MAP2_NORMAL);
-	glEnable(GL_MAP2_COLOR_4);
-	glEnable(GL_MAP2_TEXTURE_COORD_2);
 
 	glMapGrid2f(40, 0.0,1.0, 60, 0.0,1.0); 
 
 	//glShadeModel(GL_FLAT);					// GL_FLAT, GL_SMOOTH
-	glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, 1);
 	glEvalMesh2(GL_FILL, 0,40, 0,60);		// GL_POINT, GL_LINE, GL_FILL
 }
 
