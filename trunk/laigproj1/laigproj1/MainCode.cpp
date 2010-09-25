@@ -337,6 +337,7 @@ void desenhaHospital(GLUquadric * quad)
 
 void desenhaHolofotes(GLUquadric * quad)
 {
+
 	gluQuadricTexture(quad, GL_TRUE);
 	
 	glEnable(GL_TEXTURE_2D);
@@ -374,7 +375,8 @@ void desenhaHolofotes(GLUquadric * quad)
 	glTranslatef(0.0,0.0,alturaPoste);
 	gluDisk(quad,0.0,raioPoste,slicesT1, stacksT1);
 	glPopMatrix();
-
+	
+	glDisable(GL_CULL_FACE);
 	glDisable(GL_TEXTURE_2D);
 	// holofotes
 	// holofote1
@@ -413,6 +415,7 @@ void desenhaHolofotes(GLUquadric * quad)
 	glTranslatef(0.0,0.0,alturaHolo);
 	gluDisk(quad,0.0,raioHolo2,slicesT1, stacksT1);
 	glPopMatrix();
+	glEnable(GL_CULL_FACE);
 }
 
 void desenhaHeliporto()
@@ -856,7 +859,7 @@ void inicializacao()
 
 	// Face Culling para aumentar a velocidade
 	glEnable(GL_CULL_FACE);
-	//glCullFace(GL_BACK);		// GL_FRONT, GL_BACK, GL_FRONT_AND_BACK
+	glCullFace(GL_BACK);		// GL_FRONT, GL_BACK, GL_FRONT_AND_BACK
 
 
 	// Define que modelo de iluminacao utilizar; consultar o manual de referencia
