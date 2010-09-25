@@ -163,16 +163,6 @@ void desenhaTrianguloXY(float x1, float y1, float x2, float y2, int imagem)
 	glEnd();
 }
 
-void createQuad(){
-	glBegin(GL_POLYGON);
-		glNormal3d(0.0,1.0,0.0);  // esta normal fica comum aos 4 vertices
-		glTexCoord2f(0.0,0.0); glVertex3d( -0.5, 0.0,  0.5);
-		glTexCoord2f(escala,0.0); glVertex3d( 0.5, 0.0,  0.5);
-		glTexCoord2f(escala,escala); glVertex3d(0.5, 0.0,  -0.5);
-		glTexCoord2f(0.0,escala); glVertex3d(-0.5, 0.0,  -0.5);
-	glEnd();
-}
-
 void desenhaHospital(GLUquadric * quad)
 {
 	// edificio
