@@ -831,7 +831,16 @@ void keyboard(unsigned char key, int x, int y)
 		 break;	
 	  case '4':
 		 VangleY -= 1.0;
-		 break;	
+		 break;
+	  case '5':
+		  {
+			VposX = 20.0;
+			VposY = 10.0;
+			VangleX = 40.0;
+			VangleY = 0.0;
+			zoom = 50;
+			break;
+		  }
    }
 }
 
