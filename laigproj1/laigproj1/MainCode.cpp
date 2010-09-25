@@ -202,9 +202,11 @@ void desenhaHospital(GLUquadric * quad)
 	glTranslatef((PosChaoCX1+PosChaoCX2)/2-104.76*escalaLetr,hospAlt,3*(PosChaoZ2/4)+telhadoLarg/2);
 	glScalef(escalaLetr, escalaLetr, escalaLetr);
 	glColor3f(corLetreiro[0], corLetreiro[1], corLetreiro[2]);
+	//glDisable(GL_LIGHT0);
 	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'H');
 	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'S');
 	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'J');
+	//glEnable(GL_LIGHT0);
 	glPopMatrix();
 
 	glDisable(GL_COLOR_MATERIAL);
