@@ -86,6 +86,7 @@
     <None Include="floor.bmp" />
     <None Include="grass.bmp" />
     <None Include="gravel.bmp" />
+    <None Include="heliport.bmp" />
     <None Include="leaf.bmp" />
     <None Include="leaf2.bmp" />
     <None Include="tile.bmp" />

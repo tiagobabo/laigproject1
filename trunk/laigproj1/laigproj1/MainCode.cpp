@@ -423,7 +423,7 @@ void desenhaHeliporto()
 
 	//glShadeModel(GL_FLAT);					// GL_FLAT, GL_SMOOTH
 	glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, 1);
+    glBindTexture(GL_TEXTURE_2D, 9);
 	glPushMatrix();
 	glTranslatef((PosChaoCX1+PosChaoCX2)/2,0.01,(PosChaoZ2/4));
 	glEvalMesh2(GL_FILL, 0,heliDiv, 0,heliDiv);		// GL_POINT, GL_LINE, GL_FILL
@@ -883,6 +883,9 @@ void inicializacao()
 
 	pixmap.readBMPFile("metal.bmp");
 	pixmap.setTexture(8);
+	
+	pixmap.readBMPFile("heliport.bmp");
+	pixmap.setTexture(9);
 
 	GLUquadric* glQ;	// nec. p/ criar sup. quadraticas (cilindros, esferas...)
 	glQ = gluNewQuadric();
