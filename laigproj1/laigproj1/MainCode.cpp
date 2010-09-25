@@ -4,7 +4,6 @@
 #include <GL/glui.h>
 #include <math.h>
 #include "RGBpixmap.h"
-#include <iostream>
 
 // dimensoes e localizacao da janela
 #define DIMX 1000
