@@ -10,7 +10,7 @@
 #define DIMY 800
 #define INITIALPOS_X 200
 #define INITIALPOS_Y 50
-#define zoom 20
+#define zoom 50
 
 //definicao das listas
 int chaoEArvores = 1;
@@ -62,6 +62,7 @@ float alturaHolo = 0.7;
 // dimensoes do heliporto
 float heliComp = 10.5;
 float heliLarg = 7.5;
+float heliDiv = 80.0;
 GLfloat ctrlpoints[4][3] = {	{  -heliComp/2, 0.0, heliLarg/2},
 								{  -heliComp/2, 0.0, -heliLarg/2},
 								{  heliComp/2, 0.0, heliLarg/2},
@@ -72,6 +73,10 @@ GLfloat nrmlcompon[4][3] = {	{  0.0, 1.0, 0.0},
 								{  0.0, 1.0, 0.0},
 								{  0.0, 1.0, 0.0} };
 
+GLfloat textpoints[4][2] = {	{ 0.0, 0.0},
+								{ 0.0, 1.0}, 
+								{ 1.0, 0.0},
+								{ 1.0, 1.0} };
 // dimensoes da arvore de tipo 1
 float raioTInf = 0.3;
 float raioTSup = 0.0;
@@ -405,19 +410,25 @@ void desenhaHolofotes(GLUquadric * quad)
 
 void desenhaHeliporto()
 {
-	glMap2f(GL_MAP2_VERTEX_3, 0.0, 1.0, 3, 2,  0.0, 1.0, 6, 2,  &ctrlpoints[0][0]);
+		glMap2f(GL_MAP2_VERTEX_3, 0.0, 1.0, 3, 2,  0.0, 1.0, 6, 2,  &ctrlpoints[0][0]);
 	glMap2f(GL_MAP2_NORMAL,   0.0, 1.0, 3, 2,  0.0, 1.0, 6, 2,  &nrmlcompon[0][0]);
-	//glMap2f(GL_MAP2_COLOR_4,  0.0, 1.0, 4, 2,  0.0, 1.0, 8, 2,  &colorpoints[0][0]);
-	//glMap2f(GL_MAP2_TEXTURE_COORD_2,  0.0, 1.0, 2, 2,  0.0, 1.0, 4, 2,  &textpoints[0][0]);
+	glMap2f(GL_MAP2_TEXTURE_COORD_2,  0.0, 1.0, 2, 2,  0.0, 1.0, 4, 2,  &textpoints[0][0]);
 
 	// os interpoladores activam-se:
 	glEnable(GL_MAP2_VERTEX_3);
 	glEnable(GL_MAP2_NORMAL);
+	glEnable(GL_MAP2_TEXTURE_COORD_2);
 
-	glMapGrid2f(40, 0.0,1.0, 60, 0.0,1.0); 
+	glMapGrid2f(heliDiv, 0.0,1.0, heliDiv, 0.0,1.0); 
 
 	//glShadeModel(GL_FLAT);					// GL_FLAT, GL_SMOOTH
-	glEvalMesh2(GL_FILL, 0,40, 0,60);		// GL_POINT, GL_LINE, GL_FILL
+	glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, 1);
+	glPushMatrix();
+	glTranslatef((PosChaoCX1+PosChaoCX2)/2,0.01,(PosChaoZ2/4));
+	glEvalMesh2(GL_FILL, 0,heliDiv, 0,heliDiv);		// GL_POINT, GL_LINE, GL_FILL
+	glPopMatrix();
+	glDisable(GL_TEXTURE_2D);
 }
 
 void desenhaChao()
