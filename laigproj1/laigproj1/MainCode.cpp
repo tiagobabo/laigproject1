@@ -206,7 +206,7 @@ int symb_light3_stacks =8;
 
 
 // fonte (global) de luz ambiente 
-float light_ambient[] = {0.1, 0.1, 0.1, 1.0}; /* Set the background ambient lighting. */
+float light_ambient[] = {0.4, 0.4, 0.4, 1.0}; /* Set the background ambient lighting. */
 
 
 // variaveis para a janela
@@ -295,10 +295,16 @@ void desenhaHospital(GLUquadric * quad)
 	glScalef(escalaLetr, escalaLetr, escalaLetr);
 	glColor3f(corLetreiro[0], corLetreiro[1], corLetreiro[2]);
 	glDisable(GL_LIGHT0);
+	glDisable(GL_LIGHT1);
+	glDisable(GL_LIGHT2);
+	glDisable(GL_LIGHT3);
 	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'H');
 	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'S');
 	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'J');
 	glEnable(GL_LIGHT0);
+	glEnable(GL_LIGHT1);
+	glEnable(GL_LIGHT2);
+	glEnable(GL_LIGHT3);
 	glPopMatrix();
 
 	glDisable(GL_COLOR_MATERIAL);
