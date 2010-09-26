@@ -254,14 +254,14 @@ void desenhaTrianguloXY(float x1, float y1, float x2, float y2, int imagem, floa
 {
 	glBindTexture(GL_TEXTURE_2D, imagem);
 	glBegin(GL_POLYGON);
-		glNormal3d(normal[0],normal[1],normal[2]);  // esta normal fica comum aos 4 vertices
+		glNormal3d(normal[0],normal[1],normal[2]);  // esta normal fica comum aos 3 vertices
 		glTexCoord2f(0.0,0.0); glVertex3d(-x2, y1, 0.0);
 		glTexCoord2f(escala/2,escala); glVertex3d(x2,y1,0.0);
 		glTexCoord2f(escala/2,0.0); glVertex3d(0.0, y2, 0.0);
 	glEnd();
 
 	glBegin(GL_POLYGON);
-		glNormal3d(-normal[0],-normal[1],-normal[2]);  // esta normal fica comum aos 4 vertices
+		glNormal3d(-normal[0],-normal[1],-normal[2]);  // esta normal fica comum aos 3 vertices
 		glTexCoord2f(escala/2,escala); glVertex3d(x2,y1,0.0);
 		glTexCoord2f(0.0,0.0); glVertex3d(-x2, y1, 0.0);
 		glTexCoord2f(escala/2,0.0); glVertex3d(0.0, y2, 0.0);
