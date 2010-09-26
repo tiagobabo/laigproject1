@@ -86,6 +86,16 @@ GLfloat textpoints[4][2] = {	{ 0.0, 0.0},
 								{ 0.0, 1.0}, 
 								{ 1.0, 0.0},
 								{ 1.0, 1.0} };
+
+// dimensoes do helicoptero
+float raioHeliCabine = 2.0;
+float raioHeliCaudaS = 0.3;
+float raioHeliCaudaI = 0.6;
+float compHeliCauda = 5.0;
+float largSuporteAterr = 0.3;
+float compSuporteAterr = 2*raioHeliCabine+(2*raioHeliCabine/4);
+float alturaHeli = 2*(raioHeliCabine+(raioHeliCabine/4)+largSuporteAterr);
+
 // dimensoes da arvore de tipo 1
 float raioTInf = 0.3;
 float raioTSup = 0.0;
@@ -568,6 +578,99 @@ void desenhaArvoreT2(GLUquadric * quad, float posX, float posZ, float height)
 
 }
 
+void desenhaSuporteAterragem(GLUquadric * quad)
+{
+	//suportes de aterragem 
+	//direito
+	glPushMatrix();
+	glTranslatef(raioHeliCabine, -(raioHeliCabine+(raioHeliCabine/4)),-(compSuporteAterr/2));
+	// discos para cubrir os suportes de aterragem
+	glPushMatrix();
+	glTranslatef(0.0,0.0,compSuporteAterr);
+	gluDisk(quad,0.0,largSuporteAterr, slicesT1, stacksT1); 
+	glPopMatrix();
+	glPushMatrix();
+	glRotatef(180,0.0,1.0,0.0);
+	gluDisk(quad,0.0,largSuporteAterr, slicesT1, stacksT1);
+	glPopMatrix();
+	// suporte
+	gluCylinder(quad, largSuporteAterr, largSuporteAterr, compSuporteAterr ,slicesT1, stacksT1);
+	glPopMatrix();
+	
+	//esquerdo
+	glPushMatrix();
+	glTranslatef(-raioHeliCabine, -(raioHeliCabine+(raioHeliCabine/4)),-(compSuporteAterr/2));
+	// discos para cubrir os suportes de aterragem
+	glPushMatrix();
+	glTranslatef(0.0,0.0,compSuporteAterr);
+	gluDisk(quad,0.0,largSuporteAterr, slicesT1, stacksT1);
+	glPopMatrix();
+	glPushMatrix();
+	glRotatef(180,0.0,1.0,0.0);
+	gluDisk(quad,0.0,largSuporteAterr, slicesT1, stacksT1);
+	glPopMatrix();
+	// suporte
+	gluCylinder(quad, largSuporteAterr, largSuporteAterr, compSuporteAterr ,slicesT1, stacksT1);
+	glPopMatrix();
+	
+	
+	// suporte esquerdo dianteiro
+	glPushMatrix();
+	glTranslatef(-raioHeliCabine/2, 0.0,-compSuporteAterr/4);
+	glRotatef(-25,0.0,0.0,1.0);
+	glRotatef(90,1.0,0.0,0.0);
+	gluCylinder(quad, largSuporteAterr/2, largSuporteAterr/2, (raioHeliCabine+(raioHeliCabine/4)) ,slicesT1, stacksT1);
+	glPopMatrix();
+	// suporte esquerdo traseiro
+	glPushMatrix();
+	glTranslatef(-raioHeliCabine/2, 0.0,compSuporteAterr/4);
+	glRotatef(-25,0.0,0.0,1.0);
+	glRotatef(90,1.0,0.0,0.0);
+	gluCylinder(quad, largSuporteAterr/2, largSuporteAterr/2, (raioHeliCabine+(raioHeliCabine/4)) ,slicesT1, stacksT1);
+	glPopMatrix();
+	// suporte direito dianteiro
+	glPushMatrix();
+	glTranslatef(raioHeliCabine/2, 0.0,-compSuporteAterr/4);
+	glRotatef(25,0.0,0.0,1.0);
+	glRotatef(90,1.0,0.0,0.0);
+	gluCylinder(quad, largSuporteAterr/2, largSuporteAterr/2, (raioHeliCabine+(raioHeliCabine/4)) ,slicesT1, stacksT1);
+	glPopMatrix();
+	// suporte direito traseiro
+	glPushMatrix();
+	glTranslatef(raioHeliCabine/2, 0.0,compSuporteAterr/4);
+	glRotatef(25,0.0,0.0,1.0);
+	glRotatef(90,1.0,0.0,0.0);
+	gluCylinder(quad, largSuporteAterr/2, largSuporteAterr/2, (raioHeliCabine+(raioHeliCabine/4)) ,slicesT1, stacksT1);
+	glPopMatrix();
+}
+
+void desenhaCaudaHeli(GLUquadric * quad)
+{
+	// cauda Helicoptero
+	glPushMatrix();
+	glRotatef(-20,1.0,0.0,0.0);
+	glTranslatef(0.0,0.0, raioHeliCabine-0.1);
+	//disco para a cauda do helicoptero
+	glPushMatrix();
+	glTranslatef(0.0,0.0,compHeliCauda);
+	gluDisk(quad, 0.0, raioHeliCaudaS, slicesT1, stacksT1);
+	glPopMatrix();
+	gluCylinder(quad, raioHeliCaudaI, raioHeliCaudaS, compHeliCauda, slicesT1, stacksT1);
+	glPopMatrix();
+}
+
+
+void desenhaHelicoptero(GLUquadric * quad)
+{
+	glPushMatrix();
+	glTranslatef((PosChaoCX1+PosChaoCX2)/2,alturaHeli/2,(PosChaoZ2/4));
+	gluSphere(quad, raioHeliCabine , slicesT1, stacksT1);
+	desenhaSuporteAterragem(quad);
+	desenhaCaudaHeli(quad);
+	glPopMatrix();
+	
+}
+
 void display(void)
 {
 
@@ -708,6 +811,7 @@ void display(void)
 	glCallList(chaoEArvores);
 	glCallList(hospital);
 	glCallList(heliporto);
+	desenhaHelicoptero(glQ);
 	
 	// swapping the buffers causes the rendering above to be shown
 	glutSwapBuffers();
@@ -993,7 +1097,7 @@ int main(int argc, char* argv[])
 	GLUI_Master.set_glutIdleFunc( myGlutIdle );
    
 	inicializacao();
-   
+
 	glutMainLoop();
 
 	return 0;
