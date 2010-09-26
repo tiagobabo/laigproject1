@@ -775,16 +775,16 @@ void keyboard(unsigned char key, int x, int y)
 		 light0z += 0.1;
 		 break;
 	  case 'l':
-		 VposX += 0.1;
+		 VposX += 1.0;
 		 break;	
 	  case 'j':
-		 VposX -= 0.1;
+		 VposX -= 1.0;
 		 break;	
 	  case 'k':
-		 zoom += 0.1;
+		 zoom += 1.0;
 		 break;	
 	  case 'i':
-		 zoom -= 0.1;
+		 zoom -= 1.0;
 		 break;	
 	  case 'y':
 		 VposY += 1.0;
