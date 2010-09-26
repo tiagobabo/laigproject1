@@ -424,7 +424,6 @@ void desenhaHolofotes(GLUquadric * quad)
 	glPopMatrix();
 	
 	glDisable(GL_CULL_FACE);
-	glDisable(GL_TEXTURE_2D);
 	
 	// holofotes
 	// holofote1
@@ -464,6 +463,7 @@ void desenhaHolofotes(GLUquadric * quad)
 	gluDisk(quad,0.0,raioHolo2,slicesT1, stacksT1);
 	glPopMatrix();
 	glEnable(GL_CULL_FACE);
+	glDisable(GL_TEXTURE_2D);
 }
 
 void desenhaHeliporto()
