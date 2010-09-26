@@ -664,6 +664,7 @@ void desenhaHelicoptero(GLUquadric * quad)
 {
 	glPushMatrix();
 	glTranslatef((PosChaoCX1+PosChaoCX2)/2,alturaHeli/2,(PosChaoZ2/4));
+	glRotatef(90, 0.0,1.0,0.0);
 	gluSphere(quad, raioHeliCabine , slicesT1, stacksT1);
 	desenhaSuporteAterragem(quad);
 	desenhaCaudaHeli(quad);
