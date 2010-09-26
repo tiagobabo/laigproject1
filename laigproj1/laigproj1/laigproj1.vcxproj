@@ -89,6 +89,7 @@
     <None Include="heliport.bmp" />
     <None Include="leaf.bmp" />
     <None Include="leaf2.bmp" />
+    <None Include="metal.bmp" />
     <None Include="tile.bmp" />
     <None Include="tree_base.bmp" />
   </ItemGroup>
