@@ -147,8 +147,8 @@ float mat1_ambient[] =  {0.7, 0.7, 0.7, 1.0};	/* ambient reflection. */
 // declarações para a fonte de luz LIGHT0;
 float light0_position[]  = {0.0, 3.0, 4.0, 1.0}; // nao necessaria...
 float light0_ambient[] =   {0.0, 0.0, 0.0, 1.0}; // sem componente ambiente
-float light0_diffuse[] =   {2.5, 2.5, 2.5, 1.0};
-float light0_specular[] =  {2.5, 2.5, 2.5, 1.0};
+float light0_diffuse[] =   {6.0, 6.0, 6.0, 1.0};
+float light0_specular[] =  {6.0, 6.0, 6.0, 1.0};
 float light0_kc = 0.0;
 float light0_kl = 1.0;
 float light0_kq = 0.0;
@@ -162,8 +162,8 @@ int symb_light0_stacks =8;
 // declarações para a fonte de luz LIGHT1;
 float light1_position[]  = {0.0, 3.0, 4.0, 1.0}; // nao necessaria...
 float light1_ambient[] =   {0.0, 0.0, 0.0, 1.0}; // sem componente ambiente
-float light1_diffuse[] =   {2.5, 2.5, 2.5, 1.0};
-float light1_specular[] =  {2.5, 2.5, 2.5, 1.0};
+float light1_diffuse[] =   {6.0, 6.0, 6.0, 1.0};
+float light1_specular[] =  {6.0, 6.0, 6.0, 1.0};
 float light1_kc = 0.0;
 float light1_kl = 1.0;
 float light1_kq = 0.0;
@@ -177,8 +177,8 @@ int symb_light1_stacks =8;
 // declarações para a fonte de luz LIGHT2;
 float light2_position[]  = {0.0, 3.0, 4.0, 1.0}; // nao necessaria...
 float light2_ambient[] =   {0.0, 0.0, 0.0, 1.0}; // sem componente ambiente
-float light2_diffuse[] =   {2.5, 2.5, 2.5, 1.0};
-float light2_specular[] =  {2.5, 2.5, 2.5, 1.0};
+float light2_diffuse[] =   {6.0, 6.0, 6.0, 1.0};
+float light2_specular[] =  {6.0, 6.0, 6.0, 1.0};
 float light2_kc = 0.0;
 float light2_kl = 1.0;
 float light2_kq = 0.0;
@@ -192,8 +192,8 @@ int symb_light2_stacks =8;
 // declarações para a fonte de luz LIGHT3;
 float light3_position[]  = {0.0, 3.0, 4.0, 1.0}; // nao necessaria...
 float light3_ambient[] =   {0.0, 0.0, 0.0, 1.0}; // sem componente ambiente
-float light3_diffuse[] =   {2.5, 2.5, 2.5, 1.0};
-float light3_specular[] =  {2.5, 2.5, 2.5, 1.0};
+float light3_diffuse[] =   {6.0, 6.0, 6.0, 1.0};
+float light3_specular[] =  {6.0, 6.0, 6.0, 1.0};
 float light3_kc = 0.0;
 float light3_kl = 1.0;
 float light3_kq = 0.0;
@@ -206,7 +206,7 @@ int symb_light3_stacks =8;
 
 
 // fonte (global) de luz ambiente 
-float light_ambient[] = {0.4, 0.4, 0.4, 1.0}; /* Set the background ambient lighting. */
+float light_ambient[] = {0.6, 0.6, 0.6, 1.0}; /* Set the background ambient lighting. */
 
 
 // variaveis para a janela
@@ -305,6 +305,7 @@ void desenhaHospital(GLUquadric * quad)
 	glEnable(GL_LIGHT1);
 	glEnable(GL_LIGHT2);
 	glEnable(GL_LIGHT3);
+
 	glPopMatrix();
 
 	glDisable(GL_COLOR_MATERIAL);
@@ -432,6 +433,7 @@ void desenhaHolofotes(GLUquadric * quad)
 	
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_TEXTURE_2D);
+	
 	// holofotes
 	// holofote1
 	glPushMatrix();
@@ -474,7 +476,7 @@ void desenhaHolofotes(GLUquadric * quad)
 
 void desenhaHeliporto()
 {
-		glMap2f(GL_MAP2_VERTEX_3, 0.0, 1.0, 3, 2,  0.0, 1.0, 6, 2,  &ctrlpoints[0][0]);
+	glMap2f(GL_MAP2_VERTEX_3, 0.0, 1.0, 3, 2,  0.0, 1.0, 6, 2,  &ctrlpoints[0][0]);
 	glMap2f(GL_MAP2_NORMAL,   0.0, 1.0, 3, 2,  0.0, 1.0, 6, 2,  &nrmlcompon[0][0]);
 	glMap2f(GL_MAP2_TEXTURE_COORD_2,  0.0, 1.0, 2, 2,  0.0, 1.0, 4, 2,  &textpoints[0][0]);
 
@@ -585,8 +587,6 @@ void display(void)
 
 	// ****** fim de todas as declaracoes da funcao display() ******
 
-
-
 	glQ = gluNewQuadric();
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -645,7 +645,6 @@ void display(void)
 		             axis_lenght, axis_nslices, axis_nstacks);   // nao tem bases
 	glPopMatrix();
 
-	
 	// Actualizacao da posicao da fonte de luz...
 	light0_position[0] = light0x;	// por razoes de eficiencia, os restantes 
 	light0_position[1] = light0y;	// parametros _invariaveis_ da LIGHT0 mantem os valores
@@ -712,121 +711,6 @@ void display(void)
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  mat1_specular);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   mat1_diffuse);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat1_ambient);
-	/*
-	// SEGUEM-SE ALGUNS EXEMPLOS DE UTILIZACAO DE OPENGL (GL, GLU, GLUT)
-
-	// GLU: funcoes para desenhar Quadraticas
-	//   Permitem desenhar alguns objectos: disco, cilindro/cone, esfera
-	//   O parametro do tipo GLUquadric (variavel glQ, declarada acima) passa,
-	//   em argumento da funcao de desenho respectiva, algumas propriedades
-	//   que esta tem em conta durante o desenho (estilo de desenho, calculo e
-	//   orientacao de normais, mapeamento de texturas...
-
-	// Funcoes para definicao dessas propriedades em glQ
-	gluQuadricDrawStyle(glQ, GLU_LINE);		// GLU_FILL, GLU_LINE, GLU_SILHOUETTE, GLU_POINT
-	gluQuadricNormals(glQ, GLU_SMOOTH);		// GLU_NONE, GLU_FLAT, GLU_SMOOTH
-	gluQuadricOrientation(glQ, GLU_OUTSIDE);	// GLU_OUTSIDE, GLU_INSIDE
-	gluQuadricTexture(glQ, GL_FALSE);		// GL_TRUE, GL_FALSE
-	//gluQuadricCallback(glQ, GLU_ERROR, <CallBackFunc>);
-
-	// Funcoes de desenho de quadraticas
-	// gluDisk(GLUquadric* quad, GLdouble inner, GLdouble outer,
-	//			GLint slices, GLint loops )
-	// gluPartialDisk(GLUquadric* quad, GLdouble inner, GLdouble outer,
-	//			GLint slices, GLint loops, GLdouble start, GLdouble sweep )
-	// gluCylinder(GLUquadric * quad, GLdouble base, GLdouble top, GLdouble height,
-	//			GLint slices, GLint stacks );
-	// gluSphere(GLUquadric* quad, GLdouble radius, GLint slices, GLint stacks )
-
-	glColor3f(1.0,0.0,1.0);		// magenta
-	gluSphere(glQ, 1.0, 8,8);
-
-	glColor3f(0.0,1.0,1.0);		// ciao
-	gluQuadricDrawStyle(glQ, GLU_FILL);
-	gluPartialDisk(glQ, 3, 7, 16, 4, 45, 270);
-
-	// Solidos, na GLUT: nao fazem mapeamento de texturas (excepto o Teapot)
-	// glutSolidSphere(GLdouble radius, GLint slices, GLint stacks);
-	// glutSolidCube(GLdouble size);
-	// glutSolidCone(GLdouble base, GLdouble height, GLint slices, GLint stacks);
-	// glutSolidTorus(GLdouble innerRadius, GLdouble outerRadius, GLint nsides, GLint rings);
-	// glutSolidDodecahedron(void);
-	// glutSolidOctahedron(void);
-	// glutSolidTetrahedron(void);
-	// glutSolidIcosahedron(void);
-	// glutSolidTeapot(GLdouble size);
-
-
-	// Texto 3D, GLUT
-	// void glutStrokeCharacter(void *font, int character);	// GLUT_STROKE_ROMAN
-	// int glutStrokeWidth(GLUTstrokeFont font, int character);
-
-	glPushMatrix();
-	glTranslatef(0,0,1);
-	glScalef(0.05, 0.05, 0.05);
-	glColor3f(0.0,0.0,1.0);		// azul
-	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'L');
-	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'A');
-	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'S');
-	glPopMatrix();
-
-
-	// Texto BitMap, GLUT
-	// glRasterPos3f(x,y,z);
-	// void glutBitmapCharacter(void *font, int character);	// valores varios...
-	// int glutBitmapWidth(GLUTbitmapFont font, int character);
-
-	glPushMatrix();
-	glColor3f(1.0,1.0,0.0);		// amarelo
-	glRasterPos3f(5,5,5);
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'e');
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, '\'');
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ' ');
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'a');
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ' ');
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'm');
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'a');
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'i');
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'o');
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'r');
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, '!');
-	glPopMatrix();
-	
-	// inibicao de atribuicao directa de cores; os objectos que se seguem DEVEM
-	// possuir materiais associados
-	glDisable(GL_COLOR_MATERIAL);
-
-
-
-	// Definicao de material a usar daqui em diante (valores declarados acima)
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat1_shininess);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  mat1_specular);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   mat1_diffuse);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat1_ambient);
-
-	// desenha rectangulo paralelo ao plano XY, com texturas
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, 1);	// activa a textura 1 (feup)
-	temp = 2; // cinco repetições na direccao Z
-	glBegin(GL_POLYGON);
-		glNormal3d(0.0,0.0,1.0);  // esta normal fica comum aos 4 vertices
-		glTexCoord2f(0.0,0.0);  glVertex3d(-1.0, 6.0, 10.0);	// associacao de
-		glTexCoord2f(1.0,0.0);  glVertex3d(-1.0, 1.0, 10.0);	// coordenadas u,v
-		glTexCoord2f(1.0,temp); glVertex3d(-1.0, 1.0,  1.0);	// das texturas, aos
-		glTexCoord2f(0.0,temp); glVertex3d(-1.0, 6.0,  1.0);	// vertices 3D do poligono
-	glEnd();
-
-	// desenha rectangulo paralelo ao plano ZY, sem texturas
-	glDisable(GL_TEXTURE_2D);
-	glBegin(GL_POLYGON);
-		glNormal3d(1.0,0.0,0.0);  // esta normal fica comum aos 4 vertices
-		glVertex3d( 1.0, 1.0,  -1.0);
-		glVertex3d(10.0, 1.0,  -1.0);
-		glVertex3d(10.0, 6.0,  -1.0);
-		glVertex3d( 1.0, 6.0,  -1.0);
-	glEnd();
-
-	*/
 	
 	//chamada das funções
 	glCallList(chaoEArvores);
@@ -837,9 +721,6 @@ void display(void)
 	glutSwapBuffers();
 	glFlush();
 }
-
-
-
 
 /* Mouse handling */
 void processMouse(int button, int state, int x, int y)
