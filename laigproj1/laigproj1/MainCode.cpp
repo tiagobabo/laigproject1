@@ -71,7 +71,7 @@ float alturaHolo = 0.7;
 // dimensoes do heliporto
 float heliComp = 10.5;
 float heliLarg = 7.5;
-float heliDiv = 80.0;
+float heliDiv = 150.0;
 GLfloat ctrlpoints[4][3] = {	{  -heliComp/2, 0.0, heliLarg/2},
 								{  -heliComp/2, 0.0, -heliLarg/2},
 								{  heliComp/2, 0.0, heliLarg/2},
@@ -147,8 +147,8 @@ float mat1_ambient[] =  {0.7, 0.7, 0.7, 1.0};	/* ambient reflection. */
 // declarações para a fonte de luz LIGHT0;
 float light0_position[]  = {0.0, 3.0, 4.0, 1.0}; // nao necessaria...
 float light0_ambient[] =   {0.0, 0.0, 0.0, 1.0}; // sem componente ambiente
-float light0_diffuse[] =   {6.0, 6.0, 6.0, 1.0};
-float light0_specular[] =  {6.0, 6.0, 6.0, 1.0};
+float light0_diffuse[] =   {2.5, 2.5, 2.5, 1.0};
+float light0_specular[] =  {2.5, 2.5, 2.5, 1.0};
 float light0_kc = 0.0;
 float light0_kl = 1.0;
 float light0_kq = 0.0;
@@ -159,8 +159,54 @@ float symb_light0_radius = 0.2;
 int symb_light0_slices = 8;
 int symb_light0_stacks =8;
 
+// declarações para a fonte de luz LIGHT1;
+float light1_position[]  = {0.0, 3.0, 4.0, 1.0}; // nao necessaria...
+float light1_ambient[] =   {0.0, 0.0, 0.0, 1.0}; // sem componente ambiente
+float light1_diffuse[] =   {2.5, 2.5, 2.5, 1.0};
+float light1_specular[] =  {2.5, 2.5, 2.5, 1.0};
+float light1_kc = 0.0;
+float light1_kl = 1.0;
+float light1_kq = 0.0;
+float light1x = holo2X-4*raioPoste;
+float light1y = alturaPoste-2*raioPoste;
+float light1z = holo1Z-4*raioPoste;
+float symb_light1_radius = 0.2;
+int symb_light1_slices = 8;
+int symb_light1_stacks =8;
+
+// declarações para a fonte de luz LIGHT2;
+float light2_position[]  = {0.0, 3.0, 4.0, 1.0}; // nao necessaria...
+float light2_ambient[] =   {0.0, 0.0, 0.0, 1.0}; // sem componente ambiente
+float light2_diffuse[] =   {2.5, 2.5, 2.5, 1.0};
+float light2_specular[] =  {2.5, 2.5, 2.5, 1.0};
+float light2_kc = 0.0;
+float light2_kl = 1.0;
+float light2_kq = 0.0;
+float light2x = holo2X-4*raioPoste;
+float light2y = alturaPoste-2*raioPoste;
+float light2z = holo2Z+4*raioPoste;
+float symb_light2_radius = 0.2;
+int symb_light2_slices = 8;
+int symb_light2_stacks =8;
+
+// declarações para a fonte de luz LIGHT3;
+float light3_position[]  = {0.0, 3.0, 4.0, 1.0}; // nao necessaria...
+float light3_ambient[] =   {0.0, 0.0, 0.0, 1.0}; // sem componente ambiente
+float light3_diffuse[] =   {2.5, 2.5, 2.5, 1.0};
+float light3_specular[] =  {2.5, 2.5, 2.5, 1.0};
+float light3_kc = 0.0;
+float light3_kl = 1.0;
+float light3_kq = 0.0;
+float light3x = holo1X+4*raioPoste;
+float light3y = alturaPoste-2*raioPoste;
+float light3z = holo2Z+4*raioPoste;
+float symb_light3_radius = 0.2;
+int symb_light3_slices = 8;
+int symb_light3_stacks =8;
+
+
 // fonte (global) de luz ambiente 
-float light_ambient[] = {0.4, 0.4, 0.4, 1.0}; /* Set the background ambient lighting. */
+float light_ambient[] = {0.1, 0.1, 0.1, 1.0}; /* Set the background ambient lighting. */
 
 
 // variaveis para a janela
@@ -600,12 +646,57 @@ void display(void)
 	light0_position[2] = light0z;	// definidos na funcao de inicializacao
 	glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
 
+	// Actualizacao da posicao da fonte de luz2...
+	light1_position[0] = light1x;	// por razoes de eficiencia, os restantes 
+	light1_position[1] = light1y;	// parametros _invariaveis_ da light1 mantem os valores
+	light1_position[2] = light1z;	// definidos na funcao de inicializacao
+	glLightfv(GL_LIGHT1, GL_POSITION, light1_position);
+
+	// Actualizacao da posicao da fonte de luz3...
+	light2_position[0] = light2x;	// por razoes de eficiencia, os restantes 
+	light2_position[1] = light2y;	// parametros _invariaveis_ da light2 mantem os valores
+	light2_position[2] = light2z;	// definidos na funcao de inicializacao
+	glLightfv(GL_LIGHT2, GL_POSITION, light2_position);
+
+	// Actualizacao da posicao da fonte de luz4...
+	light3_position[0] = light3x;	// por razoes de eficiencia, os restantes 
+	light3_position[1] = light3y;	// parametros _invariaveis_ da light3 mantem os valores
+	light3_position[2] = light3z;	// definidos na funcao de inicializacao
+	glLightfv(GL_LIGHT3, GL_POSITION, light3_position);
+
 	// ... e da esfera que a simboliza
 	glColor3f(1.0,1.0,0.0);		// cor amarela
 	gluQuadricOrientation( glQ, GLU_INSIDE);
 	glPushMatrix();
 	glTranslated(light0x,light0y,light0z);
 	gluSphere(glQ, symb_light0_radius, symb_light0_slices, symb_light0_stacks);
+    glPopMatrix();
+	gluQuadricOrientation( glQ, GLU_OUTSIDE);
+
+	// ... e da esfera que a simboliza2
+	glColor3f(1.0,1.0,0.0);		// cor amarela
+	gluQuadricOrientation( glQ, GLU_INSIDE);
+	glPushMatrix();
+	glTranslated(light1x,light1y,light1z);
+	gluSphere(glQ, symb_light1_radius, symb_light1_slices, symb_light1_stacks);
+    glPopMatrix();
+	gluQuadricOrientation( glQ, GLU_OUTSIDE);
+
+	// ... e da esfera que a simboliza3
+	glColor3f(1.0,1.0,0.0);		// cor amarela
+	gluQuadricOrientation( glQ, GLU_INSIDE);
+	glPushMatrix();
+	glTranslated(light2x,light2y,light2z);
+	gluSphere(glQ, symb_light2_radius, symb_light2_slices, symb_light2_stacks);
+    glPopMatrix();
+	gluQuadricOrientation( glQ, GLU_OUTSIDE);
+
+	// ... e da esfera que a simboliza4
+	glColor3f(1.0,1.0,0.0);		// cor amarela
+	gluQuadricOrientation( glQ, GLU_INSIDE);
+	glPushMatrix();
+	glTranslated(light3x,light3y,light3z);
+	gluSphere(glQ, symb_light3_radius, symb_light3_slices, symb_light3_stacks);
     glPopMatrix();
 	gluQuadricOrientation( glQ, GLU_OUTSIDE);
 	
@@ -890,6 +981,30 @@ void inicializacao()
 	glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION,    light0_kl);
 	glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, light0_kq);
 
+	// declaracoes para a fonte luz GL_LIGHT1
+	glLightfv(GL_LIGHT1, GL_AMBIENT, light1_ambient);
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, light1_diffuse);
+	glLightfv(GL_LIGHT1, GL_SPECULAR, light1_specular);
+	glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION,  light1_kc);
+	glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION,    light1_kl);
+	glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, light1_kq);
+
+	// declaracoes para a fonte luz GL_LIGHT2
+	glLightfv(GL_LIGHT2, GL_AMBIENT, light2_ambient);
+	glLightfv(GL_LIGHT2, GL_DIFFUSE, light2_diffuse);
+	glLightfv(GL_LIGHT2, GL_SPECULAR, light2_specular);
+	glLightf(GL_LIGHT2, GL_CONSTANT_ATTENUATION,  light2_kc);
+	glLightf(GL_LIGHT2, GL_LINEAR_ATTENUATION,    light2_kl);
+	glLightf(GL_LIGHT2, GL_QUADRATIC_ATTENUATION, light2_kq);
+
+	// declaracoes para a fonte luz GL_LIGHT3
+	glLightfv(GL_LIGHT3, GL_AMBIENT, light3_ambient);
+	glLightfv(GL_LIGHT3, GL_DIFFUSE, light3_diffuse);
+	glLightfv(GL_LIGHT3, GL_SPECULAR, light3_specular);
+	glLightf(GL_LIGHT3, GL_CONSTANT_ATTENUATION,  light3_kc);
+	glLightf(GL_LIGHT3, GL_LINEAR_ATTENUATION,    light3_kl);
+	glLightf(GL_LIGHT3, GL_QUADRATIC_ATTENUATION, light3_kq);
+
 	// NOTA: a direccao e a posicao de GL_LIGHT0 estao na rotina display(), pelo
 	//       que as isntrucoes seguntes nao sao necessarias
 	//glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 90.0);
@@ -900,6 +1015,12 @@ void inicializacao()
 	glEnable(GL_LIGHTING);
 	// "Acender" a fonte de luz GL_LIGHT0
 	glEnable(GL_LIGHT0);
+	// "Acender" a fonte de luz GL_LIGHT1
+	glEnable(GL_LIGHT1);
+	// "Acender" a fonte de luz GL_LIGHT2
+	glEnable(GL_LIGHT2);
+	// "Acender" a fonte de luz GL_LIGHT3
+	glEnable(GL_LIGHT3);
 
 
 	// Declaracoe para shading
