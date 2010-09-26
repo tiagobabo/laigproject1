@@ -392,6 +392,21 @@ void desenhaHospital(GLUquadric * quad)
 	
 }
 
+void desenhaHolofotesAux(GLUquadric * quad)
+{
+	glRotatef(-90.0, 1.0, 0.0, 0.0);
+	gluCylinder(quad, raioPoste, raioPoste, alturaPoste, slicesT1, stacksT1);
+	glTranslatef(0.0,0.0,alturaPoste);
+	gluDisk(quad,0.0,raioPoste,slicesT1, stacksT1);
+}
+
+void desenhaHolofotesAux2(GLUquadric * quad)
+{
+	gluCylinder(quad, raioHolo1, raioHolo2, alturaHolo, slicesT1, stacksT1);
+	glTranslatef(0.0,0.0,alturaHolo);
+	gluDisk(quad,0.0,raioHolo2,slicesT1, stacksT1);
+}
+
 void desenhaHolofotes(GLUquadric * quad)
 {
 
@@ -403,34 +418,22 @@ void desenhaHolofotes(GLUquadric * quad)
 	// poste1
 	glPushMatrix();
 	glTranslatef(holo1X,0.0,holo1Z);
-	glRotatef(-90.0, 1.0, 0.0, 0.0);
-	gluCylinder(quad, raioPoste, raioPoste, alturaPoste, slicesT1, stacksT1);
-	glTranslatef(0.0,0.0,alturaPoste);
-	gluDisk(quad,0.0,raioPoste,slicesT1, stacksT1);
+	desenhaHolofotesAux(quad);
 	glPopMatrix();
 	// poste2
 	glPushMatrix();
 	glTranslatef(holo2X,0.0,holo1Z);
-	glRotatef(-90.0, 1.0, 0.0, 0.0);
-	gluCylinder(quad, raioPoste, raioPoste, alturaPoste, slicesT1, stacksT1);
-	glTranslatef(0.0,0.0,alturaPoste);
-	gluDisk(quad,0.0,raioPoste,slicesT1, stacksT1);
+	desenhaHolofotesAux(quad);
 	glPopMatrix();
 	// poste3
 	glPushMatrix();
 	glTranslatef(holo2X,0.0,holo2Z);
-	glRotatef(-90.0, 1.0, 0.0, 0.0);
-	gluCylinder(quad, raioPoste, raioPoste, alturaPoste, slicesT1, stacksT1);
-	glTranslatef(0.0,0.0,alturaPoste);
-	gluDisk(quad,0.0,raioPoste,slicesT1, stacksT1);
+	desenhaHolofotesAux(quad);
 	glPopMatrix();
 	// poste4
 	glPushMatrix();
 	glTranslatef(holo1X,0.0,holo2Z);
-	glRotatef(-90.0, 1.0, 0.0, 0.0);
-	gluCylinder(quad, raioPoste, raioPoste, alturaPoste, slicesT1, stacksT1);
-	glTranslatef(0.0,0.0,alturaPoste);
-	gluDisk(quad,0.0,raioPoste,slicesT1, stacksT1);
+	desenhaHolofotesAux(quad);
 	glPopMatrix();
 	
 	glDisable(GL_CULL_FACE);
@@ -441,36 +444,28 @@ void desenhaHolofotes(GLUquadric * quad)
 	glTranslatef(holo1X+4*raioPoste,alturaPoste-2*raioPoste,holo1Z-4*raioPoste);
 	glRotatef(-45.0, 0.0, 1.0, 0.0);
 	glRotatef(-45.0, 1.0, 0.0, 0.0);
-	gluCylinder(quad, raioHolo1, raioHolo2, alturaHolo, slicesT1, stacksT1);
-	glTranslatef(0.0,0.0,alturaHolo);
-	gluDisk(quad,0.0,raioHolo2,slicesT1, stacksT1);
+	desenhaHolofotesAux2(quad);
 	glPopMatrix();
 	// holofote2
 	glPushMatrix();
 	glTranslatef(holo2X-4*raioPoste,alturaPoste-2*raioPoste,holo1Z-4*raioPoste);
 	glRotatef(45.0, 0.0, 1.0, 0.0);
 	glRotatef(-45.0, 1.0, 0.0, 0.0);
-	gluCylinder(quad, raioHolo1, raioHolo2, alturaHolo, slicesT1, stacksT1);
-	glTranslatef(0.0,0.0,alturaHolo);
-	gluDisk(quad,0.0,raioHolo2,slicesT1, stacksT1);
+	desenhaHolofotesAux2(quad);
 	glPopMatrix();
 	// holofote3
 	glPushMatrix();
 	glTranslatef(holo2X-4*raioPoste,alturaPoste-2*raioPoste,holo2Z+4*raioPoste);
 	glRotatef(135.0, 0.0, 1.0, 0.0);
 	glRotatef(-45.0, 1.0, 0.0, 0.0);
-	gluCylinder(quad, raioHolo1, raioHolo2, alturaHolo, slicesT1, stacksT1);
-	glTranslatef(0.0,0.0,alturaHolo);
-	gluDisk(quad,0.0,raioHolo2,slicesT1, stacksT1);
+	desenhaHolofotesAux2(quad);
 	glPopMatrix();
 	// holofote4
 	glPushMatrix();
 	glTranslatef(holo1X+4*raioPoste,alturaPoste-2*raioPoste,holo2Z+4*raioPoste);
 	glRotatef(-135.0, 0.0, 1.0, 0.0);
 	glRotatef(-45.0, 1.0, 0.0, 0.0);
-	gluCylinder(quad, raioHolo1, raioHolo2, alturaHolo, slicesT1, stacksT1);
-	glTranslatef(0.0,0.0,alturaHolo);
-	gluDisk(quad,0.0,raioHolo2,slicesT1, stacksT1);
+	desenhaHolofotesAux2(quad);
 	glPopMatrix();
 	glEnable(GL_CULL_FACE);
 	glDisable(GL_TEXTURE_2D);
