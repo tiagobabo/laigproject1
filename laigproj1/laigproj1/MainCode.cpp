@@ -795,7 +795,7 @@ void desenhaHelicoptero(GLUquadric * quad)
 	glRotatef(90, 0.0,1.0,0.0);
 	glEnable (GL_BLEND);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE); 
-	glColor4f (0.0f, 0.0f, 1.0f, 0.5f); // blue with 50% opacity
+	glColor4f (0.0f, 0.6f, 1.0f, 1.0f); // blue with 50% opacity
 	// draw your model
 	gluSphere(quad, raioHeliCabine , slicesT1, stacksT1);
 	glDisable (GL_BLEND); // reset or something
