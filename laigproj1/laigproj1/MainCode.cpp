@@ -92,10 +92,24 @@ float raioHeliCabine = 2.0;
 float raioHeliCaudaS = 0.3;
 float raioHeliCaudaI = 0.6;
 float compHeliCauda = 5.0;
+float raioIMotorT = 0.2;
+float raioEMotorT = 1.2;
+float largHeliceT = 0.2;
+float compHeliceT = 0.9;
+float largHeliceF = 0.3;
+float compHeliceF = 6.0;
+float raioMotorF = 0.5;
+float alturaMotorF = 0.5;
+float MotorAng = 0.0;
+float angCauda = 10;
 float largSuporteAterr = 0.3;
 float compSuporteAterr = 2*raioHeliCabine+(2*raioHeliCabine/4);
 float alturaHeli = 2*(raioHeliCabine+(raioHeliCabine/4)+largSuporteAterr);
 float heliY = 0;
+float heliX = 0;
+float heliZ = 0;
+float heliXang = 0;
+float heliZang = 0;
 
 // dimensoes da arvore de tipo 1
 float raioTInf = 0.3;
@@ -121,6 +135,8 @@ float hospLarg = 11.5;
 float hospProf = 7.0;
 float alturaPorta = 3.0;
 float larguraPorta = 2.0;
+float alturaJanela = 3.0;
+float larguraJanela = 9.5;
 float telhadoLarg = 8.5;
 float telhadoComp = 13.0;
 float telhadoAresta = 6.5;
@@ -221,7 +237,7 @@ float luz3 = 1;
 float luz4 = 1;
 
 // fonte (global) de luz ambiente 
-float light_ambient[] = {0.0, 0.0, 0.0, 1.0}; /* Set the background ambient lighting. */
+float light_ambient[] = {0.4, 0.4, 0.4, 1.0}; /* Set the background ambient lighting. */
 
 
 // variaveis para a janela
@@ -298,6 +314,19 @@ void desenhaHospital(GLUquadric * quad)
 		glVertex3d(larguraPorta, alturaPorta, 0.0);
 		glVertex3d(0.0, alturaPorta, 0.0);
 	glEnd();
+	glPopMatrix();
+
+	// janelas
+	glPushMatrix();
+	glTranslatef((PosChaoCX1+PosChaoCX2)/2-larguraJanela/2,2*alturaPorta,(PosChaoZ2/4)*3+(hospProf/2)+0.01);
+	glBegin(GL_POLYGON);
+		glNormal3d(0.0,0.0,1.0);  // esta normal fica comum aos 4 vertices
+		glVertex3d( 0.0, 0.0,  0.0);
+		glVertex3d(larguraJanela, 0.0, 0.0);
+		glVertex3d(larguraJanela, alturaJanela, 0.0);
+		glVertex3d(0.0, alturaJanela, 0.0);
+	glEnd();
+	//desenhaRecXZ(-larguraJanela/2,-alturaJanela/2,larguraJanela/2,alturaJanela/2,8);
 	glPopMatrix();
 	
 	//letreiro HJS
@@ -582,6 +611,7 @@ void desenhaSuporteAterragem(GLUquadric * quad)
 {
 	//suportes de aterragem 
 	//direito
+	glBindTexture(GL_TEXTURE_2D, 8);
 	glPushMatrix();
 	glTranslatef(raioHeliCabine, -(raioHeliCabine+(raioHeliCabine/4)),-(compSuporteAterr/2));
 	// discos para cubrir os suportes de aterragem
@@ -644,31 +674,131 @@ void desenhaSuporteAterragem(GLUquadric * quad)
 	glPopMatrix();
 }
 
+void desenhaEstabilizador()
+{
+	glBindTexture(GL_TEXTURE_2D, 11);
+	glPushMatrix();
+	glTranslatef(0.0,0.0,compHeliCauda-(compHeliCauda/4));
+	glScalef(30.0,1.0,10.0);
+	glutSolidCube(0.1);
+	glPopMatrix();
+}
+
+void desenhaHeliceMotorT()
+{
+	
+	glDisable(GL_CULL_FACE);
+	//helice1
+	glPushMatrix();
+	glTranslatef(0.0,0.0,compHeliCauda+raioEMotorT);
+	glRotatef(-MotorAng,1.0,0.0,0.0); // movimento helice
+	glRotatef(90,1.0,0.0,0.0);
+	desenhaRecXZ(-largHeliceT,-compHeliceT,largHeliceT,compHeliceT,8);
+	glPopMatrix();
+	//Helice2
+	glPushMatrix();
+	glTranslatef(0.0,0.0,compHeliCauda+raioEMotorT);
+	glRotatef(-MotorAng,1.0,0.0,0.0); // movimento helice
+	desenhaRecXZ(-largHeliceT,-compHeliceT,largHeliceT,compHeliceT,8);
+	glPopMatrix();
+	//Helice3
+	glPushMatrix();
+	glTranslatef(0.0,0.0,compHeliCauda+raioEMotorT);
+	glRotatef(-MotorAng,1.0,0.0,0.0); // movimento helice
+	glRotatef(45,1.0,0.0,0.0);
+	desenhaRecXZ(-largHeliceT,-compHeliceT,largHeliceT,compHeliceT,8);
+	glPopMatrix();
+	//Helice4
+	glPushMatrix();
+	glTranslatef(0.0,0.0,compHeliCauda+raioEMotorT);
+	glRotatef(-MotorAng,1.0,0.0,0.0); // movimento helice
+	glRotatef(-45,1.0,0.0,0.0);
+	desenhaRecXZ(-largHeliceT,-compHeliceT,largHeliceT,compHeliceT,8);
+	glPopMatrix();
+	//Suporte ao rotor
+	glPushMatrix();
+	glTranslatef(largHeliceT,0.0,compHeliCauda);
+	glRotatef(90,0.0,0.0,1.0);
+	desenhaRecXZ(-largHeliceT,0.0,largHeliceT,2*compHeliceT,8);
+	glPopMatrix();
+	glEnable(GL_CULL_FACE);
+}
+
+void desenhaMotorTraseiro(GLUquadric * quad)
+{
+	//Estrutura rotor
+	glPushMatrix();
+	glTranslatef(0.0,0.0,compHeliCauda+raioEMotorT);
+	glRotatef(-90,0.0,1.0,0.0);
+	glutSolidTorus(0.1, 0.1, stacksT1, slicesT1);
+	glutSolidTorus(raioIMotorT, raioEMotorT, stacksT1, slicesT1);
+	glPopMatrix();
+	//helices
+	desenhaHeliceMotorT();
+}
+
+void desenhaMotorPrin(GLUquadric * quad)
+{
+	glDisable(GL_CULL_FACE);
+	//helice1
+	glPushMatrix();
+	glTranslatef(0.0,raioHeliCabine+alturaMotorF,0.0);
+	glRotatef(-MotorAng,0.0,1.0,0.0); // movimento helice
+	desenhaRecXZ(-largHeliceF,-compHeliceF,largHeliceF,compHeliceF,8);
+	glPopMatrix();
+	//helice2
+	glPushMatrix();
+	glTranslatef(0.0,raioHeliCabine+alturaMotorF,0.0);
+	glRotatef(-MotorAng,0.0,1.0,0.0); // movimento helice
+	glRotatef(90.0,0.0,1.0,0.0);
+	desenhaRecXZ(-largHeliceF,-compHeliceF,largHeliceF,compHeliceF,8);
+	glPopMatrix();
+	glEnable(GL_CULL_FACE);
+
+	glPushMatrix();
+	glTranslatef(0.0,raioHeliCabine+alturaMotorF,0.0);
+	glRotatef(90.0,1.0,0.0,0.0);
+	gluCylinder(quad, raioMotorF,raioMotorF,alturaMotorF,slicesT1,stacksT1);
+	glPopMatrix();
+}
+
 void desenhaCaudaHeli(GLUquadric * quad)
 {
 	// cauda Helicoptero
 	glPushMatrix();
-	glRotatef(-20,1.0,0.0,0.0);
+	glRotatef(-angCauda,1.0,0.0,0.0);
 	glTranslatef(0.0,0.0, raioHeliCabine-0.1);
 	//disco para a cauda do helicoptero
 	glPushMatrix();
 	glTranslatef(0.0,0.0,compHeliCauda);
 	gluDisk(quad, 0.0, raioHeliCaudaS, slicesT1, stacksT1);
 	glPopMatrix();
+	desenhaEstabilizador();
+	desenhaMotorTraseiro(quad);
+	glBindTexture(GL_TEXTURE_2D, 10);
 	gluCylinder(quad, raioHeliCaudaI, raioHeliCaudaS, compHeliCauda, slicesT1, stacksT1);
 	glPopMatrix();
+	
 }
 
 
 void desenhaHelicoptero(GLUquadric * quad)
 {
+	gluQuadricTexture(quad, GL_TRUE);
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, 11);
 	glPushMatrix();
-	glTranslatef((PosChaoCX1+PosChaoCX2)/2,alturaHeli/2+heliY,(PosChaoZ2/4));
+	glTranslatef((PosChaoCX1+PosChaoCX2)/2 + heliX,alturaHeli/2+heliY,(PosChaoZ2/4)+heliZ);
+	glRotatef(heliZang,1.0,0.0,0.0); //rotacao heli, movimento lateral
+	glRotatef(heliXang,0.0,0.0,1.0); //rotacao heli, movimento horizontal
 	glRotatef(90, 0.0,1.0,0.0);
 	gluSphere(quad, raioHeliCabine , slicesT1, stacksT1);
 	desenhaSuporteAterragem(quad);
 	desenhaCaudaHeli(quad);
+	desenhaMotorPrin(quad);
 	glPopMatrix();
+	glDisable(GL_TEXTURE_2D);
+	gluQuadricTexture(quad, GL_FALSE);
 	
 }
 
@@ -813,7 +943,11 @@ void display(void)
 	glCallList(hospital);
 	glCallList(heliporto);
 	desenhaHelicoptero(glQ);
-	
+	if(MotorAng == 360)
+		MotorAng = 0;
+	else
+		MotorAng+=20;
+
 	// swapping the buffers causes the rendering above to be shown
 	glutSwapBuffers();
 	glFlush();
@@ -867,13 +1001,49 @@ void keyboard(unsigned char key, int x, int y)
       case 27:		// tecla de escape termina o programa
          exit(0);
          break;
+	  case 'a':
+		  {
+		  heliX -= 1.0;
+		  if(heliXang>=0)
+			heliXang = 30;
+		  else
+			heliXang = 0;
+		  }
+		  break;
+	  case 'd':
+		  {
+		  heliX += 1.0;
+		  if(heliXang<=0)
+			heliXang = -30;
+		  else
+			heliXang = 0;
+		  }
+		  break;
+	  case 'w':
+		  {
+		  heliZ -= 1.0;
+		  if(heliZang<=0)
+			heliZang = -30;
+		  else
+			heliZang = 0;
+		  }
+		  break;
+	  case 's':
+		  {
+		  heliZ += 1.0;
+		  if(heliZang>=0)
+			heliZang = 30;
+		  else
+			heliZang = 0;
+		  }
+		  break;
 	  case 'r':
 		 light0y += 0.1;
 		 break;	
 	  case 'f':
 		 light0y -= 0.1;
 		 break;	
-	  case 'd':
+	  /*case 'd':
 		 light0x += 0.1;
 		 break;	
 	  case 'a':
@@ -884,7 +1054,7 @@ void keyboard(unsigned char key, int x, int y)
 		 break;	
 	  case 's':
 		 light0z += 0.1;
-		 break;
+		 break;*/
 	  case 'l':
 		 VposX += 1.0;
 		 break;	
@@ -928,7 +1098,10 @@ void keyboard(unsigned char key, int x, int y)
 		 heliY += 1.0;
 		 break;	
 	  case '-':
-		 heliY -= 1.0;
+		  {
+			  if(heliY>0)
+				heliY -= 1.0;
+		  }
 		 break;
       case 'z':
 		  {
@@ -986,6 +1159,7 @@ void keyboard(unsigned char key, int x, int y)
 			  }
 		  }
 		 break;
+	  default: break;
    }
 }
 
@@ -1109,6 +1283,12 @@ void inicializacao()
 	
 	pixmap.readBMPFile("heliport.bmp");
 	pixmap.setTexture(9);
+
+	pixmap.readBMPFile("yellow_INEM.bmp");
+	pixmap.setTexture(10);
+
+	pixmap.readBMPFile("blue_INEM.bmp");
+	pixmap.setTexture(11);
 
 	GLUquadric* glQ;	// nec. p/ criar sup. quadraticas (cilindros, esferas...)
 	glQ = gluNewQuadric();
