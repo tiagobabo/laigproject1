@@ -1171,14 +1171,14 @@ void keyboard(unsigned char key, int x, int y)
 		 break;	
 	  case 'v':
 		  {
-			  if(luz3)
+			  if(luz4)
 			  {
-				  luz3=0;
+				  luz4=0;
 				  glDisable(GL_LIGHT3);
 			  }
 			  else
 			  {
-				  luz3=1;
+				  luz4=1;
 				  glEnable(GL_LIGHT3);
 			  }
 		  }
