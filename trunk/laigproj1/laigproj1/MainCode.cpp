@@ -95,6 +95,7 @@ float compHeliCauda = 5.0;
 float largSuporteAterr = 0.3;
 float compSuporteAterr = 2*raioHeliCabine+(2*raioHeliCabine/4);
 float alturaHeli = 2*(raioHeliCabine+(raioHeliCabine/4)+largSuporteAterr);
+float heliY = 0;
 
 // dimensoes da arvore de tipo 1
 float raioTInf = 0.3;
@@ -214,9 +215,13 @@ float symb_light3_radius = 0.2;
 int symb_light3_slices = 8;
 int symb_light3_stacks =8;
 
+float luz1 = 1;
+float luz2 = 1;
+float luz3 = 1;
+float luz4 = 1;
 
 // fonte (global) de luz ambiente 
-float light_ambient[] = {0.6, 0.6, 0.6, 1.0}; /* Set the background ambient lighting. */
+float light_ambient[] = {0.0, 0.0, 0.0, 1.0}; /* Set the background ambient lighting. */
 
 
 // variaveis para a janela
@@ -658,7 +663,7 @@ void desenhaCaudaHeli(GLUquadric * quad)
 void desenhaHelicoptero(GLUquadric * quad)
 {
 	glPushMatrix();
-	glTranslatef((PosChaoCX1+PosChaoCX2)/2,alturaHeli/2,(PosChaoZ2/4));
+	glTranslatef((PosChaoCX1+PosChaoCX2)/2,alturaHeli/2+heliY,(PosChaoZ2/4));
 	glRotatef(90, 0.0,1.0,0.0);
 	gluSphere(quad, raioHeliCabine , slicesT1, stacksT1);
 	desenhaSuporteAterragem(quad);
@@ -862,6 +867,12 @@ void keyboard(unsigned char key, int x, int y)
       case 27:		// tecla de escape termina o programa
          exit(0);
          break;
+	  case 'r':
+		 light0y += 0.1;
+		 break;	
+	  case 'f':
+		 light0y -= 0.1;
+		 break;	
 	  case 'd':
 		 light0x += 0.1;
 		 break;	
@@ -913,6 +924,68 @@ void keyboard(unsigned char key, int x, int y)
 			zoom = 50;
 			break;
 		  }
+	   case '+':
+		 heliY += 1.0;
+		 break;	
+	  case '-':
+		 heliY -= 1.0;
+		 break;
+      case 'z':
+		  {
+			  if(luz1)
+			  {
+				  luz1=0;
+				  glDisable(GL_LIGHT0);
+			  }
+			  else
+			  {
+				  luz1=1;
+				  glEnable(GL_LIGHT0);
+			  }
+		  }
+		 break;	
+	  case 'x':
+		   {
+			  if(luz2)
+			  {
+				  luz2=0;
+				  glDisable(GL_LIGHT1);
+			  }
+			  else
+			  {
+				  luz2=1;
+				  glEnable(GL_LIGHT1);
+			  }
+		  }
+		 break;	
+	  case 'c':
+		  {
+			  if(luz3)
+			  {
+				  luz3=0;
+				  glDisable(GL_LIGHT2);
+			  }
+			  else
+			  {
+				  luz3=1;
+				  glEnable(GL_LIGHT2);
+			  }
+		  }
+		 break;	
+	  case 'v':
+		  {
+			  if(luz3)
+			  {
+				  luz3=0;
+				  glDisable(GL_LIGHT3);
+			  }
+			  else
+			  {
+				  luz3=1;
+				  glEnable(GL_LIGHT3);
+			  }
+		  }
+		 break;
    }
 }
 
@@ -1000,6 +1073,7 @@ void inicializacao()
 	glEnable(GL_LIGHT2);
 	// "Acender" a fonte de luz GL_LIGHT3
 	glEnable(GL_LIGHT3);
+	
 
 
 	// Declaracoe para shading
@@ -1093,7 +1167,7 @@ int main(int argc, char* argv[])
 	GLUI_Master.set_glutIdleFunc( myGlutIdle );
    
 	inicializacao();
-
+ 1 
 	glutMainLoop();
 
 	return 0;
