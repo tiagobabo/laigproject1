@@ -247,6 +247,16 @@ GLUI  *glui2;
 
 RGBpixmap pixmap;
 
+void disableColors()
+{
+	glDisable(GL_COLOR_MATERIAL);
+	// Definicao de material a usar daqui em diante (valores declarados acima)
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat1_shininess);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  mat1_specular);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   mat1_diffuse);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat1_ambient);
+}
+
 void desenhaRecXZ(float x1, float z1, float x2, float z2, int imagem)
 {
 	glBindTexture(GL_TEXTURE_2D, imagem);
@@ -344,12 +354,7 @@ void desenhaHospital(GLUquadric * quad)
 
 	glPopMatrix();
 
-	glDisable(GL_COLOR_MATERIAL);
-	// Definicao de material a usar daqui em diante (valores declarados acima)
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat1_shininess);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  mat1_specular);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   mat1_diffuse);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat1_ambient);
+	disableColors();
 
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, 7);
@@ -799,12 +804,7 @@ void desenhaHelicoptero(GLUquadric * quad)
 	// draw your model
 	gluSphere(quad, raioHeliCabine , slicesT1, stacksT1);
 	glDisable (GL_BLEND); // reset or something
-	glDisable(GL_COLOR_MATERIAL);
-	// Definicao de material a usar daqui em diante (valores declarados acima)
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat1_shininess);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  mat1_specular);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   mat1_diffuse);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat1_ambient);
+	disableColors();
 	glEnable(GL_TEXTURE_2D);
 	desenhaSuporteAterragem(quad);
 	desenhaCaudaHeli(quad);
@@ -944,12 +944,7 @@ void display(void)
     glPopMatrix();
 	gluQuadricOrientation( glQ, GLU_OUTSIDE);
 	
-	glDisable(GL_COLOR_MATERIAL);
-	// Definicao de material a usar daqui em diante (valores declarados acima)
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat1_shininess);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  mat1_specular);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   mat1_diffuse);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat1_ambient);
+	disableColors();
 	
 	//chamada das funções
 	glCallList(chaoEArvores);
