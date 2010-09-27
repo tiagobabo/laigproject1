@@ -1167,7 +1167,6 @@ int main(int argc, char* argv[])
 	GLUI_Master.set_glutIdleFunc( myGlutIdle );
    
 	inicializacao();
- 1 
 	glutMainLoop();
 
 	return 0;
