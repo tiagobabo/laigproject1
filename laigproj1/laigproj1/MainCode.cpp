@@ -785,14 +785,27 @@ void desenhaCaudaHeli(GLUquadric * quad)
 void desenhaHelicoptero(GLUquadric * quad)
 {
 	gluQuadricTexture(quad, GL_TRUE);
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, 11);
+	
+	//glBindTexture(GL_TEXTURE_2D, 11);
+	glEnable(GL_COLOR_MATERIAL);
 	glPushMatrix();
 	glTranslatef((PosChaoCX1+PosChaoCX2)/2 + heliX,alturaHeli/2+heliY,(PosChaoZ2/4)+heliZ);
 	glRotatef(heliZang,1.0,0.0,0.0); //rotacao heli, movimento lateral
 	glRotatef(heliXang,0.0,0.0,1.0); //rotacao heli, movimento horizontal
 	glRotatef(90, 0.0,1.0,0.0);
+	glEnable (GL_BLEND);
+	glBlendFunc (GL_SRC_ALPHA, GL_ONE); 
+	glColor4f (0.0f, 0.0f, 1.0f, 0.5f); // blue with 50% opacity
+	// draw your model
 	gluSphere(quad, raioHeliCabine , slicesT1, stacksT1);
+	glDisable (GL_BLEND); // reset or something
+	glDisable(GL_COLOR_MATERIAL);
+	// Definicao de material a usar daqui em diante (valores declarados acima)
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat1_shininess);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  mat1_specular);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   mat1_diffuse);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat1_ambient);
+	glEnable(GL_TEXTURE_2D);
 	desenhaSuporteAterragem(quad);
 	desenhaCaudaHeli(quad);
 	desenhaMotorPrin(quad);
