@@ -23,7 +23,7 @@ int chaoEArvores = 1;
 int hospital = 2;
 int heliporto = 3;
 
-float corFundo[3] = {0.41, 0.76, 0.98};
+float corFundo[3] = {0.41, 0.76, 0.40};
 
 // dimensoes do chao
 float PosChaoZ1 = 0.0;
@@ -135,8 +135,8 @@ float hospLarg = 11.5;
 float hospProf = 7.0;
 float alturaPorta = 3.0;
 float larguraPorta = 2.0;
-float alturaJanela = 3.0;
-float larguraJanela = 9.5;
+float alturaJanela = 2.0;
+float larguraJanela = 2.0;
 float telhadoLarg = 8.5;
 float telhadoComp = 13.0;
 float telhadoAresta = 6.5;
@@ -299,6 +299,27 @@ void desenhaTrianguloXY(float x1, float y1, float x2, float y2, int imagem, floa
 	glEnd();
 }
 
+void desenhaJanelas()
+{
+	// janelas
+	for(int i = 0; i < 3; i++)
+	{
+		for(int j = 0; j < 5; j++)
+		{
+			glPushMatrix();
+			glTranslatef((PosChaoCX1+PosChaoCX2)/2+0.7-hospLarg/2+larguraJanela*j,alturaPorta+0.5+(alturaJanela+0.5)*i,(PosChaoZ2/4)*3+(hospProf/2)+0.01);
+			glBegin(GL_POLYGON);
+				glNormal3d(0.0,0.0,1.0);  // esta normal fica comum aos 4 vertices
+				glTexCoord2f(0.0,0.0); glVertex3d( 0.0, 0.0,  0.0);
+				glTexCoord2f(1.0,0.0); glVertex3d(larguraJanela, 0.0, 0.0);
+				glTexCoord2f(1.0,1.0); glVertex3d(larguraJanela, alturaJanela, 0.0);
+				glTexCoord2f(0.0,1.0); glVertex3d(0.0, alturaJanela, 0.0);
+			glEnd();
+			glPopMatrix();
+		}
+	}
+}
+
 void desenhaHospital(GLUquadric * quad)
 {
 	// edificio
@@ -326,18 +347,6 @@ void desenhaHospital(GLUquadric * quad)
 	glEnd();
 	glPopMatrix();
 
-	// janelas
-	glPushMatrix();
-	glTranslatef((PosChaoCX1+PosChaoCX2)/2-larguraJanela/2,2*alturaPorta,(PosChaoZ2/4)*3+(hospProf/2)+0.01);
-	glBegin(GL_POLYGON);
-		glNormal3d(0.0,0.0,1.0);  // esta normal fica comum aos 4 vertices
-		glVertex3d( 0.0, 0.0,  0.0);
-		glVertex3d(larguraJanela, 0.0, 0.0);
-		glVertex3d(larguraJanela, alturaJanela, 0.0);
-		glVertex3d(0.0, alturaJanela, 0.0);
-	glEnd();
-	//desenhaRecXZ(-larguraJanela/2,-alturaJanela/2,larguraJanela/2,alturaJanela/2,8);
-	glPopMatrix();
 	
 	//letreiro HJS
 	glPushMatrix();
@@ -357,6 +366,11 @@ void desenhaHospital(GLUquadric * quad)
 	disableColors();
 
 	glEnable(GL_TEXTURE_2D);
+
+	glBindTexture(GL_TEXTURE_2D, 12);
+
+	desenhaJanelas();
+
 	glBindTexture(GL_TEXTURE_2D, 7);
 
 	//telhado
@@ -800,7 +814,7 @@ void desenhaHelicoptero(GLUquadric * quad)
 	glRotatef(90, 0.0,1.0,0.0);
 	glEnable (GL_BLEND);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE); 
-	glColor4f (0.0f, 0.6f, 1.0f, 1.0f); // blue with 50% opacity
+	glColor4f (0.0f, 0.0f, 1.0f, 3.0f); // blue with 50% opacity
 	// draw your model
 	gluSphere(quad, raioHeliCabine , slicesT1, stacksT1);
 	glDisable (GL_BLEND); // reset or something
@@ -1297,6 +1311,9 @@ void inicializacao()
 
 	pixmap.readBMPFile("blue_INEM.bmp");
 	pixmap.setTexture(11);
+
+	pixmap.readBMPFile("windows.bmp");
+	pixmap.setTexture(12);
 
 	GLUquadric* glQ;	// nec. p/ criar sup. quadraticas (cilindros, esferas...)
 	glQ = gluNewQuadric();
