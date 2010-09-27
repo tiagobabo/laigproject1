@@ -50,6 +50,12 @@
     <None Include="metal.bmp">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="door.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="windows.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RGBpixmap.h">
