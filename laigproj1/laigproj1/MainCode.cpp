@@ -941,7 +941,7 @@ void animacaoVermelha()
 		}
 		else if(heliX<0)
 		{
-			if(rodaHeliang!=180)
+			if(rodaHeliang<180)
 				rodaHeliang+=speedTurn;
 				heliX+=speedHeli;
 		}
