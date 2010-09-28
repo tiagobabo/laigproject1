@@ -866,7 +866,7 @@ void animacaoVerde()
 	{
 		if(heliY<12 && step==1)
 		{
-			if(heliZang < 2.5 && step2)
+			if(heliZang < 5.0 && step2)
 			{
 				heliZang+=factor;
 				heliXang+=factor;
@@ -874,41 +874,42 @@ void animacaoVerde()
 			else
 			{
 				step2 = 0;
-				if(heliZang < -2.5)
+				if(heliZang < -5.0)
 					step2 = 1;
 				heliZang-=factor;
 				heliXang-=factor;
 			}
-
 			heliY+=speedHeli/4;
-			step2=1;
 		}
 		else if(heliX>-15 && heliZ>-7.5)
 		{
+			if(step == 1) heliZang = 0;
+			step2=1;
 			step++;
 			if(rodaHeliang > -30)
 			{
-				if(heliZang > -20 && step2 && rodaHeliang > -15)
+				if(heliZang > -30 && step2 == 1)
 				{
-					heliZang-=10*factor;
+					heliZang-=factor;
 				}
 				else
 				{
 					step2=0;
-					if(heliZang < 10)
-						heliZang+=10*factor;
+					heliZang+=factor;
 				}
-				rodaHeliang-=speedTurn/10;
-				heliX-=2*speedHeli/4;
-				heliZ-=speedHeli/4;
+				rodaHeliang-=speedTurn/15;
+				heliX-=2*speedHeli/8;
+				heliZ-=speedHeli/8;
 			}
 			else
-			{		
-				heliX-=2*speedHeli;
-				heliZ-=speedHeli;
+			{	
+				if(heliZang < 0)
+				{
+					heliZang+=factor;
+				}
+				heliX-=2*speedHeli/8;
+				heliZ-=speedHeli/8;
 			}
-
-			
 		}
 		else if(heliY > 9)
 		{
