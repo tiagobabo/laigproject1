@@ -110,6 +110,13 @@ float heliX = 0;
 float heliZ = 0;
 float heliXang = 0;
 float heliZang = 0;
+float rodaHeliang = 0.0;
+
+// animacao do helicoptero
+int animation=0;
+int step=1;
+float speedHeli = 0.2;
+float speedTurn = 5;
 
 // dimensoes da arvore de tipo 1
 float raioTInf = 0.3;
@@ -814,6 +821,7 @@ void desenhaHelicoptero(GLUquadric * quad)
 	glEnable(GL_COLOR_MATERIAL);
 	glPushMatrix();
 	glTranslatef((PosChaoCX1+PosChaoCX2)/2 + heliX,alturaHeli/2+heliY,(PosChaoZ2/4)+heliZ);
+	glRotatef(rodaHeliang, 0.0,1.0,0.0);
 	glRotatef(heliZang,1.0,0.0,0.0); //rotacao heli, movimento lateral
 	glRotatef(heliXang,0.0,0.0,1.0); //rotacao heli, movimento horizontal
 	glRotatef(90, 0.0,1.0,0.0);
@@ -835,6 +843,105 @@ void desenhaHelicoptero(GLUquadric * quad)
 	glDisable(GL_TEXTURE_2D);
 	gluQuadricTexture(quad, GL_FALSE);
 	
+}
+float factor= 0.2;
+int step2 = 1;
+void animacaoVerde()
+{
+	if(animation==1)
+	{
+		if(heliY<12 && step==1)
+		{
+			if(heliZang < 2.5 && step2)
+			{
+				heliZang+=factor;
+				heliXang+=factor;
+			}
+			else
+			{
+				step2 = 0;
+				if(heliZang < -2.5)
+					step2 = 1;
+				heliZang-=factor;
+				heliXang-=factor;
+			}
+
+			heliY+=speedHeli/4;
+			step2=1;
+		}
+		else if(heliX>-15 && heliZ>-7.5)
+		{
+			step++;
+			if(rodaHeliang > -30)
+			{
+				if(heliZang > -20 && step2 && rodaHeliang > -15)
+				{
+					heliZang-=10*factor;
+				}
+				else
+				{
+					step2=0;
+					if(heliZang < 10)
+						heliZang+=10*factor;
+				}
+				rodaHeliang-=speedTurn/10;
+				heliX-=2*speedHeli/4;
+				heliZ-=speedHeli/4;
+			}
+			else
+			{		
+				heliX-=2*speedHeli;
+				heliZ-=speedHeli;
+			}
+
+			
+		}
+		else if(heliY > 9)
+		{
+			heliY-=speedHeli;
+		}
+		else
+		{
+			animation=2;
+			step=1;
+		}
+	}
+}
+
+void animacaoVermelha()
+{
+	if(animation==2)
+	{
+		if(heliY<12 && step==1)
+		{
+			heliY+=speedHeli;
+		}
+		else if(heliZ < 0)
+		{
+			if(rodaHeliang<90)
+				rodaHeliang+=speedTurn;
+			step++;
+			heliZ+=speedHeli;
+
+		}
+		else if(heliX<0)
+		{
+			if(rodaHeliang!=180)
+				rodaHeliang+=speedTurn;
+				heliX+=speedHeli;
+		}
+		else if(heliY>0)
+		{
+			if(rodaHeliang > 0)
+				rodaHeliang-=speedTurn;
+			heliY-=speedHeli;
+		}
+		else
+		{
+			step=1;
+			animation=0;
+		}
+	}
 }
 
 void display(void)
@@ -977,6 +1084,8 @@ void display(void)
 		MotorAng = 0;
 	else
 		MotorAng+=20;
+	animacaoVermelha();
+	animacaoVerde();
 
 	// swapping the buffers causes the rendering above to be shown
 	glutSwapBuffers();
@@ -1194,6 +1303,10 @@ void keyboard(unsigned char key, int x, int y)
 			  }
 		  }
 		 break;
+	  case 'p':
+		  {
+			  animation=1;
+		  }
 	  default: break;
    }
 }
