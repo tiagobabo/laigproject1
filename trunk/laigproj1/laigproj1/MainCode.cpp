@@ -4,6 +4,8 @@
 #include <GL/glui.h>
 #include <math.h>
 #include "RGBpixmap.h"
+#include <iostream>
+#include <string>
 
 // dimensoes e localizacao da janela
 #define DIMX 1000
@@ -238,8 +240,20 @@ float symb_light3_radius = 0.2;
 int symb_light3_slices = 8;
 int symb_light3_stacks =8;
 
-/*float lights_position[][] = {light0_position, light1_position, light2_position, light3_position};
-float lights_ambient[][] = {light0_ambient, light1_ambient, light2_ambient, light3_ambient};*/
+float lights_position[4][4] = {light0_position[4], light1_position[4], light2_position[4], light3_position[4]};
+float lights_ambient[4][4] = {light0_ambient[4], light1_ambient[4], light2_ambient[4], light3_ambient[4]};
+float lights_diffuse[4][4] = {light0_diffuse[4], light1_diffuse[4], light2_diffuse[4], light3_diffuse[4]};
+float lights_specular[4][4] = {light0_specular[4], light1_specular[4], light2_specular[4], light3_specular[4]};
+float lights_kc[] = {light0_kc, light1_kc, light2_kc, light3_kc};
+float lights_kl[] = {light0_kl, light1_kl, light2_kl, light3_kl};
+float lights_kq[] = {light0_kq, light1_kq, light2_kq, light3_kq};
+float lightsx[] = {light0x, light1x, light2x, light3x};
+float lightsy[]= {light0y, light1y, light2y, light3y};
+float lightsz[]= {light0z, light1z, light2z, light3z};
+float symb_lights_radius[] = {symb_light0_radius, symb_light1_radius, symb_light2_radius, symb_light3_radius};
+int symb_lights_slices[] = {symb_light0_slices, symb_light1_slices, symb_light2_slices, symb_light3_slices};
+int symb_lights_stacks[] = {symb_light0_stacks, symb_light1_stacks, symb_light2_stacks, symb_light3_stacks};
+int nlights = 4;
 
 float luz1 = 1;
 float luz2 = 1;
@@ -1013,6 +1027,19 @@ void display(void)
 		             axis_lenght, axis_nslices, axis_nstacks);   // nao tem bases
 	glPopMatrix();
 
+	
+	/*for(int i = 0; i < nlights; i++)
+	{
+			lights_position[i][0] = lightsx[i];
+			lights_position[i][1] = lightsy[i];
+			lights_position[i][2] = lightsz[i];
+	}
+
+	glLightfv(GL_LIGHT0, GL_POSITION, lights_position[0]);
+	glLightfv(GL_LIGHT1, GL_POSITION, lights_position[1]);
+	glLightfv(GL_LIGHT2, GL_POSITION, lights_position[2]);
+	glLightfv(GL_LIGHT3, GL_POSITION, lights_position[3]);*/
+	
 	// Actualizacao da posicao da fonte de luz...
 	light0_position[0] = light0x;	// por razoes de eficiencia, os restantes 
 	light0_position[1] = light0y;	// parametros _invariaveis_ da LIGHT0 mantem os valores
