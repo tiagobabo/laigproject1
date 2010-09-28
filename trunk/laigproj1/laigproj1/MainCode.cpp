@@ -231,6 +231,9 @@ float symb_light3_radius = 0.2;
 int symb_light3_slices = 8;
 int symb_light3_stacks =8;
 
+/*float lights_position[][] = {light0_position, light1_position, light2_position, light3_position};
+float lights_ambient[][] = {light0_ambient, light1_ambient, light2_ambient, light3_ambient};*/
+
 float luz1 = 1;
 float luz2 = 1;
 float luz3 = 1;
