@@ -816,9 +816,12 @@ void desenhaHelicoptero(GLUquadric * quad)
 	glRotatef(90, 0.0,1.0,0.0);
 	glEnable (GL_BLEND);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE); 
-	glColor4f (0.0f, 0.0f, 1.0f, 3.0f); // blue with 50% opacity
+	glColor4f (0.0f, 1.0f, 1.0f, 1.0f); // blue with 50% opacity
 	// draw your model
-	gluSphere(quad, raioHeliCabine , slicesT1, stacksT1);
+	glPushMatrix();
+	glScalef(1.0,1.0,2.0);
+	gluSphere(quad, raioHeliCabine , 20, stacksT1);
+	glPopMatrix();
 	glDisable (GL_BLEND); // reset or something
 	disableColors();
 	glEnable(GL_TEXTURE_2D);
@@ -1125,6 +1128,11 @@ void keyboard(unsigned char key, int x, int y)
 		  {
 			  if(heliY>0)
 				heliY -= 1.0;
+			  else
+			  {
+				  heliXang = 0;
+				  heliZang = 0;
+			  }
 		  }
 		 break;
       case 'z':
