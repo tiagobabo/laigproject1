@@ -37,12 +37,6 @@ float PosChaoCX2 = 30.0;
 float PosChaoDX1 = 30.0;
 float PosChaoDX2 = 45.0;
 
-// posicao dos holofotes
-float holo1X = 17.25;
-float holo1Z = -3.75;
-float holo2X = 27.75;
-float holo2Z = -11.25;
-
 //posicao das arvores e alturas desenhadas
 float arv1X = 5.0;
 float arv1Z = -25.0;
@@ -74,6 +68,7 @@ float alturaHolo = 0.7;
 float heliComp = 10.5;
 float heliLarg = 7.5;
 float heliDiv = 150.0;
+float helipRatio= heliComp/heliLarg;
 GLfloat ctrlpoints[4][3] = {	{  -heliComp/2, 0.0, heliLarg/2},
 								{  -heliComp/2, 0.0, -heliLarg/2},
 								{  heliComp/2, 0.0, heliLarg/2},
@@ -89,7 +84,21 @@ GLfloat textpoints[4][2] = {	{ 0.0, 0.0},
 								{ 1.0, 0.0},
 								{ 1.0, 1.0} };
 
+// posicao dos holofotes
+float holo1X = ((PosChaoCX1+PosChaoCX2)/2)-heliComp/2;
+float holo1Z = (PosChaoZ2/4)+heliLarg/2;
+float holo2X = ((PosChaoCX1+PosChaoCX2)/2)+heliComp/2;
+float holo2Z = (PosChaoZ2/4)-heliLarg/2;;
+
+// vectores direccionais das luzes dos holofotes
+float angLuz = 35.0;
+float spot0[] = {helipRatio,-2.5,-helipRatio};
+float spot1[] = {-helipRatio,-2.5,-helipRatio};
+float spot2[] = {-helipRatio,-2.5,helipRatio};
+float spot3[] = {helipRatio,-2.5,helipRatio};
+
 // dimensoes do helicoptero
+float escalaHeli = 0.7;
 float raioHeliCabine = 2.0;
 float raioHeliCaudaS = 0.3;
 float raioHeliCaudaI = 0.6;
@@ -106,7 +115,7 @@ float MotorAng = 0.0;
 float angCauda = 10;
 float largSuporteAterr = 0.3;
 float compSuporteAterr = 2*raioHeliCabine+(2*raioHeliCabine/4);
-float alturaHeli = 2*(raioHeliCabine+(raioHeliCabine/4)+largSuporteAterr);
+float alturaHeli = (2*(raioHeliCabine+(raioHeliCabine/4)+largSuporteAterr))*escalaHeli;
 float heliY = 0;
 float heliX = 0;
 float heliZ = 0;
@@ -118,7 +127,7 @@ float rodaHeliang = 0.0;
 int animation=0;
 int step=1;
 float speedHeli = 0.2;
-float speedTurn = 5;
+float speedTurn = 25*speedHeli;
 
 // dimensoes da arvore de tipo 1
 float raioTInf = 0.3;
@@ -145,7 +154,8 @@ float hospProf = 7.0;
 float alturaPorta = 3.0;
 float larguraPorta = 2.0;
 float alturaJanela = 2.0;
-float larguraJanela = 2.0;
+float larguraJanela = 10.0;
+float larguraJanelaL = 6.0;
 float telhadoLarg = 8.5;
 float telhadoComp = 13.0;
 float telhadoAresta = 6.5;
@@ -261,7 +271,7 @@ float luz3 = 1;
 float luz4 = 1;
 
 // fonte (global) de luz ambiente 
-float light_ambient[] = {0.4, 0.4, 0.4, 1.0}; /* Set the background ambient lighting. */
+float light_ambient[] = {0.6, 0.6, 0.6, 1.0}; /* Set the background ambient lighting. */
 
 
 // variaveis para a janela
@@ -325,23 +335,49 @@ void desenhaTrianguloXY(float x1, float y1, float x2, float y2, int imagem, floa
 
 void desenhaJanelas()
 {
-	// janelas
+	float distJanelas = 0.7;
+	// janelas frontais
 	for(int i = 0; i < 3; i++)
 	{
-		for(int j = 0; j < 5; j++)
-		{
 			glPushMatrix();
-			glTranslatef((PosChaoCX1+PosChaoCX2)/2+0.7-hospLarg/2+larguraJanela*j,alturaPorta+0.5+(alturaJanela+0.5)*i,(PosChaoZ2/4)*3+(hospProf/2)+0.01);
+			glTranslatef((PosChaoCX1+PosChaoCX2)/2+(hospLarg-larguraJanela)/2-hospLarg/2,alturaPorta+(alturaJanela+distJanelas)*i+distJanelas,(PosChaoZ2/4)*3+(hospProf/2)+0.01);
 			glBegin(GL_POLYGON);
 				glNormal3d(0.0,0.0,1.0);  // esta normal fica comum aos 4 vertices
 				glTexCoord2f(0.0,0.0); glVertex3d( 0.0, 0.0,  0.0);
-				glTexCoord2f(1.0,0.0); glVertex3d(larguraJanela, 0.0, 0.0);
-				glTexCoord2f(1.0,1.0); glVertex3d(larguraJanela, alturaJanela, 0.0);
+				glTexCoord2f(5.0,0.0); glVertex3d(larguraJanela, 0.0, 0.0);
+				glTexCoord2f(5.0,1.0); glVertex3d(larguraJanela, alturaJanela, 0.0);
 				glTexCoord2f(0.0,1.0); glVertex3d(0.0, alturaJanela, 0.0);
 			glEnd();
 			glPopMatrix();
-		}
 	}
+	//janelas laterais
+	for(int i = 0; i < 4; i++)
+	{
+			glPushMatrix();
+			glTranslatef((PosChaoCX1+PosChaoCX2)/2+hospLarg/2+0.01,alturaPorta-alturaJanela+(alturaJanela+distJanelas)*i,(PosChaoZ2/4)*3+(hospProf/2)-(hospProf-larguraJanelaL)/2);
+			glRotatef(90.0,0.0,1.0,0.0);
+			glBegin(GL_POLYGON);
+				glNormal3d(1.0,0.0,0.0);  // esta normal fica comum aos 4 vertices
+				glTexCoord2f(0.0,0.0); glVertex3d( 0.0, 0.0,  0.0);
+				glTexCoord2f(3.0,0.0); glVertex3d(larguraJanelaL, 0.0, 0.0);
+				glTexCoord2f(3.0,1.0); glVertex3d(larguraJanelaL, alturaJanela, 0.0);
+				glTexCoord2f(0.0,1.0); glVertex3d(0.0, alturaJanela, 0.0);
+			glEnd();
+			glPopMatrix();
+
+			glPushMatrix();
+			glTranslatef((PosChaoCX1+PosChaoCX2)/2-hospLarg/2-0.01,alturaPorta-alturaJanela+(alturaJanela+distJanelas)*i,(PosChaoZ2/4)*3-(hospProf/2)+(hospProf-larguraJanelaL)/2);
+			glRotatef(-90.0,0.0,1.0,0.0);
+			glBegin(GL_POLYGON);
+				glNormal3d(-1.0,0.0,0.0);  // esta normal fica comum aos 4 vertices
+				glTexCoord2f(0.0,0.0); glVertex3d( 0.0, 0.0,  0.0);
+				glTexCoord2f(3.0,0.0); glVertex3d(larguraJanelaL, 0.0, 0.0);
+				glTexCoord2f(3.0,1.0); glVertex3d(larguraJanelaL, alturaJanela, 0.0);
+				glTexCoord2f(0.0,1.0); glVertex3d(0.0, alturaJanela, 0.0);
+			glEnd();
+			glPopMatrix();
+	}
+
 }
 
 void desenhaHospital(GLUquadric * quad)
@@ -820,7 +856,7 @@ void desenhaCaudaHeli(GLUquadric * quad)
 	glPopMatrix();
 	desenhaEstabilizador();
 	desenhaMotorTraseiro(quad);
-	glBindTexture(GL_TEXTURE_2D, 10);
+	glBindTexture(GL_TEXTURE_2D, 14);
 	gluCylinder(quad, raioHeliCaudaI, raioHeliCaudaS, compHeliCauda, slicesT1, stacksT1);
 	glPopMatrix();
 	
@@ -830,11 +866,12 @@ void desenhaCaudaHeli(GLUquadric * quad)
 void desenhaHelicoptero(GLUquadric * quad)
 {
 	gluQuadricTexture(quad, GL_TRUE);
-	
+	glEnable(GL_NORMALIZE);	
 	//glBindTexture(GL_TEXTURE_2D, 11);
 	glEnable(GL_COLOR_MATERIAL);
 	glPushMatrix();
 	glTranslatef((PosChaoCX1+PosChaoCX2)/2 + heliX,alturaHeli/2+heliY,(PosChaoZ2/4)+heliZ);
+	glScalef(escalaHeli,escalaHeli,escalaHeli);
 	glRotatef(rodaHeliang, 0.0,1.0,0.0);
 	glRotatef(heliZang,1.0,0.0,0.0); //rotacao heli, movimento lateral
 	glRotatef(heliXang,0.0,0.0,1.0); //rotacao heli, movimento horizontal
@@ -855,6 +892,7 @@ void desenhaHelicoptero(GLUquadric * quad)
 	desenhaMotorPrin(quad);
 	glPopMatrix();
 	glDisable(GL_TEXTURE_2D);
+	glDisable(GL_NORMALIZE);
 	gluQuadricTexture(quad, GL_FALSE);
 	
 }
@@ -883,7 +921,11 @@ void animacaoVerde()
 		}
 		else if(heliX>-15 && heliZ>-7.5)
 		{
-			if(step == 1) heliZang = 0;
+			if(step == 1)
+			{
+				heliZang = 0;
+				heliXang = 0;
+			}
 			step2=1;
 			step++;
 			if(rodaHeliang > -30)
@@ -921,6 +963,7 @@ void animacaoVerde()
 			step=1;
 		}
 	}
+
 }
 
 void animacaoVermelha()
@@ -1064,6 +1107,19 @@ void display(void)
 	light3_position[1] = light3y;	// parametros _invariaveis_ da light3 mantem os valores
 	light3_position[2] = light3z;	// definidos na funcao de inicializacao
 	glLightfv(GL_LIGHT3, GL_POSITION, light3_position);
+
+	// direccao da luz0
+	glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, angLuz);
+	glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spot0);
+	// direccao da luz1
+	glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, angLuz);
+	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, spot1);
+	// direccao da luz2
+	glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, angLuz);
+	glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, spot2);
+	// direccao da luz3
+	glLightf(GL_LIGHT3, GL_SPOT_CUTOFF, angLuz);
+	glLightfv(GL_LIGHT3, GL_SPOT_DIRECTION, spot3);
 
 	// ... e da esfera que a simboliza
 	glColor3f(1.0,1.0,0.0);		// cor amarela
@@ -1406,7 +1462,8 @@ void inicializacao()
 	glLightf(GL_LIGHT3, GL_CONSTANT_ATTENUATION,  light3_kc);
 	glLightf(GL_LIGHT3, GL_LINEAR_ATTENUATION,    light3_kl);
 	glLightf(GL_LIGHT3, GL_QUADRATIC_ATTENUATION, light3_kq);
-
+	
+	
 	// NOTA: a direccao e a posicao de GL_LIGHT0 estao na rotina display(), pelo
 	//       que as isntrucoes seguntes nao sao necessarias
 	//glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 90.0);
@@ -1471,6 +1528,9 @@ void inicializacao()
 
 	pixmap.readBMPFile("door.bmp");
 	pixmap.setTexture(13);
+
+	pixmap.readBMPFile("red_cross2.bmp");
+	pixmap.setTexture(14);
 
 
 	GLUquadric* glQ;	// nec. p/ criar sup. quadraticas (cilindros, esferas...)
