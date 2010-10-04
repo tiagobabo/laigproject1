@@ -258,20 +258,35 @@ float symb_light3_radius = 0.2;
 int symb_light3_slices = 8;
 int symb_light3_stacks =8;
 
-float lights_position[4][4] = {light0_position[4], light1_position[4], light2_position[4], light3_position[4]};
-float lights_ambient[4][4] = {light0_ambient[4], light1_ambient[4], light2_ambient[4], light3_ambient[4]};
-float lights_diffuse[4][4] = {light0_diffuse[4], light1_diffuse[4], light2_diffuse[4], light3_diffuse[4]};
-float lights_specular[4][4] = {light0_specular[4], light1_specular[4], light2_specular[4], light3_specular[4]};
-float lights_kc[] = {light0_kc, light1_kc, light2_kc, light3_kc};
-float lights_kl[] = {light0_kl, light1_kl, light2_kl, light3_kl};
-float lights_kq[] = {light0_kq, light1_kq, light2_kq, light3_kq};
-float lightsx[] = {light0x, light1x, light2x, light3x};
-float lightsy[]= {light0y, light1y, light2y, light3y};
-float lightsz[]= {light0z, light1z, light2z, light3z};
-float symb_lights_radius[] = {symb_light0_radius, symb_light1_radius, symb_light2_radius, symb_light3_radius};
-int symb_lights_slices[] = {symb_light0_slices, symb_light1_slices, symb_light2_slices, symb_light3_slices};
-int symb_lights_stacks[] = {symb_light0_stacks, symb_light1_stacks, symb_light2_stacks, symb_light3_stacks};
-int nlights = 4;
+// declarações para a fonte de luz light4;
+float light4_position[]  = {0.0, 3.0, 4.0, 1.0}; // nao necessaria...
+float light4_ambient[] =   {0.0, 0.0, 0.0, 1.0}; // sem componente ambiente
+float light4_diffuse[] =   {0.4, 0.4, 0.4, 1.0};
+float light4_specular[] =  {0.4, 0.4, 0.4, 1.0};
+float light4_kc = 0.0;
+float light4_kl = 1.0;
+float light4_kq = 0.0;
+float light4x = 30.0;
+float light4y = 30.0;
+float light4z = 10.0;
+float symb_light4_radius = 0.6;
+int symb_light4_slices = 8;
+int symb_light4_stacks =8;
+
+float* lights_position[] = {light0_position, light1_position, light2_position, light3_position, light4_position};
+float* lights_ambient[] = {light0_ambient, light1_ambient, light2_ambient, light3_ambient, light4_ambient};
+float* lights_diffuse[] = {light0_diffuse, light1_diffuse, light2_diffuse, light3_diffuse, light4_diffuse};
+float* lights_specular[] = {light0_specular, light1_specular, light2_specular, light3_specular, light4_specular};
+float lights_kc[] = {light0_kc, light1_kc, light2_kc, light3_kc, light4_kc};
+float lights_kl[] = {light0_kl, light1_kl, light2_kl, light3_kl, light4_kc};
+float lights_kq[] = {light0_kq, light1_kq, light2_kq, light3_kq, light4_kc};
+float lightsx[] = {light0x, light1x, light2x, light3x, light4x};
+float lightsy[]= {light0y, light1y, light2y, light3y, light4y};
+float lightsz[]= {light0z, light1z, light2z, light3z, light4z};
+float symb_lights_radius[] = {symb_light0_radius, symb_light1_radius, symb_light2_radius, symb_light3_radius, symb_light4_radius};
+int symb_lights_slices[] = {symb_light0_slices, symb_light1_slices, symb_light2_slices, symb_light3_slices, symb_light4_slices};
+int symb_lights_stacks[] = {symb_light0_stacks, symb_light1_stacks, symb_light2_stacks, symb_light3_stacks, symb_light4_stacks};
+int nlights = 5;
 
 float luz1 = 1;
 float luz2 = 1;
@@ -392,7 +407,7 @@ void desenhaHospital(GLUquadric * quad)
 {
 	// edificio
 	float tamanhoCubo = 1.0;
-	
+	glEnable(GL_NORMALIZE);
 	glEnable(GL_COLOR_MATERIAL);
 	glColor3f(corHospital[0], corHospital[1], corHospital[2]);
 	glPushMatrix();
@@ -400,7 +415,6 @@ void desenhaHospital(GLUquadric * quad)
 	glScalef(hospLarg,hospAlt,hospProf);
 	glutSolidCube(tamanhoCubo);
 	glPopMatrix();
-	//glDisable(GL_DEPTH_TEST); //desactiva temporariamente o uso do z-buffer
 	
 	//letreiro HJS
 	glPushMatrix();
@@ -414,9 +428,8 @@ void desenhaHospital(GLUquadric * quad)
 	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'H');
 	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'S');
 	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'J');
-
 	glPopMatrix();
-
+	glDisable(GL_NORMALIZE);
 	disableColors();
 
 	glEnable(GL_TEXTURE_2D);
@@ -765,12 +778,14 @@ void desenhaSuporteAterragem(GLUquadric * quad)
 
 void desenhaEstabilizador()
 {
+	glEnable(GL_NORMALIZE);
 	glBindTexture(GL_TEXTURE_2D, 11);
 	glPushMatrix();
 	glTranslatef(0.0,0.0,compHeliCauda-(compHeliCauda/4));
 	glScalef(30.0,1.0,10.0);
 	glutSolidCube(0.1);
 	glPopMatrix();
+	glDisable(GL_NORMALIZE);
 }
 
 void desenhaHeliceMotorT()
@@ -873,9 +888,10 @@ void desenhaCaudaHeli(GLUquadric * quad)
 void desenhaHelicoptero(GLUquadric * quad)
 {
 	gluQuadricTexture(quad, GL_TRUE);
-	glEnable(GL_NORMALIZE);	
+	
 	//glBindTexture(GL_TEXTURE_2D, 11);
 	glEnable(GL_COLOR_MATERIAL);
+	glEnable(GL_NORMALIZE);	
 	glPushMatrix();
 	glTranslatef((PosChaoCX1+PosChaoCX2)/2 + heliX,alturaHeli/2+heliY,(PosChaoZ2/4)+heliZ);
 	glScalef(escalaHeli,escalaHeli,escalaHeli);
@@ -883,16 +899,17 @@ void desenhaHelicoptero(GLUquadric * quad)
 	glRotatef(heliZang,1.0,0.0,0.0); //rotacao heli, movimento lateral
 	glRotatef(heliXang,0.0,0.0,1.0); //rotacao heli, movimento horizontal
 	glRotatef(90, 0.0,1.0,0.0);
-	glEnable (GL_BLEND);
-	glBlendFunc (GL_SRC_ALPHA, GL_ONE); 
-	glColor4f (0.0f, 1.0f, 1.0f, 1.0f); // blue with 50% opacity
+	//glEnable (GL_BLEND);
+	//glBlendFunc (GL_SRC_ALPHA, GL_ONE); 
+	//glColor4f (0.0f, 1.0f, 1.0f, 1.0f); // blue with 50% opacity
 	// draw your model
 	glPushMatrix();
 	glScalef(1.0,1.0,2.0);
 	gluSphere(quad, raioHeliCabine , 20, stacksT1);
 	glPopMatrix();
-	glDisable (GL_BLEND); // reset or something
+	//glDisable (GL_BLEND); // reset or something
 	disableColors();
+	glEnable(GL_NORMALIZE);	
 	glEnable(GL_TEXTURE_2D);
 	desenhaSuporteAterragem(quad);
 	desenhaCaudaHeli(quad);
@@ -1112,41 +1129,26 @@ void display(void)
 	glPopMatrix();
 
 	
-	/*for(int i = 0; i < nlights; i++)
+	for(int i = 0; i < nlights; i++)
 	{
 			lights_position[i][0] = lightsx[i];
 			lights_position[i][1] = lightsy[i];
 			lights_position[i][2] = lightsz[i];
+			glLightfv(GL_LIGHT0+i, GL_POSITION, lights_position[i]);
 	}
-
-	glLightfv(GL_LIGHT0, GL_POSITION, lights_position[0]);
-	glLightfv(GL_LIGHT1, GL_POSITION, lights_position[1]);
-	glLightfv(GL_LIGHT2, GL_POSITION, lights_position[2]);
-	glLightfv(GL_LIGHT3, GL_POSITION, lights_position[3]);*/
 	
-	// Actualizacao da posicao da fonte de luz...
-	light0_position[0] = light0x;	// por razoes de eficiencia, os restantes 
-	light0_position[1] = light0y;	// parametros _invariaveis_ da LIGHT0 mantem os valores
-	light0_position[2] = light0z;	// definidos na funcao de inicializacao
-	glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
 
-	// Actualizacao da posicao da fonte de luz2...
-	light1_position[0] = light1x;	// por razoes de eficiencia, os restantes 
-	light1_position[1] = light1y;	// parametros _invariaveis_ da light1 mantem os valores
-	light1_position[2] = light1z;	// definidos na funcao de inicializacao
-	glLightfv(GL_LIGHT1, GL_POSITION, light1_position);
-
-	// Actualizacao da posicao da fonte de luz3...
-	light2_position[0] = light2x;	// por razoes de eficiencia, os restantes 
-	light2_position[1] = light2y;	// parametros _invariaveis_ da light2 mantem os valores
-	light2_position[2] = light2z;	// definidos na funcao de inicializacao
-	glLightfv(GL_LIGHT2, GL_POSITION, light2_position);
-
-	// Actualizacao da posicao da fonte de luz4...
-	light3_position[0] = light3x;	// por razoes de eficiencia, os restantes 
-	light3_position[1] = light3y;	// parametros _invariaveis_ da light3 mantem os valores
-	light3_position[2] = light3z;	// definidos na funcao de inicializacao
-	glLightfv(GL_LIGHT3, GL_POSITION, light3_position);
+	for(int i = 0; i < nlights; i++)
+	{
+		// ... e da esfera que a simboliza
+		glColor3f(1.0,1.0,0.0);		// cor amarela
+		gluQuadricOrientation( glQ, GLU_INSIDE);
+		glPushMatrix();
+		glTranslated(lightsx[i],lightsy[i],lightsz[i]);
+		gluSphere(glQ, symb_lights_radius[i], symb_lights_slices[i], symb_lights_stacks[i]);
+		glPopMatrix();
+		gluQuadricOrientation( glQ, GLU_OUTSIDE);
+	}
 
 	// direccao da luz0
 	glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, angLuz);
@@ -1160,42 +1162,6 @@ void display(void)
 	// direccao da luz3
 	glLightf(GL_LIGHT3, GL_SPOT_CUTOFF, angLuz);
 	glLightfv(GL_LIGHT3, GL_SPOT_DIRECTION, spot3);
-
-	// ... e da esfera que a simboliza
-	glColor3f(1.0,1.0,0.0);		// cor amarela
-	gluQuadricOrientation( glQ, GLU_INSIDE);
-	glPushMatrix();
-	glTranslated(light0x,light0y,light0z);
-	gluSphere(glQ, symb_light0_radius, symb_light0_slices, symb_light0_stacks);
-    glPopMatrix();
-	gluQuadricOrientation( glQ, GLU_OUTSIDE);
-
-	// ... e da esfera que a simboliza2
-	glColor3f(1.0,1.0,0.0);		// cor amarela
-	gluQuadricOrientation( glQ, GLU_INSIDE);
-	glPushMatrix();
-	glTranslated(light1x,light1y,light1z);
-	gluSphere(glQ, symb_light1_radius, symb_light1_slices, symb_light1_stacks);
-    glPopMatrix();
-	gluQuadricOrientation( glQ, GLU_OUTSIDE);
-
-	// ... e da esfera que a simboliza3
-	glColor3f(1.0,1.0,0.0);		// cor amarela
-	gluQuadricOrientation( glQ, GLU_INSIDE);
-	glPushMatrix();
-	glTranslated(light2x,light2y,light2z);
-	gluSphere(glQ, symb_light2_radius, symb_light2_slices, symb_light2_stacks);
-    glPopMatrix();
-	gluQuadricOrientation( glQ, GLU_OUTSIDE);
-
-	// ... e da esfera que a simboliza4
-	glColor3f(1.0,1.0,0.0);		// cor amarela
-	gluQuadricOrientation( glQ, GLU_INSIDE);
-	glPushMatrix();
-	glTranslated(light3x,light3y,light3z);
-	gluSphere(glQ, symb_light3_radius, symb_light3_slices, symb_light3_stacks);
-    glPopMatrix();
-	gluQuadricOrientation( glQ, GLU_OUTSIDE);
 	
 	disableColors();
 	
@@ -1471,59 +1437,24 @@ void inicializacao()
 	// por defeito a cor de fundo e o preto
 	glClearColor(corFundo[0], corFundo[1], corFundo[2], 1.0);    // cor de fundo a branco
 
-
-	// declaracoes para a fonte luz GL_LIGHT0
-	glLightfv(GL_LIGHT0, GL_AMBIENT, light0_ambient);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, light0_diffuse);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, light0_specular);
-	glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION,  light0_kc);
-	glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION,    light0_kl);
-	glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, light0_kq);
-
-	// declaracoes para a fonte luz GL_LIGHT1
-	glLightfv(GL_LIGHT1, GL_AMBIENT, light1_ambient);
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, light1_diffuse);
-	glLightfv(GL_LIGHT1, GL_SPECULAR, light1_specular);
-	glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION,  light1_kc);
-	glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION,    light1_kl);
-	glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, light1_kq);
-
-	// declaracoes para a fonte luz GL_LIGHT2
-	glLightfv(GL_LIGHT2, GL_AMBIENT, light2_ambient);
-	glLightfv(GL_LIGHT2, GL_DIFFUSE, light2_diffuse);
-	glLightfv(GL_LIGHT2, GL_SPECULAR, light2_specular);
-	glLightf(GL_LIGHT2, GL_CONSTANT_ATTENUATION,  light2_kc);
-	glLightf(GL_LIGHT2, GL_LINEAR_ATTENUATION,    light2_kl);
-	glLightf(GL_LIGHT2, GL_QUADRATIC_ATTENUATION, light2_kq);
-
-	// declaracoes para a fonte luz GL_LIGHT3
-	glLightfv(GL_LIGHT3, GL_AMBIENT, light3_ambient);
-	glLightfv(GL_LIGHT3, GL_DIFFUSE, light3_diffuse);
-	glLightfv(GL_LIGHT3, GL_SPECULAR, light3_specular);
-	glLightf(GL_LIGHT3, GL_CONSTANT_ATTENUATION,  light3_kc);
-	glLightf(GL_LIGHT3, GL_LINEAR_ATTENUATION,    light3_kl);
-	glLightf(GL_LIGHT3, GL_QUADRATIC_ATTENUATION, light3_kq);
+	for(int i = 0; i < nlights; i++)
+	{
+		glLightfv(GL_LIGHT0+i, GL_AMBIENT, lights_ambient[i]);
+		glLightfv(GL_LIGHT0+i, GL_DIFFUSE, lights_diffuse[i]);
+		glLightfv(GL_LIGHT0+i, GL_SPECULAR, lights_specular[i]);
+		glLightf(GL_LIGHT0+i, GL_CONSTANT_ATTENUATION,  lights_kc[i]);
+		glLightf(GL_LIGHT0+i, GL_LINEAR_ATTENUATION,    lights_kl[i]);
+		glLightf(GL_LIGHT0+i, GL_QUADRATIC_ATTENUATION, lights_kq[i]);
+	}
 	
-	
-	// NOTA: a direccao e a posicao de GL_LIGHT0 estao na rotina display(), pelo
-	//       que as isntrucoes seguntes nao sao necessarias
-	//glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 90.0);
-	//glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spot_direction);
-	//glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
 
 	// Permitir calculos de iluminacao
 	glEnable(GL_LIGHTING);
-	// "Acender" a fonte de luz GL_LIGHT0
-	glEnable(GL_LIGHT0);
-	// "Acender" a fonte de luz GL_LIGHT1
-	glEnable(GL_LIGHT1);
-	// "Acender" a fonte de luz GL_LIGHT2
-	glEnable(GL_LIGHT2);
-	// "Acender" a fonte de luz GL_LIGHT3
-	glEnable(GL_LIGHT3);
 	
-
-
+	for(int i = 0; i < nlights; i++)
+	{
+		glEnable(GL_LIGHT0+i);
+	}
 	// Declaracoe para shading
 	glShadeModel(GL_SMOOTH);			// GL_FLAT / GL_SMOOTH
 	glPolygonMode(GL_FRONT, GL_FILL);	// preence a face da frente dos poligonos
