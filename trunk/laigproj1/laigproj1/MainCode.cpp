@@ -126,8 +126,16 @@ float rodaHeliang = 0.0;
 // animacao do helicoptero
 int animation=0;
 int step=1;
+int step2 = 1;
 float speedHeli = 0.2;
 float speedTurn = 25*speedHeli;
+float factor= 0.2;
+
+// dimensoes torre de controlo
+float alturaTorre = 9.5;
+float raioTorre = 1.25;
+float raioTorrePlat = 4.5;
+float alturaTorrePlat = 0.7;
 
 // dimensoes da arvore de tipo 1
 float raioTInf = 0.3;
@@ -862,7 +870,6 @@ void desenhaCaudaHeli(GLUquadric * quad)
 	
 }
 
-
 void desenhaHelicoptero(GLUquadric * quad)
 {
 	gluQuadricTexture(quad, GL_TRUE);
@@ -896,8 +903,7 @@ void desenhaHelicoptero(GLUquadric * quad)
 	gluQuadricTexture(quad, GL_FALSE);
 	
 }
-float factor= 0.2;
-int step2 = 1;
+
 void animacaoVerde()
 {
 	if(animation==1)
@@ -1001,6 +1007,40 @@ void animacaoVermelha()
 		}
 	}
 }
+
+void desenhaTorre(GLUquadric * quad)
+{
+	
+	
+	glPushMatrix();
+	glTranslatef(PosChaoDX2-raioTorrePlat,0.0,PosChaoZ2+raioTorrePlat);
+	glRotatef(-90.0,1.0,0.0,0.0);
+	
+	glPushMatrix();
+	glTranslatef(0.0,0.0,alturaTorre);
+	// disco inferior da plataforma
+	glPushMatrix();
+	glRotatef(180.0,1.0,0.0,0.0);
+	gluDisk(quad, 0.0, raioTorrePlat, slicesT1, stacksT1);
+	glPopMatrix();
+	// disco superior da plataforma
+	glPushMatrix();
+	glTranslatef(0.0,0.0,alturaTorrePlat);
+	gluDisk(quad, 0.0, raioTorrePlat, slicesT1, stacksT1);
+	glPopMatrix();
+	// plataforma
+	gluCylinder(quad, raioTorrePlat, raioTorrePlat, alturaTorrePlat, slicesT1, stacksT1);
+	glPopMatrix();
+	
+	// base cilindrica
+	gluCylinder(quad, raioTorre,raioTorre ,alturaTorre, slicesT1,stacksT1);
+	glPushMatrix();
+	glTranslatef(0.0,0.0,alturaTorre);
+	gluDisk(quad, 0.0,raioTorre,slicesT1,stacksT1);
+	glPopMatrix();
+	glPopMatrix();
+}
+
 
 void display(void)
 {
@@ -1170,6 +1210,7 @@ void display(void)
 		MotorAng+=20;
 	animacaoVermelha();
 	animacaoVerde();
+	desenhaTorre(glQ);
 
 	// swapping the buffers causes the rendering above to be shown
 	glutSwapBuffers();
@@ -1554,8 +1595,6 @@ void inicializacao()
 	desenhaHeliporto();
 	glEndList();
 }
-
-
 
 int main(int argc, char* argv[])
 {
