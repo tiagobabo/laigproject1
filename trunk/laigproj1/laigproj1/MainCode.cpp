@@ -682,7 +682,7 @@ void desenhaArvoreT1(GLUquadric * quad, float posX, float posZ, float height)
 
 void desenhaArvoreT2(GLUquadric * quad, float posX, float posZ, float height)
 {
-	gluQuadricTexture(quad, GL_TRUE);
+	//gluQuadricTexture(quad, GL_TRUE);
 	glEnable(GL_TEXTURE_2D);
 
 	// tronco
@@ -721,7 +721,7 @@ void desenhaArvoreT2(GLUquadric * quad, float posX, float posZ, float height)
 	glPopMatrix();
 
 	glDisable(GL_TEXTURE_2D);
-	gluQuadricTexture(quad, GL_FALSE);
+	//gluQuadricTexture(quad, GL_FALSE);
 
 }
 
