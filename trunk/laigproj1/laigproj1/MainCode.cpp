@@ -8,10 +8,16 @@
 #include <string>
 
 // dimensoes e localizacao da janela
-#define DIMX 1000
-#define DIMY 800
+#define DIMX 800
+#define DIMY 600
 #define INITIALPOS_X 200
 #define INITIALPOS_Y 50
+
+/********** User IDs for callbacks ********/
+#define LIGHT0_ENABLED_ID    200
+#define LIGHT1_ENABLED_ID    201
+#define LIGHT2_ENABLED_ID    202
+#define LIGHT3_ENABLED_ID    203
 
 //posicao de visualizacao
 float VposX = 20.0;
@@ -19,6 +25,16 @@ float VposY = 10.0;
 float VangleX = 40.0;
 float VangleY = 0.0;
 float zoom = 50;
+int camera = 1;
+float eyex3 = 22.5;
+float eyey3 = 20.0;
+float eyez3 = 7.5;
+float centerx3 = 22.5;
+float centery3 = 0.0;
+float centerz3 = -7.5;
+float upx3 = 0.0;
+float upy3 = 1.0;
+float upz3 = -1.0;
 
 //definicao das listas
 int chaoEArvores = 1;
@@ -1025,6 +1041,25 @@ void animacaoVermelha()
 	}
 }
 
+void camera3()
+{
+	glMatrixMode( GL_MODELVIEW );
+	glLoadIdentity();
+	gluLookAt( eyex3, eyey3, eyez3, centerx3, centery3, centerz3, upx3, upy3, upz3 ); 
+}
+
+void showCamera(char* camera)
+{
+    /*  printf( "text: %s\n", text );              */
+
+    /*** Render the live character array 'text' ***/
+    int i;
+
+    for( i=0; i<(int)strlen( camera ); i++ )
+      glutBitmapCharacter( GLUT_BITMAP_HELVETICA_18, camera[i] );
+  glEnable( GL_LIGHTING );
+}
+
 void desenhaTorre(GLUquadric * quad)
 {
 	
@@ -1062,6 +1097,7 @@ void desenhaTorre(GLUquadric * quad)
 void display(void)
 {
 
+
 	// ****** declaracoes internas 'a funcao display() ******
 	
 	//float temp;
@@ -1074,15 +1110,17 @@ void display(void)
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
  
-	// inicializacoes da matriz de visualizacao
+	
+	if(camera == 1)
+	{
+		// inicializacoes da matriz de visualizacao
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
 	glFrustum( -xy_aspect*.04, xy_aspect*.04, -.04, .04, .1, 500.0 );
 
-	//inicializacoes da matriz de transformacoes geometricas
+		//inicializacoes da matriz de transformacoes geometricas
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
-	
 	// afasta a cena de 25 unidades mais a distância que...
 	// ...decorre da utilizacao do botao de afastamento (pseudo-zoom)
     glTranslatef( obj_pos[0]-VposX, obj_pos[1]-VposY, -obj_pos[2]-zoom );
@@ -1093,7 +1131,7 @@ void display(void)
 	// roda a cena para ficar em perspectiva
 	glRotated( VangleX, 1.0,0.0,0.0 );		// 20 graus em torno de X
 	glRotated( VangleY, 0.0,1.0,0.0 );		//-45 graus em torno de Y
-
+	}
 	// roda a cena de acordo com o botao (esfera) de rotacao
 	glMultMatrixf( view_rotate );
 
@@ -1102,8 +1140,7 @@ void display(void)
 	// e' o caso dos eixos e da esfera que simboliza a fonte de luz...
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 	glEnable(GL_COLOR_MATERIAL);
-
-
+	
 	// cilindro representativo do eixo X
 	glColor3f(1.0,0.0,0.0);		// vermelho
 	glPushMatrix();
@@ -1137,7 +1174,7 @@ void display(void)
 			glLightfv(GL_LIGHT0+i, GL_POSITION, lights_position[i]);
 	}
 	
-
+	 
 	for(int i = 0; i < nlights; i++)
 	{
 		// ... e da esfera que a simboliza
@@ -1231,98 +1268,77 @@ void keyboard(unsigned char key, int x, int y)
       case 27:		// tecla de escape termina o programa
          exit(0);
          break;
-	  case 'a':
-		  {
-		  heliX -= 1.0;
-		  if(heliXang>=0)
-			heliXang = 30;
-		  else
-			heliXang = 0;
-		  }
-		  break;
-	  case 'd':
-		  {
-		  heliX += 1.0;
-		  if(heliXang<=0)
-			heliXang = -30;
-		  else
-			heliXang = 0;
-		  }
-		  break;
-	  case 'w':
-		  {
-		  heliZ -= 1.0;
-		  if(heliZang<=0)
-			heliZang = -30;
-		  else
-			heliZang = 0;
-		  }
-		  break;
-	  case 's':
-		  {
-		  heliZ += 1.0;
-		  if(heliZang>=0)
-			heliZang = 30;
-		  else
-			heliZang = 0;
-		  }
-		  break;
-	  case 'r':
-		 light0y += 0.1;
-		 break;	
-	  case 'f':
-		 light0y -= 0.1;
-		 break;	
-	  /*case 'd':
-		 light0x += 0.1;
-		 break;	
-	  case 'a':
-		 light0x -= 0.1;
-		 break;	
-	  case 'w':
-		 light0z -= 0.1;
-		 break;	
-	  case 's':
-		 light0z += 0.1;
-		 break;*/
 	  case 'l':
-		 VposX += 1.0;
+		 {
+			if(camera == 3)
+			{
+				eyex3 +=1.0;
+				camera3();
+			}
+		  }
 		 break;	
 	  case 'j':
-		 VposX -= 1.0;
+		  {
+			if(camera == 3)
+			{
+				eyex3 -=1.0;
+				camera3();
+			}
+		  }
 		 break;	
 	  case 'k':
-		 zoom += 1.0;
+		 {
+			 if(camera == 3)
+			 {
+				eyey3 +=1.0;
+				camera3();
+			 }
+		  }
 		 break;	
 	  case 'i':
-		 zoom -= 1.0;
+		 {
+			 if(camera == 3)
+			 {
+				eyey3 -=1.0;
+				camera3();
+			 }
+		  }
 		 break;	
-	  case 'y':
-		 VposY += 1.0;
+	  case 'q':
+		 {
+			 if(camera == 3)
+			 {
+				eyez3 -=1.0;
+				camera3();
+			 }
+		  }
 		 break;	
-	  case 'h':
-		 VposY -= 1.0;
+	  case 'a':
+		 {
+			 if(camera == 3)
+			 {
+				eyez3 +=1.0;
+				camera3();
+			 }
+		  }
 		 break;	
-	  case '8':
-		 VangleX += 1.0;
-		 break;	
-	  case '2':
-		 VangleX -= 1.0;
-		 break;	
-	  case '6':
-		 VangleY += 1.0;
-		 break;	
-	  case '4':
-		 VangleY -= 1.0;
+	  case '1':
+		 camera = 1;
 		 break;
-	  case '5':
+	  case '2':
 		  {
-			VposX = 20.0;
-			VposY = 10.0;
-			VangleX = 40.0;
-			VangleY = 0.0;
-			zoom = 50;
-			break;
+			camera = 2;
+			glMatrixMode( GL_MODELVIEW );
+			glLoadIdentity();
+			gluLookAt( 22.5, 50.0, -15.0, 22.5, 0.0, -15.0, 0.0, 0.0, -1.0 ); 
+			//showCamera("Camera 2");
+		 break;	
+		  }
+	  case '3':
+		  {
+			camera = 3;
+			camera3();
+			break;	
 		  }
 	   case '+':
 		 heliY += 1.0;
@@ -1335,62 +1351,6 @@ void keyboard(unsigned char key, int x, int y)
 			  {
 				  heliXang = 0;
 				  heliZang = 0;
-			  }
-		  }
-		 break;
-      case 'z':
-		  {
-			  if(luz1)
-			  {
-				  luz1=0;
-				  glDisable(GL_LIGHT0);
-			  }
-			  else
-			  {
-				  luz1=1;
-				  glEnable(GL_LIGHT0);
-			  }
-		  }
-		 break;	
-	  case 'x':
-		   {
-			  if(luz2)
-			  {
-				  luz2=0;
-				  glDisable(GL_LIGHT1);
-			  }
-			  else
-			  {
-				  luz2=1;
-				  glEnable(GL_LIGHT1);
-			  }
-		  }
-		 break;	
-	  case 'c':
-		  {
-			  if(luz3)
-			  {
-				  luz3=0;
-				  glDisable(GL_LIGHT2);
-			  }
-			  else
-			  {
-				  luz3=1;
-				  glEnable(GL_LIGHT2);
-			  }
-		  }
-		 break;	
-	  case 'v':
-		  {
-			  if(luz4)
-			  {
-				  luz4=0;
-				  glDisable(GL_LIGHT3);
-			  }
-			  else
-			  {
-				  luz4=1;
-				  glEnable(GL_LIGHT3);
 			  }
 		  }
 		 break;
@@ -1527,6 +1487,48 @@ void inicializacao()
 	glEndList();
 }
 
+int   light0_enabled = 1;
+int   light1_enabled = 1;
+int   light2_enabled = 1;
+int   light3_enabled = 1;
+
+void control_cb( int control )
+{
+  if ( control == LIGHT0_ENABLED_ID ) {
+    if ( light0_enabled ) {
+      glEnable( GL_LIGHT0 );
+    }
+    else {
+      glDisable( GL_LIGHT0 ); 
+    }
+  }
+  else if ( control == LIGHT1_ENABLED_ID ) {
+    if ( light1_enabled ) {
+      glEnable( GL_LIGHT1 );
+    }
+    else {
+      glDisable( GL_LIGHT1 ); 
+    }
+  }
+  else if ( control == LIGHT2_ENABLED_ID ) {
+    if ( light2_enabled ) {
+      glEnable( GL_LIGHT2 );
+    }
+    else {
+      glDisable( GL_LIGHT2 ); 
+    }
+  }
+  else if( control == LIGHT3_ENABLED_ID ) {
+    if ( light3_enabled ) {
+      glEnable( GL_LIGHT3 );
+    }
+    else {
+      glDisable( GL_LIGHT3 ); 
+    }
+  }
+}
+
+
 int main(int argc, char* argv[])
 {
 	glutInit(&argc, argv);
@@ -1554,7 +1556,18 @@ int main(int argc, char* argv[])
 	glui2->add_column( false );
 	GLUI_Translation *trans_z = glui2->add_translation( "Zoom", GLUI_TRANSLATION_Z, &obj_pos[2] );
 	trans_z->set_speed( .02 );
+	
+	/******** Add some controls for lights ********/
+	glui2->add_column( false );
 
+	glui2->add_checkbox("Luz 1", &light0_enabled,
+				LIGHT0_ENABLED_ID, control_cb );
+	glui2->add_checkbox("Luz 2", &light1_enabled,
+				LIGHT1_ENABLED_ID, control_cb );
+	glui2->add_checkbox("Luz 3", &light2_enabled,
+				LIGHT2_ENABLED_ID, control_cb );
+	glui2->add_checkbox("Luz 4", &light3_enabled,
+				LIGHT3_ENABLED_ID, control_cb );
 
 	/* We register the idle callback with GLUI, not with GLUT */
 	GLUI_Master.set_glutIdleFunc( myGlutIdle );
