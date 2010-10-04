@@ -277,14 +277,14 @@ int symb_light3_stacks =8;
 // declarações para a fonte de luz light4;
 float light4_position[]  = {0.0, 3.0, 4.0, 1.0}; // nao necessaria...
 float light4_ambient[] =   {0.0, 0.0, 0.0, 1.0}; // sem componente ambiente
-float light4_diffuse[] =   {0.4, 0.4, 0.4, 1.0};
-float light4_specular[] =  {0.4, 0.4, 0.4, 1.0};
+float light4_diffuse[] =   {10.0, 10.0, 10.0, 1.0};
+float light4_specular[] =  {10.0, 10.0, 10.0, 1.0};
 float light4_kc = 0.0;
 float light4_kl = 1.0;
 float light4_kq = 0.0;
 float light4x = 30.0;
-float light4y = 30.0;
-float light4z = 10.0;
+float light4y = 20.0;
+float light4z = -10.0;
 float symb_light4_radius = 0.6;
 int symb_light4_slices = 8;
 int symb_light4_stacks =8;
@@ -294,8 +294,8 @@ float* lights_ambient[] = {light0_ambient, light1_ambient, light2_ambient, light
 float* lights_diffuse[] = {light0_diffuse, light1_diffuse, light2_diffuse, light3_diffuse, light4_diffuse};
 float* lights_specular[] = {light0_specular, light1_specular, light2_specular, light3_specular, light4_specular};
 float lights_kc[] = {light0_kc, light1_kc, light2_kc, light3_kc, light4_kc};
-float lights_kl[] = {light0_kl, light1_kl, light2_kl, light3_kl, light4_kc};
-float lights_kq[] = {light0_kq, light1_kq, light2_kq, light3_kq, light4_kc};
+float lights_kl[] = {light0_kl, light1_kl, light2_kl, light3_kl, light4_kl};
+float lights_kq[] = {light0_kq, light1_kq, light2_kq, light3_kq, light4_kq};
 float lightsx[] = {light0x, light1x, light2x, light3x, light4x};
 float lightsy[]= {light0y, light1y, light2y, light3y, light4y};
 float lightsz[]= {light0z, light1z, light2z, light3z, light4z};
@@ -1131,10 +1131,11 @@ void display(void)
 	// roda a cena para ficar em perspectiva
 	glRotated( VangleX, 1.0,0.0,0.0 );		// 20 graus em torno de X
 	glRotated( VangleY, 0.0,1.0,0.0 );		//-45 graus em torno de Y
-	}
 	// roda a cena de acordo com o botao (esfera) de rotacao
 	glMultMatrixf( view_rotate );
 
+	}
+	
 	// permissao de atribuicao directa de cores
 	// para objectos que nao tem material atribuido, como
 	// e' o caso dos eixos e da esfera que simboliza a fonte de luz...
@@ -1415,6 +1416,7 @@ void inicializacao()
 	{
 		glEnable(GL_LIGHT0+i);
 	}
+
 	// Declaracoe para shading
 	glShadeModel(GL_SMOOTH);			// GL_FLAT / GL_SMOOTH
 	glPolygonMode(GL_FRONT, GL_FILL);	// preence a face da frente dos poligonos
