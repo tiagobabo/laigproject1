@@ -96,6 +96,7 @@
     <None Include="windows.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MainCode.h" />
     <ClInclude Include="RGBpixmap.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

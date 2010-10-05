@@ -61,5 +61,8 @@
     <ClInclude Include="RGBpixmap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MainCode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
