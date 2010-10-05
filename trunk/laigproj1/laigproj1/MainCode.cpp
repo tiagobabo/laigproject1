@@ -3,7 +3,6 @@
 void disableColors()
 {
 	glDisable(GL_COLOR_MATERIAL);
-	// Definicao de material a usar daqui em diante (valores declarados acima)
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat1_shininess);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  mat1_specular);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   mat1_diffuse);
@@ -13,12 +12,30 @@ void disableColors()
 void cockpitMaterial()
 {
 	glDisable(GL_COLOR_MATERIAL);
-	// Definicao de material a usar daqui em diante (valores declarados acima)
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, cockpit_shininess);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  cockpit_specular);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   cockpit_diffuse);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   cockpit_ambient);
+}
+
+void arvoreMaterial()
+{
+	glDisable(GL_COLOR_MATERIAL);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, arv_shininess);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  arv_specular);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   arv_diffuse);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   arv_ambient);
+}
+
+void heliMaterial()
+{
+	glDisable(GL_COLOR_MATERIAL);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, heli_shininess);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  heli_specular);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   heli_diffuse);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   heli_ambient);
 }
+
 
 void desenhaRecXZ(float x1, float z1, float x2, float z2, int imagem)
 {
@@ -46,6 +63,7 @@ void desenhaRecXZ2(float x1, float z1, float x2, float z2, int imagem)
 
 void desenhaTrianguloXY(float x1, float y1, float x2, float y2, int imagem, float normal[3])
 {
+	arvoreMaterial();
 	glBindTexture(GL_TEXTURE_2D, imagem);
 	glBegin(GL_POLYGON);
 		glNormal3d(normal[0],normal[1],normal[2]);  // esta normal fica comum aos 3 vertices
@@ -384,7 +402,8 @@ void desenhaArvoreT1(GLUquadric * quad, float posX, float posZ, float height)
 	glRotatef(-90.0, 1.0, 0.0, 0.0);
 	gluCylinder(quad, raioTInf, raioTSup, height, slicesT1, stacksT1);
 	glPopMatrix();
-
+	
+	arvoreMaterial();
 	// folhagem
 	glPushMatrix();
 	glBindTexture(GL_TEXTURE_2D, 5);
@@ -399,7 +418,6 @@ void desenhaArvoreT1(GLUquadric * quad, float posX, float posZ, float height)
 
 void desenhaArvoreT2(GLUquadric * quad, float posX, float posZ, float height)
 {
-	//gluQuadricTexture(quad, GL_TRUE);
 	glEnable(GL_TEXTURE_2D);
 
 	// tronco
@@ -438,8 +456,6 @@ void desenhaArvoreT2(GLUquadric * quad, float posX, float posZ, float height)
 	glPopMatrix();
 
 	glDisable(GL_TEXTURE_2D);
-	//gluQuadricTexture(quad, GL_FALSE);
-
 }
 
 void desenhaSuporteAterragem(GLUquadric * quad)
@@ -641,7 +657,7 @@ void desenhaHelicoptero(GLUquadric * quad)
 	gluSphere(quad, raioHeliCabine , 20, stacksT1);
 	glPopMatrix();
 	glDisable(GL_NORMALIZE);
-	//
+	heliMaterial();
 	disableColors();
 	glEnable(GL_NORMALIZE);	
 	glEnable(GL_TEXTURE_2D);
@@ -650,6 +666,7 @@ void desenhaHelicoptero(GLUquadric * quad)
 	desenhaMotorPrin(quad);
 	glPopMatrix();
 	glDisable(GL_TEXTURE_2D);
+	
 	gluQuadricTexture(quad, GL_FALSE);
 	
 }
@@ -760,6 +777,9 @@ void animacaoVermelha()
 
 void camera3()
 {
+	glMatrixMode( GL_PROJECTION );
+	glLoadIdentity();
+	glFrustum( -xy_aspect*.04, xy_aspect*.04, -.04, .04, .1, 500.0 );
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
 	gluLookAt( eyex3, eyey3, eyez3, centerx3, centery3, centerz3, upx3, upy3, upz3 ); 
@@ -767,20 +787,25 @@ void camera3()
 
 void showCamera(char* camera)
 {
-    /*  printf( "text: %s\n", text );              */
-
-    /*** Render the live character array 'text' ***/
-    int i;
-
-    for( i=0; i<(int)strlen( camera ); i++ )
-      glutBitmapCharacter( GLUT_BITMAP_HELVETICA_18, camera[i] );
+	  glDisable( GL_LIGHTING );  /* Disable lighting while we render text */
+    glMatrixMode( GL_PROJECTION );
+    glLoadIdentity();
+    gluOrtho2D( 0.0, 100.0, 0.0, 100.0  );
+    glMatrixMode( GL_MODELVIEW );
+    glLoadIdentity();
+    glColor3ub( 0, 0, 0 );
+    glRasterPos2i( 0, 0 );
+   int len = strlen(camera);
+  for (int i = 0; i < len; i++)
+  {
+    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, camera[i]);
+  }
   glEnable( GL_LIGHTING );
+
 }
 
 void desenhaTorre(GLUquadric * quad)
 {
-	
-	
 	glPushMatrix();
 	glTranslatef(PosChaoDX2-raioTorrePlat/2,0.0,PosChaoZ2+raioTorrePlat);
 	glRotatef(-90.0,1.0,0.0,0.0);
@@ -813,8 +838,7 @@ void desenhaTorre(GLUquadric * quad)
 
 void display(void)
 {
-
-
+	
 	// ****** declaracoes internas 'a funcao display() ******
 	
 	//float temp;
@@ -850,8 +874,27 @@ void display(void)
 	glRotated( VangleY, 0.0,1.0,0.0 );		//-45 graus em torno de Y
 	// roda a cena de acordo com o botao (esfera) de rotacao
 	glMultMatrixf( view_rotate );
-
+	view_rot->enable();
+	trans_z->enable();
 	}
+	else if(camera == 2)
+	{
+		glMatrixMode( GL_PROJECTION );
+		glLoadIdentity();
+		glFrustum( -xy_aspect*.04, xy_aspect*.04, -.04, .04, .1, 500.0 );
+		glMatrixMode( GL_MODELVIEW );
+		glLoadIdentity();
+		gluLookAt( 22.5, 50.0, -15.0, 22.5, 0.0, -15.0, 0.0, 0.0, -1.0 ); 
+		view_rot->disable();
+		trans_z->disable();
+	}
+	else if(camera == 3)
+	{
+		camera3();
+		view_rot->disable();
+		trans_z->disable();
+	}
+	
 	
 	// permissao de atribuicao directa de cores
 	// para objectos que nao tem material atribuido, como
@@ -933,8 +976,10 @@ void display(void)
 	animacaoVerde();
 	desenhaTorre(glQ);
 	desenhaHangar();
-
 	// swapping the buffers causes the rendering above to be shown
+	if(camera == 1)  showCamera("Camera 1");
+	else if(camera == 2) showCamera("Camera 2");
+	else if(camera == 3) showCamera("Camera 3");
 	glutSwapBuffers();
 	glFlush();
 }
@@ -1047,16 +1092,11 @@ void keyboard(unsigned char key, int x, int y)
 	  case '2':
 		  {
 			camera = 2;
-			glMatrixMode( GL_MODELVIEW );
-			glLoadIdentity();
-			gluLookAt( 22.5, 50.0, -15.0, 22.5, 0.0, -15.0, 0.0, 0.0, -1.0 ); 
-			//showCamera("Camera 2");
 		 break;	
 		  }
 	  case '3':
 		  {
 			camera = 3;
-			camera3();
 			break;	
 		  }
 	   case '+':
@@ -1248,7 +1288,6 @@ void control_cb( int control )
   }
 }
 
-
 int main(int argc, char* argv[])
 {
 	glutInit(&argc, argv);
@@ -1270,11 +1309,11 @@ int main(int argc, char* argv[])
 	glui2 = GLUI_Master.create_glui_subwindow( main_window, GLUI_SUBWINDOW_BOTTOM );
 	glui2->set_main_gfx_window( main_window );
 
-	GLUI_Rotation *view_rot = glui2->add_rotation( "Rotacao", view_rotate );
+	view_rot = glui2->add_rotation( "Rotacao", view_rotate );
 	view_rot->set_spin( 1.0 );
 	
 	glui2->add_column( false );
-	GLUI_Translation *trans_z = glui2->add_translation( "Zoom", GLUI_TRANSLATION_Z, &obj_pos[2] );
+	trans_z = glui2->add_translation( "Zoom", GLUI_TRANSLATION_Z, &obj_pos[2] );
 	trans_z->set_speed( .02 );
 	
 	/******** Add some controls for lights ********/
