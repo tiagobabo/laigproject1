@@ -787,21 +787,20 @@ void camera3()
 
 void showCamera(char* camera)
 {
-	  glDisable( GL_LIGHTING );  /* Disable lighting while we render text */
-    glMatrixMode( GL_PROJECTION );
-    glLoadIdentity();
-    gluOrtho2D( 0.0, 100.0, 0.0, 100.0  );
-    glMatrixMode( GL_MODELVIEW );
-    glLoadIdentity();
-    glColor3ub( 0, 0, 0 );
-    glRasterPos2i( 0, 0 );
-   int len = strlen(camera);
-  for (int i = 0; i < len; i++)
-  {
-    glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, camera[i]);
-  }
-  glEnable( GL_LIGHTING );
-
+	glDisable( GL_LIGHTING );  /* Disable lighting while we render text */
+	glMatrixMode( GL_PROJECTION );
+	glLoadIdentity();
+	gluOrtho2D( 0.0, 100.0, 0.0, 100.0  );
+	glMatrixMode( GL_MODELVIEW );
+	glLoadIdentity();
+	glColor3ub( 0, 0, 0 );
+	glRasterPos2i( 1, 1);
+	int len = strlen(camera);
+	for (int i = 0; i < len; i++)
+	{
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, camera[i]);
+	}
+	glEnable( GL_LIGHTING );
 }
 
 void desenhaTorre(GLUquadric * quad)
