@@ -9,34 +9,6 @@ void disableColors()
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat1_ambient);
 }
 
-void cockpitMaterial()
-{
-	glDisable(GL_COLOR_MATERIAL);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, cockpit_shininess);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  cockpit_specular);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   cockpit_diffuse);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   cockpit_ambient);
-}
-
-void arvoreMaterial()
-{
-	glDisable(GL_COLOR_MATERIAL);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, arv_shininess);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  arv_specular);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   arv_diffuse);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   arv_ambient);
-}
-
-void heliMaterial()
-{
-	glDisable(GL_COLOR_MATERIAL);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, heli_shininess);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  heli_specular);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   heli_diffuse);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   heli_ambient);
-}
-
-
 void desenhaRecXZ(float x1, float z1, float x2, float z2, int imagem)
 {
 	glBindTexture(GL_TEXTURE_2D, imagem);
@@ -63,7 +35,7 @@ void desenhaRecXZ2(float x1, float z1, float x2, float z2, int imagem)
 
 void desenhaTrianguloXY(float x1, float y1, float x2, float y2, int imagem, float normal[3])
 {
-	arvoreMaterial();
+	arvore.activate();
 	glBindTexture(GL_TEXTURE_2D, imagem);
 	glBegin(GL_POLYGON);
 		glNormal3d(normal[0],normal[1],normal[2]);  // esta normal fica comum aos 3 vertices
@@ -360,25 +332,23 @@ void desenhaHangar()
 	glDisable(GL_CULL_FACE);
 	glMap2f(GL_MAP2_VERTEX_3, 0.0, 1.0, 3, 4,  0.0, 1.0, 12, 4,  &ctrlpointsHangar[0][0][0]);
 	glMap2f(GL_MAP2_NORMAL,   0.0, 1.0, 3, 4,  0.0, 1.0, 12, 4,  &nrmlcomponHangar[0][0][0]);
+	glMap2f(GL_MAP2_TEXTURE_COORD_2,  0.0, 1.0, 2, 2,  0.0, 1.0, 4, 2,  &textpoints2[0][0]);
 
 	// os interpoladores activam-se:
 	glEnable(GL_MAP2_VERTEX_3);
 	glEnable(GL_MAP2_NORMAL);
+	glEnable(GL_MAP2_TEXTURE_COORD_2);
 	
 	glPushMatrix();
 	glTranslatef(PosChaoCX2+deslHangarX,0.0,PosChaoZ2+deslHangarY);
+	glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, 15);
 	glMapGrid2f(heliDiv, 0.0,1.0, heliDiv, 0.0,1.0); 
 	glEvalMesh2(GL_FILL, 0,heliDiv, 0,heliDiv);		// GL_POINT, GL_LINE, GL_FILL
+	glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
-	/*//glShadeModel(GL_FLAT);					// GL_FLAT, GL_SMOOTH
-	glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, 9);
-	glPushMatrix();
-	glTranslatef((PosChaoCX1+PosChaoCX2)/2,0.01,(PosChaoZ2/4));
-	glEvalMesh2(GL_FILL, 0,heliDiv, 0,heliDiv);		// GL_POINT, GL_LINE, GL_FILL
-	glPopMatrix();
-	glDisable(GL_TEXTURE_2D);*/
 	glEnable(GL_CULL_FACE);
+
 }
 
 void desenhaChao()
@@ -403,7 +373,7 @@ void desenhaArvoreT1(GLUquadric * quad, float posX, float posZ, float height)
 	gluCylinder(quad, raioTInf, raioTSup, height, slicesT1, stacksT1);
 	glPopMatrix();
 	
-	arvoreMaterial();
+	arvore.activate();
 	// folhagem
 	glPushMatrix();
 	glBindTexture(GL_TEXTURE_2D, 5);
@@ -648,24 +618,33 @@ void desenhaHelicoptero(GLUquadric * quad)
 	glRotatef(heliZang,1.0,0.0,0.0); //rotacao heli, movimento lateral
 	glRotatef(heliXang,0.0,0.0,1.0); //rotacao heli, movimento horizontal
 	glRotatef(90, 0.0,1.0,0.0);
-
-	//cockpit
-	glEnable(GL_NORMALIZE);	
-	glPushMatrix();
-	cockpitMaterial();
-	glScalef(1.0,1.0,2.0);
-	gluSphere(quad, raioHeliCabine , 20, stacksT1);
-	glPopMatrix();
-	glDisable(GL_NORMALIZE);
-	heliMaterial();
+	
+	heli.activate();
 	disableColors();
 	glEnable(GL_NORMALIZE);	
 	glEnable(GL_TEXTURE_2D);
 	desenhaSuporteAterragem(quad);
 	desenhaCaudaHeli(quad);
 	desenhaMotorPrin(quad);
+	//cockpit
+	glEnable(GL_NORMALIZE);	
+	glPushMatrix();
+	cockpit.activate();
+	glScalef(1.0,1.0,2.0);
+	gluSphere(quad, raioHeliCabine , 20, stacksT1);
+	glPopMatrix();
+	glPushMatrix();
+	heli.activate();
+	glScalef(1.0,0.7,2.0);
+	glTranslatef(0.0, -0.7, -0.7);
+	gluSphere(quad, raioHeliCabine , 20, stacksT1);
+	glPopMatrix();
+	glDisable(GL_NORMALIZE);
+
 	glPopMatrix();
 	glDisable(GL_TEXTURE_2D);
+
+
 	
 	gluQuadricTexture(quad, GL_FALSE);
 	
@@ -1236,6 +1215,9 @@ void inicializacao()
 
 	pixmap.readBMPFile("red_cross2.bmp");
 	pixmap.setTexture(14);
+
+	pixmap.readBMPFile("hangar.bmp");
+	pixmap.setTexture(15);
 
 
 	GLUquadric* glQ;	// nec. p/ criar sup. quadraticas (cilindros, esferas...)
