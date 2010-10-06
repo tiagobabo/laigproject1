@@ -117,6 +117,11 @@ GLfloat textpoints[4][2] = {	{ 0.0, 0.0},
 								{ 0.0, 1.0}, 
 								{ 1.0, 0.0},
 								{ 1.0, 1.0} };
+
+GLfloat textpoints2[4][2] = {	{ 0.0, 0.0},
+								{ 0.0, 1.0}, 
+								{ 1.0, 0.0},
+								{ 1.0, 1.0} };
 // definicoes do hangar
 float deslHangarX = 6.0;
 float deslHangarY = 10.0;
@@ -338,22 +343,22 @@ RGBpixmap pixmap;
  class Material 
    {
    private:
-		float shininess[1]; 
-		float specular[4];	/* specular reflection. */
-		float diffuse[4];	/* diffuse reflection. */
-		float ambient[4];	/* ambient reflection. */   
+		float* shininess; 
+		float* specular;	/* specular reflection. */
+		float* diffuse;	/* diffuse reflection. */
+		float* ambient;	/* ambient reflection. */   
    public:
-	    Material(float* heli_shininess, float* heli_specular,
-						float* heli_diffuse, float* heli_ambient);
+	    Material(float* shininess, float* specular,
+						float* diffuse, float* ambient);
 		 void activate();
    };
 
-Material::Material(float* heli_shininess, float* heli_specular, float* heli_diffuse, float* heli_ambient)
+Material::Material(float* shininess, float* specular, float* diffuse, float* ambient)
 {
-	this->shininess[1] = shininess[1];
-	this->specular[4] = specular[4];
-	this->diffuse[4] = diffuse[4];
-	this->ambient[4] = ambient[4];
+	this->shininess = shininess;
+	this->specular = specular;
+	this->diffuse = diffuse;
+	this->ambient = ambient;
 }
  void Material::activate()
 {
@@ -370,11 +375,16 @@ float mat1_specular[] = {0.3, 0.3, 0.3, 1.0};	/* specular reflection. */
 float mat1_diffuse[] =  {0.7, 0.7, 0.7, 1.0};	/* diffuse reflection. */
 float mat1_ambient[] =  {0.7, 0.7, 0.7, 1.0};	/* ambient reflection. */
 
+Material parede(mat1_shininess, mat1_specular, mat1_diffuse, mat1_ambient);
+Material chao(mat1_shininess, mat1_specular, mat1_diffuse, mat1_ambient);
+
 // declaracoes para o cockpit
 float cockpit_shininess[] = {256.0}; 
 float cockpit_specular[] = {0.0, 0.0, 0.3, 0.5};	/* specular reflection. */
 float cockpit_diffuse[] =  {0.0, 0.0, 1.0, 0.5};	/* diffuse reflection. */
 float cockpit_ambient[] =  {0.0, 0.0, 1.0, 0.5};	/* ambient reflection. */
+
+ Material cockpit(cockpit_shininess, cockpit_specular, cockpit_diffuse, cockpit_ambient);
 
 // declaracoes para as folhas das árvores
 float arv_shininess[] = {128.0}; 
@@ -382,11 +392,15 @@ float arv_specular[] = {0.0, 0.0, 0.4, 1.0};	/* specular reflection. */
 float arv_diffuse[] =  {0.8, 0.8, 0.8, 1.0};	/* diffuse reflection. */
 float arv_ambient[] =  {0.8, 0.8, 0.8, 1.0};	/* ambient reflection. */
 
+Material arvore(arv_shininess, arv_specular, arv_diffuse, arv_ambient);
+
 // declaracoes para o material do helicoptero
 float heli_shininess[] = {128.0}; 
 float heli_specular[] = {0.0, 0.0, 0.4, 1.0};	/* specular reflection. */
 float heli_diffuse[] =  {0.6, 0.6, 0.6, 1.0};	/* diffuse reflection. */
 float heli_ambient[] =  {0.6, 0.6, 0.6, 1.0};	/* ambient reflection. */
+
+Material heli(heli_shininess, heli_specular, heli_diffuse, heli_ambient);
 
 GLUI_Rotation *view_rot;
 GLUI_Translation *trans_z;
