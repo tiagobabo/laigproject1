@@ -56,6 +56,15 @@
     <None Include="windows.bmp">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="chaoplat.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="hangar.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="torre.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RGBpixmap.h">
