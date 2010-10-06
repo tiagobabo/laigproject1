@@ -659,13 +659,21 @@ void myInitTransforms()
 {
 	delta_rotate = (double) mili_secs/1000.0 * ANGULAR_SPEED *360.0;
 }
-
+float factori = 0.01;
 void animacaoHelice(int dummy)
 {
 	if(MotorAng == 360)
 		MotorAng = 0;
 	else
-		MotorAng += delta_rotate;
+	{
+		if(factori < 1.0)
+		{
+			MotorAng += delta_rotate*factori;
+			factori += 0.01;
+		}
+		else
+			MotorAng += delta_rotate*factori;
+	}
 
 	glutTimerFunc(mili_secs, animacaoHelice, 0);
 }
