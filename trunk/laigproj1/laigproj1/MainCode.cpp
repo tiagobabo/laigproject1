@@ -632,7 +632,7 @@ void desenhaHelicoptero(GLUquadric * quad)
 	glPushMatrix();
 	cockpit.activate();
 	glScalef(1.0,1.0,2.0);
-	gluSphere(quad, raioHeliCabine , 20, stacksT1);
+	gluSphere(quad, raioHeliCabine , slicesT1, stacksT1);
 	glPopMatrix();
 	
 	
@@ -658,12 +658,14 @@ void desenhaHelicoptero(GLUquadric * quad)
 void myInitTransforms()
 {
 	delta_rotate = (double) mili_secs/1000.0 * ANGULAR_SPEED *360.0;
-	delta_radius = (double) mili_secs/1000.0 * RADIUS_SPEED;
 }
 
 void animacaoHelice(int dummy)
 {
-	MotorAng += delta_rotate;
+	if(MotorAng == 360)
+		MotorAng = 0;
+	else
+		MotorAng += delta_rotate;
 
 	glutTimerFunc(mili_secs, animacaoHelice, 0);
 }

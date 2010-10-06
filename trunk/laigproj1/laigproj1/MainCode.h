@@ -167,9 +167,8 @@ float rodaHeliang = 0.0;
 
 // declarações para animacao
 unsigned int mili_secs = 10;
-double  obj_radius, obj_rotate, delta_radius, delta_rotate;
-#define RADIUS_SPEED  0.4  // unidades de comprimento por segundo
-#define ANGULAR_SPEED 0.5  // rotacoes por segundo
+double  delta_rotate;
+#define ANGULAR_SPEED 3.0  // rotacoes por segundo
 int animation = 0;
 int step = 1;
 int step2 = 1;
