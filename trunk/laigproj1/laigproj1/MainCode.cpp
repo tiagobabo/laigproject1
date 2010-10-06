@@ -805,9 +805,23 @@ void showCamera(char* camera)
 
 void desenhaTorre(GLUquadric * quad)
 {
+	double plane0[] = {0.0,0.0,1.0,0.0};
+
+	// posicionamento da torre
 	glPushMatrix();
 	glTranslatef(PosChaoDX2-raioTorrePlat/2,0.0,PosChaoZ2+raioTorrePlat);
 	glRotatef(-90.0,1.0,0.0,0.0);
+	
+	// cupula da torre
+	glPushMatrix();
+	cockpitMaterial();
+	glTranslatef(0.0,0.0,alturaTorre+alturaTorrePlat);
+	glClipPlane(GL_CLIP_PLANE0, plane0);
+	glEnable(GL_CLIP_PLANE0);
+	gluSphere(quad,raioTorrePlat,slicesT1,stacksT1);
+	glDisable(GL_CLIP_PLANE0);
+	disableColors();
+	glPopMatrix();
 	
 	glPushMatrix();
 	glTranslatef(0.0,0.0,alturaTorre);
