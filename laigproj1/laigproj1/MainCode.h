@@ -165,9 +165,13 @@ float heliXang = 0;
 float heliZang = 0;
 float rodaHeliang = 0.0;
 
-// animacao do helicoptero
-int animation=0;
-int step=1;
+// declarações para animacao
+unsigned int mili_secs = 10;
+double  obj_radius, obj_rotate, delta_radius, delta_rotate;
+#define RADIUS_SPEED  0.4  // unidades de comprimento por segundo
+#define ANGULAR_SPEED 0.5  // rotacoes por segundo
+int animation = 0;
+int step = 1;
 int step2 = 1;
 float speedHeli = 0.2;
 float speedTurn = 25*speedHeli;
@@ -379,12 +383,12 @@ Material parede(mat1_shininess, mat1_specular, mat1_diffuse, mat1_ambient);
 Material chao(mat1_shininess, mat1_specular, mat1_diffuse, mat1_ambient);
 
 // declaracoes para o cockpit
-float cockpit_shininess[] = {256.0}; 
+float cockpit_shininess[] = {128.0}; 
 float cockpit_specular[] = {0.0, 0.0, 0.3, 0.5};	/* specular reflection. */
 float cockpit_diffuse[] =  {0.0, 0.0, 1.0, 0.5};	/* diffuse reflection. */
 float cockpit_ambient[] =  {0.0, 0.0, 1.0, 0.5};	/* ambient reflection. */
 
- Material cockpit(cockpit_shininess, cockpit_specular, cockpit_diffuse, cockpit_ambient);
+Material cockpit(cockpit_shininess, cockpit_specular, cockpit_diffuse, cockpit_ambient);
 
 // declaracoes para as folhas das árvores
 float arv_shininess[] = {128.0}; 

@@ -626,6 +626,7 @@ void desenhaHelicoptero(GLUquadric * quad)
 	desenhaSuporteAterragem(quad);
 	desenhaCaudaHeli(quad);
 	desenhaMotorPrin(quad);
+	
 	//cockpit
 	glEnable(GL_NORMALIZE);	
 	glPushMatrix();
@@ -633,12 +634,16 @@ void desenhaHelicoptero(GLUquadric * quad)
 	glScalef(1.0,1.0,2.0);
 	gluSphere(quad, raioHeliCabine , 20, stacksT1);
 	glPopMatrix();
-	glPushMatrix();
+	
+	
+	/*glPushMatrix();
 	heli.activate();
 	glScalef(1.0,0.7,2.0);
 	glTranslatef(0.0, -0.7, -0.7);
 	gluSphere(quad, raioHeliCabine , 20, stacksT1);
-	glPopMatrix();
+	glPopMatrix();*/
+
+
 	glDisable(GL_NORMALIZE);
 
 	glPopMatrix();
@@ -648,6 +653,19 @@ void desenhaHelicoptero(GLUquadric * quad)
 	
 	gluQuadricTexture(quad, GL_FALSE);
 	
+}
+
+void myInitTransforms()
+{
+	delta_rotate = (double) mili_secs/1000.0 * ANGULAR_SPEED *360.0;
+	delta_radius = (double) mili_secs/1000.0 * RADIUS_SPEED;
+}
+
+void animacaoHelice(int dummy)
+{
+	MotorAng += delta_rotate;
+
+	glutTimerFunc(mili_secs, animacaoHelice, 0);
 }
 
 void animacaoVerde()
@@ -772,8 +790,8 @@ void showCamera(char* camera)
 	gluOrtho2D( 0.0, 100.0, 0.0, 100.0  );
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
-	glColor3ub( 0, 0, 0 );
-	glRasterPos2i( 1, 1);
+	glColor3ub( 1, 1, 1 );
+	glRasterPos2i( 1, 96);
 	int len = strlen(camera);
 	for (int i = 0; i < len; i++)
 	{
@@ -784,34 +802,29 @@ void showCamera(char* camera)
 
 void desenhaTorre(GLUquadric * quad)
 {
+	parede.activate();
 	double plane0[] = {0.0,0.0,1.0,0.0};
-
+	gluQuadricTexture(quad, GL_TRUE);
+	glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, 16);
+	
 	// posicionamento da torre
 	glPushMatrix();
 	glTranslatef(PosChaoDX2-raioTorrePlat/2,0.0,PosChaoZ2+raioTorrePlat);
 	glRotatef(-90.0,1.0,0.0,0.0);
 	
-	// cupula da torre
-	glPushMatrix();
-	cockpitMaterial();
-	glTranslatef(0.0,0.0,alturaTorre+alturaTorrePlat);
-	glClipPlane(GL_CLIP_PLANE0, plane0);
-	glEnable(GL_CLIP_PLANE0);
-	gluSphere(quad,raioTorrePlat,slicesT1,stacksT1);
-	glDisable(GL_CLIP_PLANE0);
-	disableColors();
-	glPopMatrix();
-	
 	glPushMatrix();
 	glTranslatef(0.0,0.0,alturaTorre);
+	// disco superior da plataforma
+	glBindTexture(GL_TEXTURE_2D, 17);
+	glPushMatrix();
+	glTranslatef(0.0,0.0,alturaTorrePlat);
+	gluDisk(quad, 0.0, raioTorrePlat, slicesT1, stacksT1);
+	glPopMatrix();
+
 	// disco inferior da plataforma
 	glPushMatrix();
 	glRotatef(180.0,1.0,0.0,0.0);
-	gluDisk(quad, 0.0, raioTorrePlat, slicesT1, stacksT1);
-	glPopMatrix();
-	// disco superior da plataforma
-	glPushMatrix();
-	glTranslatef(0.0,0.0,alturaTorrePlat);
 	gluDisk(quad, 0.0, raioTorrePlat, slicesT1, stacksT1);
 	glPopMatrix();
 	// plataforma
@@ -823,6 +836,20 @@ void desenhaTorre(GLUquadric * quad)
 	glPushMatrix();
 	glTranslatef(0.0,0.0,alturaTorre);
 	gluDisk(quad, 0.0,raioTorre,slicesT1,stacksT1);
+	glPopMatrix();
+	
+	glDisable(GL_TEXTURE_2D);	
+	gluQuadricTexture(quad, GL_FALSE);
+	
+	// cupula da torre
+	glPushMatrix();
+	cockpit.activate();
+	glTranslatef(0.0,0.0,alturaTorre+alturaTorrePlat);
+	glClipPlane(GL_CLIP_PLANE0, plane0);
+	glEnable(GL_CLIP_PLANE0);
+	gluSphere(quad,raioTorrePlat,slicesT1,stacksT1);
+	glDisable(GL_CLIP_PLANE0);
+	disableColors();
 	glPopMatrix();
 	glPopMatrix();
 }
@@ -960,10 +987,6 @@ void display(void)
 	glCallList(hospital);
 	glCallList(heliporto);
 	desenhaHelicoptero(glQ);
-	if(MotorAng == 360)
-		MotorAng = 0;
-	else
-		MotorAng+=20;
 	animacaoVermelha();
 	animacaoVerde();
 	desenhaTorre(glQ);
@@ -1129,7 +1152,6 @@ void myGlutIdle( void )
 
 void inicializacao()
 {
-
 	glFrontFace(GL_CCW);		// Front faces defined using a counterclockwise rotation
 	glDepthFunc(GL_LEQUAL);		// Por defeito e GL_LESS
 	glEnable(GL_DEPTH_TEST);	// Use a depth (z) buffer to draw only visible objects
@@ -1219,6 +1241,11 @@ void inicializacao()
 	pixmap.readBMPFile("hangar.bmp");
 	pixmap.setTexture(15);
 
+	pixmap.readBMPFile("torre.bmp");
+	pixmap.setTexture(16);
+
+	pixmap.readBMPFile("chaoplat.bmp");
+	pixmap.setTexture(17);
 
 	GLUquadric* glQ;	// nec. p/ criar sup. quadraticas (cilindros, esferas...)
 	glQ = gluNewQuadric();
@@ -1240,6 +1267,8 @@ void inicializacao()
 	desenhaHolofotes(glQ);
 	desenhaHeliporto();
 	glEndList();
+	myInitTransforms();
+	glutTimerFunc(0, animacaoHelice, 0);
 }
 
 int   light0_enabled = 1;
@@ -1298,7 +1327,6 @@ int main(int argc, char* argv[])
 	glutMotionFunc(processMouseMoved);
 	glutPassiveMotionFunc(processPassiveMouseMoved);
 	GLUI_Master.set_glutSpecialFunc( NULL );
-   
 
 	/*** Create the bottom subwindow ***/
 	glui2 = GLUI_Master.create_glui_subwindow( main_window, GLUI_SUBWINDOW_BOTTOM );
