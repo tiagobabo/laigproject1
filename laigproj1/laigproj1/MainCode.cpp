@@ -572,8 +572,8 @@ void desenhaMotorPrin(GLUquadric * quad)
 	//helice2
 	glPushMatrix();
 	glTranslatef(0.0,raioHeliCabine+alturaMotorF,0.0);
-	glRotatef(-MotorAng,0.0,1.0,0.0); // movimento helice
-	glRotatef(90.0,0.0,1.0,0.0);
+	glRotatef(-MotorAng+90.0,0.0,1.0,0.0); // movimento helice
+	//glRotatef(90.0,0.0,1.0,0.0);
 	desenhaRecXZ(-largHeliceF,-compHeliceF,largHeliceF,compHeliceF,8);
 	glPopMatrix();
 	glEnable(GL_CULL_FACE);
