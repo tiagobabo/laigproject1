@@ -90,7 +90,7 @@ GLfloat ctrlpoints[4][3] = {	{  -heliComp/2, 0.0, heliLarg/2},
 								{  heliComp/2, 0.0, heliLarg/2},
 								{  heliComp/2, 0.0, -heliLarg/2}};
 
-GLfloat ctrlpointsHangar[2][4][3] = {   {{-4.65, 0.0, -7.25},{-4.65, 4.65, -7.25},{4.65, 4.65, -7.25},{4.65, 0.0, -7.25}},
+GLfloat ctrlpointsHangar[2][4][3] = {  {{ -4.65, 0.0, -7.25},{-4.65, 4.65, -7.25},{4.65, 4.65, -7.25},{4.65, 0.0, -7.25}},
 										{{-4.65, 0.0, 7.25},{-4.65, 4.65, 7.25},{4.65, 4.65, 7.25},{4.65, 0.0, 7.25}}
 										};
 
@@ -171,6 +171,7 @@ float PI = acos(-1.0);
 unsigned int mili_secs = 20;
 double  obj_radius, obj_rotate, delta_radius, delta_rotate;
 int animation = 0;
+int firstTime = 1;
 int step = 1;
 int step2 = 1;
 float speedTurn = 2.0;

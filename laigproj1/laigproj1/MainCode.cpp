@@ -712,7 +712,6 @@ void animacaoHelice(int dummy)
 
 void animacaoVermelha(int status)
 {
-
 	switch(status)
 	{
 	case 0:
@@ -953,7 +952,6 @@ void desenhaTorre(GLUquadric * quad)
 	glPopMatrix();
 }
 
-
 void display(void)
 {
 	
@@ -1093,8 +1091,11 @@ void display(void)
 	else if(camera == 2) showCamera("2");
 	else if(camera == 3) showCamera("3");
 
-	if(animation == 1)
+	if(animation == 1 && firstTime == 1)
+	{
+		firstTime = 0;
 		animacaoVerde(0);
+	}
 
 	glutSwapBuffers();
 	glFlush();
