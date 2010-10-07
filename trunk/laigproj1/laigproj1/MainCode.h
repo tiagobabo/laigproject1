@@ -174,14 +174,30 @@ float rotZ = 0.0;
 float rotAng = 0.0;
 
 // declarações para animacao
-unsigned int mili_secs = 20;
-double  obj_radius, obj_rotate, delta_radius, delta_rotate;
 #define RADIUS_SPEED  5.0  // unidades de comprimento por segundo
 #define ANGULAR_SPEED 2.0 // rotacoes por segundo
+float PI = acos(-1.0);
+unsigned int mili_secs = 20;
+double  obj_radius, obj_rotate, delta_radius, delta_rotate;
 int animation = 0;
 int step = 1;
 int step2 = 1;
 float speedTurn = 2;
+float alturaMAXanim = 12.0;
+float alturaMINanim = 9.0;
+float rotacaoVerdeIni = -25.0;
+float alturaIniRota = 5.0;
+float alturaIniAnda = 7.0;
+float angMovFrente = 10.0;
+float stepAngMovFrente = 0.25;
+float limXesq = -15.0;
+float limXendireita = -10.0;
+float limXendireita2 = -2.0;
+float limZtras = -7.5;
+float zIniRota = -5.0;
+float xFimRota = -5.0;
+float xRaioRota = -5.0;
+float stepRota = RADIUS_SPEED/abs(xRaioRota);
 
 // dimensoes torre de controlo
 float alturaTorre = 9.5;

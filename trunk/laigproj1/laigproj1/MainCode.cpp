@@ -714,51 +714,75 @@ void animacaoHelice(int dummy)
 
 void animacaoVermelha(int status)
 {
-	if(animation==3)
+
+	switch(status)
 	{
-		if(heliY<12 && step==1)
+	case 0:
 		{
-			if(rodaHeliang<90)
-				rodaHeliang+=speedTurn;
-			heliY+=delta_radius;
-		}
-		else if(heliZ < -5)
-		{
-			if(heliXang < 10)
-				heliXang+=0.25;
-			step++;
-			heliZ+=delta_radius;
-		}
-		else if(heliX < -5)
-		{
-			if(rotAng <90)
+			if(heliY<alturaMAXanim)
 			{
-				rotCenX = -5.0;
-				rotCenY = (alturaHeli/2+heliY);
-				rotCenZ = 0;
-				rotY = 1.0;
-				rotAng ++;
+				if(rodaHeliang<90)
+					rodaHeliang+=speedTurn;
+				heliY+=delta_radius;
+				glutTimerFunc(mili_secs, animacaoVermelha, status);
 			}
 			else
+				glutTimerFunc(mili_secs, animacaoVermelha, ++status);
+			break;
+		}
+	case 1:
+		{
+			if(heliZ < zIniRota)
 			{
-				heliX+=delta_radius;
-				if(heliX< -2)
-					if(heliXang > 0)
-						heliXang-=0.25;
+				if(heliXang < angMovFrente)
+					heliXang+=stepAngMovFrente;
+				heliZ+=delta_radius;
+				glutTimerFunc(mili_secs, animacaoVermelha, status);
 			}
+			else
+				glutTimerFunc(mili_secs, animacaoVermelha, ++status);
+			break;
 		}
-		else if(heliY>0)
+	case 2:
 		{
-			if(rodaHeliang > -90)
-				rodaHeliang-=speedTurn;
-			heliY-=delta_radius;
+			if(heliX < xFimRota)
+			{
+				if(rotAng <90)
+				{
+					rotCenX = xRaioRota;
+					rotCenY = (heliY+alturaHeli/2);
+					rotCenZ = 0;
+					rotY = 1.0;
+					rotAng += stepRota;
+				}
+				else
+				{
+					heliX+=delta_radius;
+					if(heliX< -limXendireita2)
+						if(heliXang > 0)
+							heliXang-=stepAngMovFrente;
+				}
+				glutTimerFunc(mili_secs, animacaoVermelha, status);
+			}
+			else
+				glutTimerFunc(mili_secs, animacaoVermelha, ++status);
+			break;
 		}
-		else
+	case 3:
 		{
-			step=1;
-			animation=4;
+			if(heliY>0)
+			{
+				if(rodaHeliang > -90)
+					rodaHeliang-=speedTurn;
+				heliY-=delta_radius;
+				glutTimerFunc(mili_secs, animacaoVermelha, status);
+			}
+			else
+				glutTimerFunc(mili_secs, animacaoVermelha, ++status);
+			break;
 		}
-		glutTimerFunc(mili_secs, animacaoVermelha, 0);
+	default:
+		break;
 	}
 }
 
@@ -775,56 +799,75 @@ void resetAni()
 	heliZ = 0;
 }
 
-void animacaoVerde(int d)
+void animacaoVerde(int status)
 {
-	if(animation == 1)
+	switch(status)
 	{
-		resetAni();
-		animation++;
-	}
-	if(animation==2)
-	{
-		if(heliY<12 && step==1)
+	case 0:
 		{
-			if(rodaHeliang > -25 && heliY > 5)
+			resetAni();
+			glutTimerFunc(mili_secs, animacaoVerde, ++status);
+			break;
+		}
+	case 1:
+		{
+			if(heliY< alturaMAXanim)
 			{
-				rodaHeliang-=speedTurn;
+				if(rodaHeliang > rotacaoVerdeIni && heliY > alturaIniRota)
+				{
+					rodaHeliang-=speedTurn;
+				}
+				if(heliY>alturaIniAnda)
+				{
+					heliX -= delta_radius;
+					heliZ -= delta_radius/2;
+					if(heliXang < angMovFrente)
+						heliXang+=stepAngMovFrente;
+				}
+				heliY+=delta_radius;
+				glutTimerFunc(mili_secs, animacaoVerde, status);
 			}
-			if(heliY>7)
+			else
+				glutTimerFunc(mili_secs, animacaoVerde, ++status);
+			break;
+		}
+	case 2:
+		{
+			if(heliX > limXesq && heliZ > limZtras)
 			{
+				if(heliXang < angMovFrente && heliX> limXendireita)
+					heliXang+=stepAngMovFrente;
+				else if(heliXang > 0 && heliX < limXendireita)
+				{
+					heliXang -=stepAngMovFrente;
+				}
 				heliX -= delta_radius;
 				heliZ -= delta_radius/2;
-				if(heliXang < 10)
-					heliXang+=0.25;
+				glutTimerFunc(mili_secs, animacaoVerde, status);
 			}
-			heliY+=delta_radius;
+			else
+				glutTimerFunc(mili_secs, animacaoVerde, ++status);
+			break;
 		}
-		else if(heliX>-15 && heliZ>-7.5)
+	case 3:
 		{
-			step++;
-			if(heliXang < 10 && heliX> -10)
-				heliXang+=0.25;
-			else if(heliXang > 0 && heliX<-10)
+			if(heliY > alturaMINanim)
 			{
-				heliXang -=0.25;
+				if(rodaHeliang<90)
+					rodaHeliang+=speedTurn;
+				heliY-=delta_radius;
+				glutTimerFunc(mili_secs, animacaoVerde, status);
 			}
-			heliX -= delta_radius;
-			heliZ -= delta_radius/2;
+			else
+				glutTimerFunc(mili_secs, animacaoVerde, ++status);
+			break;
 		}
-		else if(heliY > 9)
-		{
-			if(rodaHeliang<90)
-				rodaHeliang+=speedTurn;
-			heliY-=delta_radius;
-		}
-		else
-		{
-			animation=3;
-			step=1;
-		}
-		glutTimerFunc(mili_secs, animacaoVerde, 0);
+	case 4:
+		glutTimerFunc(mili_secs, animacaoVermelha, 0);
+		break;
+	default:
+		break;
 	}
-	animacaoVermelha(0);
 }
 
 void camera3()
