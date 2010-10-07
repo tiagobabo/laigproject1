@@ -189,7 +189,7 @@ float limZtras = -7.5;
 float zIniRota = -5.0;
 float xFimRota = -5.0;
 float xRaioRota = -5.0;
-float stepRota = RADIUS_SPEED/abs(xRaioRota);
+float stepRota = RADIUS_SPEED*(mili_secs/10)/(abs(xRaioRota)*PI/2);
 float rotacaoTeta = -atan(limZtras/limXesq);
 float razaoZXAnda = limZtras/limXesq;
 
