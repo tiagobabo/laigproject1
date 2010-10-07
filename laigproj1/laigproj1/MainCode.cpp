@@ -820,7 +820,7 @@ void animacaoVerde(int status)
 				if(heliY>alturaIniAnda)
 				{
 					heliX -= delta_radius;
-					heliZ -= delta_radius/2;
+					heliZ -= delta_radius*razaoZXAnda;
 					if(heliXang < angMovFrente)
 						heliXang+=stepAngMovFrente;
 				}

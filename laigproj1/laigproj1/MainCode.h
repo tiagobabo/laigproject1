@@ -182,10 +182,10 @@ double  obj_radius, obj_rotate, delta_radius, delta_rotate;
 int animation = 0;
 int step = 1;
 int step2 = 1;
-float speedTurn = 2;
+float speedTurn = 2.0;
 float alturaMAXanim = 12.0;
 float alturaMINanim = 9.0;
-float rotacaoVerdeIni = -25.0;
+float rotacaoVerdeIni = -26.0;
 float alturaIniRota = 5.0;
 float alturaIniAnda = 7.0;
 float angMovFrente = 10.0;
@@ -198,6 +198,8 @@ float zIniRota = -5.0;
 float xFimRota = -5.0;
 float xRaioRota = -5.0;
 float stepRota = RADIUS_SPEED/abs(xRaioRota);
+float rotacaoTeta = -atan(limZtras/limXesq);
+float razaoZXAnda = limZtras/limXesq;
 
 // dimensoes torre de controlo
 float alturaTorre = 9.5;
