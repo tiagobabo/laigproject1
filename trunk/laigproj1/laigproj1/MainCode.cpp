@@ -318,7 +318,6 @@ void desenhaHeliporto()
 
 	glMapGrid2f(heliDiv, 0.0,1.0, heliDiv, 0.0,1.0); 
 
-	//glShadeModel(GL_FLAT);					// GL_FLAT, GL_SMOOTH
 	glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, 9);
 	glPushMatrix();
@@ -330,10 +329,9 @@ void desenhaHeliporto()
 
 void desenhaHangar()
 {
-
 	glDisable(GL_CULL_FACE);
-	glMap2f(GL_MAP2_VERTEX_3, 0.0, 1.0, 3, 4,  0.0, 1.0, 12, 4,  &ctrlpointsHangar[0][0][0]);
-	glMap2f(GL_MAP2_NORMAL,   0.0, 1.0, 3, 4,  0.0, 1.0, 12, 4,  &nrmlcomponHangar[0][0][0]);
+	glMap2f(GL_MAP2_VERTEX_3, 0.0, 1.0, 3, 4,  0.0, 1.0, 12, 2,  &ctrlpointsHangar[0][0][0]);
+	glMap2f(GL_MAP2_NORMAL,   0.0, 1.0, 3, 4,  0.0, 1.0, 12, 2,  &nrmlcomponHangar[0][0][0]);
 	glMap2f(GL_MAP2_TEXTURE_COORD_2,  0.0, 1.0, 2, 2,  0.0, 1.0, 4, 2,  &textpoints2[0][0]);
 
 	// os interpoladores activam-se:
@@ -1091,9 +1089,9 @@ void display(void)
 	desenhaTorre(glQ);
 	desenhaHangar();
 	// swapping the buffers causes the rendering above to be shown
-	if(camera == 1)  showCamera("Camera 1");
-	else if(camera == 2) showCamera("Camera 2");
-	else if(camera == 3) showCamera("Camera 3");
+	if(camera == 1)  showCamera("1");
+	else if(camera == 2) showCamera("2");
+	else if(camera == 3) showCamera("3");
 
 	if(animation == 1)
 		animacaoVerde(0);
@@ -1283,7 +1281,6 @@ void inicializacao()
 		glLightf(GL_LIGHT0+i, GL_QUADRATIC_ATTENUATION, lights_kq[i]);
 	}
 	
-
 	// Permitir calculos de iluminacao
 	glEnable(GL_LIGHTING);
 	
