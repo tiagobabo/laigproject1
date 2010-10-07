@@ -140,7 +140,7 @@ float spot2[] = {-helipRatio,-2.5,helipRatio};
 float spot3[] = {helipRatio,-2.5,helipRatio};
 
 // dimensoes do helicoptero
-float escalaHeli = 0.7;
+float escalaHeli = 0.6;
 float raioHeliCabine = 2.0*escalaHeli;
 float raioHeliCaudaS = 0.3*escalaHeli;
 float raioHeliCaudaI = 0.6*escalaHeli;
@@ -166,15 +166,14 @@ float heliZang = 0;
 float rodaHeliang = 0.0;
 
 // declarações para animacao
-unsigned int mili_secs = 10;
-double  delta_rotate;
+unsigned int mili_secs = 20;
+double  obj_radius, obj_rotate, delta_radius, delta_rotate;
+#define RADIUS_SPEED  5.0  // unidades de comprimento por segundo
 #define ANGULAR_SPEED 2.0 // rotacoes por segundo
 int animation = 0;
 int step = 1;
 int step2 = 1;
-float speedHeli = 0.2;
-float speedTurn = 25*speedHeli;
-float factor= 0.2;
+float speedTurn = 2;
 
 // dimensoes torre de controlo
 float alturaTorre = 9.5;
@@ -383,15 +382,15 @@ Material chao(mat1_shininess, mat1_specular, mat1_diffuse, mat1_ambient);
 
 // declaracoes para o cockpit
 float cockpit_shininess[] = {128.0}; 
-float cockpit_specular[] = {0.0, 0.0, 0.3, 0.5};	/* specular reflection. */
-float cockpit_diffuse[] =  {0.0, 0.0, 1.0, 0.5};	/* diffuse reflection. */
-float cockpit_ambient[] =  {0.0, 0.0, 1.0, 0.5};	/* ambient reflection. */
+float cockpit_specular[] = {0.0, 0.0, 0.3, 0.4};	/* specular reflection. */
+float cockpit_diffuse[] =  {0.0, 0.0, 1.0, 0.4};	/* diffuse reflection. */
+float cockpit_ambient[] =  {0.0, 0.0, 1.0, 0.4};	/* ambient reflection. */
 
 Material cockpit(cockpit_shininess, cockpit_specular, cockpit_diffuse, cockpit_ambient);
 
 // declaracoes para as folhas das árvores
 float arv_shininess[] = {128.0}; 
-float arv_specular[] = {0.0, 0.0, 0.4, 1.0};	/* specular reflection. */
+float arv_specular[] = {0.4, 0.4, 0.4, 1.0};	/* specular reflection. */
 float arv_diffuse[] =  {0.8, 0.8, 0.8, 1.0};	/* diffuse reflection. */
 float arv_ambient[] =  {0.8, 0.8, 0.8, 1.0};	/* ambient reflection. */
 
@@ -399,11 +398,19 @@ Material arvore(arv_shininess, arv_specular, arv_diffuse, arv_ambient);
 
 // declaracoes para o material do helicoptero
 float heli_shininess[] = {128.0}; 
-float heli_specular[] = {0.0, 0.0, 0.4, 1.0};	/* specular reflection. */
-float heli_diffuse[] =  {0.6, 0.6, 0.6, 1.0};	/* diffuse reflection. */
-float heli_ambient[] =  {0.6, 0.6, 0.6, 1.0};	/* ambient reflection. */
+float heli_specular[] = {0.2, 0.2, 0.2, 1.0};	/* specular reflection. */
+float heli_diffuse[] =  {0.4, 0.4, 0.4, 1.0};	/* diffuse reflection. */
+float heli_ambient[] =  {0.8, 0.8, 0.8, 1.0};	/* ambient reflection. */
 
 Material heli(heli_shininess, heli_specular, heli_diffuse, heli_ambient);
+
+// declaracoes para o material do hangar
+float hangar_shininess[] = {128.0}; 
+float hangar_specular[] = {0.4, 0.4, 0.4, 1.0};	/* specular reflection. */
+float hangar_diffuse[] =  {0.8, 0.8, 0.8, 1.0};	/* diffuse reflection. */
+float hangar_ambient[] =  {0.8, 0.8, 0.8, 1.0};	/* ambient reflection. */
+
+Material hangar(hangar_shininess, hangar_specular, hangar_diffuse, hangar_ambient);
 
 GLUI_Rotation *view_rot;
 GLUI_Translation *trans_z;
