@@ -124,6 +124,8 @@ void desenhaHospital(GLUquadric * quad)
 	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'H');
 	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'S');
 	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'J');
+	glDisable(GL_BLEND);
+	glDisable(GL_LINE_SMOOTH);
 	glPopMatrix();
 	glDisable(GL_NORMALIZE);
 	disableColors();
@@ -338,7 +340,7 @@ void desenhaHangar()
 	glEnable(GL_MAP2_VERTEX_3);
 	glEnable(GL_MAP2_NORMAL);
 	glEnable(GL_MAP2_TEXTURE_COORD_2);
-	
+	hangar.activate();
 	glPushMatrix();
 	glTranslatef(PosChaoCX2+deslHangarX,0.0,PosChaoZ2+deslHangarY);
 	glEnable(GL_TEXTURE_2D);
@@ -565,7 +567,7 @@ void desenhaMotorPrin(GLUquadric * quad)
 	glDisable(GL_CULL_FACE);
 	//helice1
 	glPushMatrix();
-	glTranslatef(0.0,raioHeliCabine+alturaMotorF,0.0);
+	glTranslatef(0.0,raioHeliCabine+alturaMotorF+0.1,0.0);
 	glRotatef(-MotorAng,0.0,1.0,0.0); // movimento helice
 	desenhaRecXZ(-largHeliceF,-compHeliceF,largHeliceF,compHeliceF,8);
 	glPopMatrix();
@@ -573,7 +575,6 @@ void desenhaMotorPrin(GLUquadric * quad)
 	glPushMatrix();
 	glTranslatef(0.0,raioHeliCabine+alturaMotorF,0.0);
 	glRotatef(-MotorAng+90.0,0.0,1.0,0.0); // movimento helice
-	//glRotatef(90.0,0.0,1.0,0.0);
 	desenhaRecXZ(-largHeliceF,-compHeliceF,largHeliceF,compHeliceF,8);
 	glPopMatrix();
 	glEnable(GL_CULL_FACE);
@@ -590,7 +591,7 @@ void desenhaCaudaHeli(GLUquadric * quad)
 	// cauda Helicoptero
 	glPushMatrix();
 	glRotatef(-angCauda,1.0,0.0,0.0);
-	glTranslatef(0.0,0.0, raioHeliCabine-0.1);
+	glTranslatef(0.0,0.0, raioHeliCabine+0.5);
 	//disco para a cauda do helicoptero
 	glPushMatrix();
 	glTranslatef(0.0,0.0,compHeliCauda);
@@ -607,45 +608,72 @@ void desenhaCaudaHeli(GLUquadric * quad)
 void desenhaHelicoptero(GLUquadric * quad)
 {
 	gluQuadricTexture(quad, GL_TRUE);
-	
-	//glBindTexture(GL_TEXTURE_2D, 11);
+	double plane0[] = {0.0,-1.0,0.3,0.0}; //estrutura traseira da cabine
+	double plane1[] = {0.0,1.0,-0.3,0.0}; //vidro da cabine
+	double plane2[] = {0.0,-1.0,-0.3,-0.4}; //estrutura dianteira da cabine
+	double plane3[] = {0.0,1.0,0.3,0.4};
+
 	glEnable(GL_COLOR_MATERIAL);
-	
+
 	glPushMatrix();
 	glTranslatef((PosChaoCX1+PosChaoCX2)/2 + heliX,alturaHeli/2+heliY,(PosChaoZ2/4)+heliZ);
-	//glScalef(escalaHeli,escalaHeli,escalaHeli);
 	glRotatef(rodaHeliang, 0.0,1.0,0.0);
 	glRotatef(heliZang,1.0,0.0,0.0); //rotacao heli, movimento lateral
 	glRotatef(heliXang,0.0,0.0,1.0); //rotacao heli, movimento horizontal
 	glRotatef(90, 0.0,1.0,0.0);
 	
 	heli.activate();
-	disableColors();
 	glEnable(GL_NORMALIZE);	
 	glEnable(GL_TEXTURE_2D);
-	desenhaSuporteAterragem(quad);
-	desenhaCaudaHeli(quad);
 	desenhaMotorPrin(quad);
 	
-	//cockpit
-	glEnable(GL_NORMALIZE);	
+	glBindTexture(GL_TEXTURE_2D, 18);
+	glDisable(GL_CULL_FACE);
+	//estrutura traseira
+	glEnable(GL_NORMALIZE);
 	glPushMatrix();
-	cockpit.activate();
+	glClipPlane(GL_CLIP_PLANE0, plane0);
+	glEnable(GL_CLIP_PLANE0);
+	//glTranslatef(0.0,-0.1,0.1);
 	glScalef(1.0,1.0,2.0);
 	gluSphere(quad, raioHeliCabine , slicesT1, stacksT1);
+	glDisable(GL_CLIP_PLANE0);
 	glPopMatrix();
-	
-	
-	/*glPushMatrix();
+
+	//estrutura dianteira
+	glPushMatrix();
 	heli.activate();
+	glClipPlane(GL_CLIP_PLANE0, plane2);
+	glEnable(GL_CLIP_PLANE0);
 	glScalef(1.0,0.7,2.0);
 	glTranslatef(0.0, -0.7, -0.7);
-	gluSphere(quad, raioHeliCabine , 20, stacksT1);
-	glPopMatrix();*/
+	gluSphere(quad, raioHeliCabine , slicesT1, stacksT1);
+	glDisable(GL_CLIP_PLANE0);
+	glPopMatrix();
+	glEnable(GL_CULL_FACE);
 
 
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
+	//cockpit
+	glPushMatrix();
+	cockpit.activate();
+	glClipPlane(GL_CLIP_PLANE0, plane1);
+	glClipPlane(GL_CLIP_PLANE1, plane3);
+	glEnable(GL_CLIP_PLANE0);
+	glEnable(GL_CLIP_PLANE1);
+	glScalef(1.0,1.0,2.0);
+	gluSphere(quad, raioHeliCabine , slicesT1, stacksT1);
+	glDisable(GL_CLIP_PLANE0);
+	glDisable(GL_CLIP_PLANE1);
+	glPopMatrix();
+	glDisable(GL_BLEND);
 	glDisable(GL_NORMALIZE);
-
+	
+	
+	heli.activate();
+	desenhaSuporteAterragem(quad);
+	desenhaCaudaHeli(quad);
 	glPopMatrix();
 	glDisable(GL_TEXTURE_2D);
 
@@ -658,6 +686,7 @@ void desenhaHelicoptero(GLUquadric * quad)
 void myInitTransforms()
 {
 	delta_rotate = (double) mili_secs/1000.0 * ANGULAR_SPEED *360.0;
+	delta_radius = (double) mili_secs/1000.0 * RADIUS_SPEED;
 }
 float factori = 0.01;
 void animacaoHelice(int dummy)
@@ -672,115 +701,123 @@ void animacaoHelice(int dummy)
 			factori += 0.01;
 		}
 		else
+		{
 			MotorAng += delta_rotate*factori;
-	}
-
+			if(animation == 0) animation = 1;
+		}
+	}	
 	glutTimerFunc(mili_secs, animacaoHelice, 0);
 }
 
-void animacaoVerde()
+
+void animacaoVermelha(int dummy)
 {
-	if(animation==1)
+	if(animation==3)
 	{
 		if(heliY<12 && step==1)
-		{
-			if(heliZang < 5.0 && step2)
-			{
-				heliZang+=factor;
-				heliXang+=factor;
-			}
-			else
-			{
-				step2 = 0;
-				if(heliZang < -5.0)
-					step2 = 1;
-				heliZang-=factor;
-				heliXang-=factor;
-			}
-			heliY+=speedHeli/4;
-		}
-		else if(heliX>-15 && heliZ>-7.5)
-		{
-			if(step == 1)
-			{
-				heliZang = 0;
-				heliXang = 0;
-			}
-			step2=1;
-			step++;
-			if(rodaHeliang > -30)
-			{
-				if(heliZang > -30 && step2 == 1)
-				{
-					heliZang-=factor;
-				}
-				else
-				{
-					step2=0;
-					heliZang+=factor;
-				}
-				rodaHeliang-=speedTurn/15;
-				heliX-=2*speedHeli/8;
-				heliZ-=speedHeli/8;
-			}
-			else
-			{	
-				if(heliZang < 0)
-				{
-					heliZang+=factor;
-				}
-				heliX-=2*speedHeli/8;
-				heliZ-=speedHeli/8;
-			}
-		}
-		else if(heliY > 9)
-		{
-			heliY-=speedHeli;
-		}
-		else
-		{
-			animation=2;
-			step=1;
-		}
-	}
-
-}
-
-void animacaoVermelha()
-{
-	if(animation==2)
-	{
-		if(heliY<12 && step==1)
-		{
-			heliY+=speedHeli;
-		}
-		else if(heliZ < 0)
 		{
 			if(rodaHeliang<90)
 				rodaHeliang+=speedTurn;
+			heliY+=delta_radius;
+			heliZ+=delta_radius;
+		}
+		else if(heliZ < 0)
+		{
+			if(heliXang < 10)
+				heliXang+=0.25;
+			if(rodaHeliang<90)
+				rodaHeliang+=speedTurn;
 			step++;
-			heliZ+=speedHeli;
+			heliZ+=delta_radius;
+
+			if(heliZ > -3)
+			{
+				if(rodaHeliang<180)
+					rodaHeliang+=speedTurn;
+				heliX+=delta_radius;
+			}
 
 		}
 		else if(heliX<0)
 		{
 			if(rodaHeliang<180)
 				rodaHeliang+=speedTurn;
-				heliX+=speedHeli;
+			heliX+=delta_radius;
+			if(heliX< -2)
+				if(heliXang > 0)
+					heliXang-=0.25;
 		}
 		else if(heliY>0)
 		{
 			if(rodaHeliang > 0)
 				rodaHeliang-=speedTurn;
-			heliY-=speedHeli;
+			heliY-=delta_radius;
 		}
 		else
 		{
 			step=1;
-			animation=0;
+			animation=4;
 		}
+		glutTimerFunc(mili_secs, animacaoVermelha, 0);
 	}
 }
+
+void animacaoVerde(int d)
+{
+	if(animation == 1) animation++;
+	if(animation==2)
+	{
+		if(heliY<12 && step==1)
+		{
+			if(rodaHeliang > -35 && heliY > 5)
+			{
+				rodaHeliang-=speedTurn;
+			}
+			if(heliY>7)
+			{
+				heliX -= delta_radius;
+				heliZ -= delta_radius/2;
+				if(heliXang < 10)
+					heliXang+=0.25;
+			}
+			heliY+=delta_radius;
+		}
+		else if(heliX>-15 && heliZ>-7.5)
+		{
+			step++;
+			
+			if(heliXang < 10 && heliX> -10)
+				heliXang+=0.25;
+			else if(heliXang > 0 && heliX<-10)
+			{
+				heliXang -=0.25;
+			}
+			if(heliX<-12)
+			{
+				if(rodaHeliang<90)
+					rodaHeliang+=speedTurn;
+				heliY-=delta_radius;
+			}
+			heliX -= delta_radius;
+			heliZ -= delta_radius/2;
+		}
+		else if(heliY > 9)
+		{
+			if(rodaHeliang<90)
+				rodaHeliang+=speedTurn;
+			heliY-=delta_radius;
+		}
+		else
+		{
+			animation=3;
+			step=1;
+		}
+		glutTimerFunc(mili_secs, animacaoVerde, 0);
+	}
+	animacaoVermelha(0);
+	
+}
+
 
 void camera3()
 {
@@ -851,6 +888,8 @@ void desenhaTorre(GLUquadric * quad)
 	glDisable(GL_TEXTURE_2D);	
 	gluQuadricTexture(quad, GL_FALSE);
 	
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
 	// cupula da torre
 	glPushMatrix();
 	cockpit.activate();
@@ -861,6 +900,7 @@ void desenhaTorre(GLUquadric * quad)
 	glDisable(GL_CLIP_PLANE0);
 	disableColors();
 	glPopMatrix();
+	glDisable(GL_BLEND);
 	glPopMatrix();
 }
 
@@ -997,14 +1037,16 @@ void display(void)
 	glCallList(hospital);
 	glCallList(heliporto);
 	desenhaHelicoptero(glQ);
-	animacaoVermelha();
-	animacaoVerde();
 	desenhaTorre(glQ);
 	desenhaHangar();
 	// swapping the buffers causes the rendering above to be shown
 	if(camera == 1)  showCamera("Camera 1");
 	else if(camera == 2) showCamera("Camera 2");
 	else if(camera == 3) showCamera("Camera 3");
+
+	if(animation == 1)
+		animacaoVerde(0);
+
 	glutSwapBuffers();
 	glFlush();
 }
@@ -1257,6 +1299,9 @@ void inicializacao()
 	pixmap.readBMPFile("chaoplat.bmp");
 	pixmap.setTexture(17);
 
+	pixmap.readBMPFile("chopper.bmp");
+	pixmap.setTexture(18);
+
 	GLUquadric* glQ;	// nec. p/ criar sup. quadraticas (cilindros, esferas...)
 	glQ = gluNewQuadric();
 
@@ -1279,6 +1324,7 @@ void inicializacao()
 	glEndList();
 	myInitTransforms();
 	glutTimerFunc(0, animacaoHelice, 0);
+
 }
 
 int   light0_enabled = 1;
