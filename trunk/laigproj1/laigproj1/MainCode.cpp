@@ -617,26 +617,28 @@ void desenhaHelicoptero(GLUquadric * quad)
 
 	glPushMatrix();
 	glTranslatef((PosChaoCX1+PosChaoCX2)/2 + heliX,alturaHeli/2+heliY,(PosChaoZ2/4)+heliZ);
+	glTranslatef(-rotCenX, -rotCenY, -rotCenZ);
+	glRotatef(rotAng, rotX, rotY, rotZ);
+	glTranslatef(rotCenX, rotCenY, rotCenZ);
 	glRotatef(rodaHeliang, 0.0,1.0,0.0);
-	glRotatef(heliZang,1.0,0.0,0.0); //rotacao heli, movimento lateral
 	glRotatef(heliXang,0.0,0.0,1.0); //rotacao heli, movimento horizontal
 	glRotatef(90, 0.0,1.0,0.0);
 	
 	heli.activate();
-	glEnable(GL_NORMALIZE);	
 	glEnable(GL_TEXTURE_2D);
 	desenhaMotorPrin(quad);
 	
 	glBindTexture(GL_TEXTURE_2D, 18);
 	glDisable(GL_CULL_FACE);
 	//estrutura traseira
-	glEnable(GL_NORMALIZE);
 	glPushMatrix();
 	glClipPlane(GL_CLIP_PLANE0, plane0);
 	glEnable(GL_CLIP_PLANE0);
 	//glTranslatef(0.0,-0.1,0.1);
-	glScalef(1.0,1.0,2.0);
+	glEnable(GL_NORMALIZE);	
+	glScalef(1.0,1.0,2.0);	
 	gluSphere(quad, raioHeliCabine , slicesT1, stacksT1);
+	glDisable(GL_NORMALIZE);
 	glDisable(GL_CLIP_PLANE0);
 	glPopMatrix();
 
@@ -645,9 +647,11 @@ void desenhaHelicoptero(GLUquadric * quad)
 	heli.activate();
 	glClipPlane(GL_CLIP_PLANE0, plane2);
 	glEnable(GL_CLIP_PLANE0);
+	glEnable(GL_NORMALIZE);
 	glScalef(1.0,0.7,2.0);
 	glTranslatef(0.0, -0.7, -0.7);
 	gluSphere(quad, raioHeliCabine , slicesT1, stacksT1);
+	glDisable(GL_NORMALIZE);
 	glDisable(GL_CLIP_PLANE0);
 	glPopMatrix();
 	glEnable(GL_CULL_FACE);
@@ -662,14 +666,14 @@ void desenhaHelicoptero(GLUquadric * quad)
 	glClipPlane(GL_CLIP_PLANE1, plane3);
 	glEnable(GL_CLIP_PLANE0);
 	glEnable(GL_CLIP_PLANE1);
+	glEnable(GL_NORMALIZE);	
 	glScalef(1.0,1.0,2.0);
 	gluSphere(quad, raioHeliCabine , slicesT1, stacksT1);
+	glDisable(GL_NORMALIZE);	
 	glDisable(GL_CLIP_PLANE0);
 	glDisable(GL_CLIP_PLANE1);
 	glPopMatrix();
 	glDisable(GL_BLEND);
-	glDisable(GL_NORMALIZE);
-	
 	
 	heli.activate();
 	desenhaSuporteAterragem(quad);
@@ -677,8 +681,6 @@ void desenhaHelicoptero(GLUquadric * quad)
 	glPopMatrix();
 	glDisable(GL_TEXTURE_2D);
 
-
-	
 	gluQuadricTexture(quad, GL_FALSE);
 	
 }
@@ -710,7 +712,7 @@ void animacaoHelice(int dummy)
 }
 
 
-void animacaoVermelha(int dummy)
+void animacaoVermelha(int status)
 {
 	if(animation==3)
 	{
@@ -719,37 +721,35 @@ void animacaoVermelha(int dummy)
 			if(rodaHeliang<90)
 				rodaHeliang+=speedTurn;
 			heliY+=delta_radius;
-			heliZ+=delta_radius;
 		}
-		else if(heliZ < 0)
+		else if(heliZ < -5)
 		{
 			if(heliXang < 10)
 				heliXang+=0.25;
-			if(rodaHeliang<90)
-				rodaHeliang+=speedTurn;
 			step++;
 			heliZ+=delta_radius;
-
-			if(heliZ > -3)
-			{
-				if(rodaHeliang<180)
-					rodaHeliang+=speedTurn;
-				heliX+=delta_radius;
-			}
-
 		}
-		else if(heliX<0)
+		else if(heliX < -5)
 		{
-			if(rodaHeliang<180)
-				rodaHeliang+=speedTurn;
-			heliX+=delta_radius;
-			if(heliX< -2)
-				if(heliXang > 0)
-					heliXang-=0.25;
+			if(rotAng <90)
+			{
+				rotCenX = -5.0;
+				rotCenY = (alturaHeli/2+heliY);
+				rotCenZ = 0;
+				rotY = 1.0;
+				rotAng ++;
+			}
+			else
+			{
+				heliX+=delta_radius;
+				if(heliX< -2)
+					if(heliXang > 0)
+						heliXang-=0.25;
+			}
 		}
 		else if(heliY>0)
 		{
-			if(rodaHeliang > 0)
+			if(rodaHeliang > -90)
 				rodaHeliang-=speedTurn;
 			heliY-=delta_radius;
 		}
@@ -762,14 +762,31 @@ void animacaoVermelha(int dummy)
 	}
 }
 
+void resetAni()
+{
+	rodaHeliang = 0;
+	rotAng = 0.0;
+	rotCenX = 0;
+	rotCenY = 0;
+	rotCenZ = 0;
+	rotY = 1;
+	heliX = 0;
+	heliY = 0;
+	heliZ = 0;
+}
+
 void animacaoVerde(int d)
 {
-	if(animation == 1) animation++;
+	if(animation == 1)
+	{
+		resetAni();
+		animation++;
+	}
 	if(animation==2)
 	{
 		if(heliY<12 && step==1)
 		{
-			if(rodaHeliang > -35 && heliY > 5)
+			if(rodaHeliang > -25 && heliY > 5)
 			{
 				rodaHeliang-=speedTurn;
 			}
@@ -785,18 +802,11 @@ void animacaoVerde(int d)
 		else if(heliX>-15 && heliZ>-7.5)
 		{
 			step++;
-			
 			if(heliXang < 10 && heliX> -10)
 				heliXang+=0.25;
 			else if(heliXang > 0 && heliX<-10)
 			{
 				heliXang -=0.25;
-			}
-			if(heliX<-12)
-			{
-				if(rodaHeliang<90)
-					rodaHeliang+=speedTurn;
-				heliY-=delta_radius;
 			}
 			heliX -= delta_radius;
 			heliZ -= delta_radius/2;
@@ -815,9 +825,7 @@ void animacaoVerde(int d)
 		glutTimerFunc(mili_secs, animacaoVerde, 0);
 	}
 	animacaoVermelha(0);
-	
 }
-
 
 void camera3()
 {

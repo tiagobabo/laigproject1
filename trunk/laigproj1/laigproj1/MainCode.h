@@ -164,6 +164,14 @@ float heliZ = 0;
 float heliXang = 0;
 float heliZang = 0;
 float rodaHeliang = 0.0;
+float curvHeli = 0.0;
+float rotCenX = 0.0;
+float rotCenY = 0.0;
+float rotCenZ = 0.0;
+float rotX = 0.0;
+float rotY = 0.0;
+float rotZ = 0.0;
+float rotAng = 0.0;
 
 // declarações para animacao
 unsigned int mili_secs = 20;
