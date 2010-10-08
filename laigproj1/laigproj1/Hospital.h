@@ -1,4 +1,8 @@
 //HEADER FILE Hospital
+#ifndef Hospital
+#define Hospital
+
+#include "Auxiliar.h"
 
 void desenhaRecXZ2(float x1, float z1, float x2, float z2, int imagem);
 
@@ -25,3 +29,5 @@ float telhadoAresta = 6.5;
 float telhadoAlt = 1.0;
 float escalaLetr = 0.02;
 float tamanhoLetr = 3.0;
+
+#endif

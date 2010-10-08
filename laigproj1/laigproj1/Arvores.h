@@ -1,4 +1,8 @@
-//HEADER FILE Chao e Arvores
+//HEADER FILE Arvores
+#ifndef Arvores
+#define Arvores
+
+#include "Auxiliar.h"
 
 void desenhaTrianguloXY(float x1, float y1, float x2, float y2, int imagem, float normal[3]);
 
@@ -9,8 +13,6 @@ void desenhaArvoreT2(GLUquadric * quad, float posX, float posZ, float height);
 // dimensoes da arvore de tipo 1
 float raioTInf = 0.3;
 float raioTSup = 0.0;
-float slicesT1 = 20.0;
-float stacksT1 = 20.0;
 float alturaA1 = 2.0;
 float escalaTB = 4.0;
 
@@ -35,3 +37,5 @@ float arv4Z = -20.0;
 float heightA4 = 6.5;
 float normal1AT2[3] = {0.0,0.0,1.0};
 float normal2AT2[3] = {1.0,0.0,1.0};
+
+#endif

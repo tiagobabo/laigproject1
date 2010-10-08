@@ -1,6 +1,6 @@
 //CPP FILE Hospital
 
-#include "MainCode.h"
+#include "Hospital.h"
 
 void desenhaRecXZ2(float x1, float z1, float x2, float z2, int imagem)
 {

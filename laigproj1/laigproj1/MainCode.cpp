@@ -1,4 +1,5 @@
 #include "MainCode.h"
+#include "Auxiliar.h"
 
 void disableColors()
 {
@@ -8,10 +9,6 @@ void disableColors()
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   mat1_diffuse);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat1_ambient);
 }
-
-
-
-
 
 void myInitTransforms()
 {
