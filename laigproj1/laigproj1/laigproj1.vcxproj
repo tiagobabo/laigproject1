@@ -79,6 +79,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Arvores.cpp" />
+    <ClCompile Include="Chao.cpp" />
+    <ClCompile Include="HangarTorre.cpp" />
+    <ClCompile Include="Helicoptero.cpp" />
+    <ClCompile Include="Heliporto.cpp" />
+    <ClCompile Include="Hospital.cpp" />
     <ClCompile Include="MainCode.cpp" />
     <ClCompile Include="RGBpixmap.cpp" />
   </ItemGroup>
@@ -99,6 +105,12 @@
     <None Include="windows.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Arvores.h" />
+    <ClInclude Include="Chao.h" />
+    <ClInclude Include="HangarTorre.h" />
+    <ClInclude Include="helicoptero.h" />
+    <ClInclude Include="Heliporto.h" />
+    <ClInclude Include="Hospital.h" />
     <ClInclude Include="MainCode.h" />
     <ClInclude Include="RGBpixmap.h" />
   </ItemGroup>
