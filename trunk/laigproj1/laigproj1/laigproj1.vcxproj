@@ -106,6 +106,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Arvores.h" />
+    <ClInclude Include="Auxiliar.h" />
     <ClInclude Include="Chao.h" />
     <ClInclude Include="HangarTorre.h" />
     <ClInclude Include="helicoptero.h" />

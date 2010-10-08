@@ -1,6 +1,6 @@
 //CPP FILE Hangar e Torre
 
-#include "MainCode.h"
+#include "HangarTorre.h"
 
 void desenhaTorre(GLUquadric * quad)
 {
@@ -75,8 +75,8 @@ void desenhaHangar()
 	glTranslatef(PosChaoCX2+deslHangarX,0.0,PosChaoZ2+deslHangarY);
 	glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, 15);
-	glMapGrid2f(heliDiv, 0.0,1.0, heliDiv, 0.0,1.0); 
-	glEvalMesh2(GL_FILL, 0,heliDiv, 0,heliDiv);		// GL_POINT, GL_LINE, GL_FILL
+	glMapGrid2f(HangDiv, 0.0,1.0, HangDiv, 0.0,1.0); 
+	glEvalMesh2(GL_FILL, 0,HangDiv, 0,HangDiv);		// GL_POINT, GL_LINE, GL_FILL
 	glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
 	glEnable(GL_CULL_FACE);

@@ -1,4 +1,8 @@
 //HEADER FILE Heliporto
+#ifndef Heliporto
+#define Heliporto
+
+#include "Auxiliar.h"
 
 void desenhaHolofotesAux(GLUquadric * quad);
 
@@ -24,6 +28,19 @@ GLfloat ctrlpoints[4][3] = {	{  -heliComp/2, 0.0, heliLarg/2},
 								{  -heliComp/2, 0.0, -heliLarg/2},
 								{  heliComp/2, 0.0, heliLarg/2},
 								{  heliComp/2, 0.0, -heliLarg/2}};
+
+GLfloat nrmlcompon[4][3] = {	{  0.0, 1.0, 0.0},
+								{  0.0, 1.0, 0.0}, 
+								{  0.0, 1.0, 0.0},
+								{  0.0, 1.0, 0.0} };
+
+
+
+GLfloat textpoints[4][2] = {	{ 0.0, 0.0},
+								{ 0.0, 1.0}, 
+								{ 1.0, 0.0},
+								{ 1.0, 1.0} };
+
 // posicao dos holofotes
 float holo1X = ((PosChaoCX1+PosChaoCX2)/2)-heliComp/2;
 float holo1Z = (PosChaoZ2/4)+heliLarg/2;
@@ -37,3 +54,4 @@ float spot1[] = {-helipRatio,-2.5,-helipRatio};
 float spot2[] = {-helipRatio,-2.5,helipRatio};
 float spot3[] = {helipRatio,-2.5,helipRatio};
 
+#endif

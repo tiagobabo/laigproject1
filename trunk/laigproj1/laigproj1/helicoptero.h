@@ -1,4 +1,8 @@
 //HEADER FILE Helicoptero
+#ifndef Helicoptero
+#define Helicoptero
+
+#include "Auxiliar.h"
 
 void desenhaSuporteAterragem(GLUquadric * quad);
 
@@ -47,3 +51,5 @@ float rotX = 0.0;
 float rotY = 0.0;
 float rotZ = 0.0;
 float rotAng = 0.0;
+
+#endif

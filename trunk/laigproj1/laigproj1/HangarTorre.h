@@ -1,4 +1,8 @@
 //HEADER FILE Hangar e Torre
+#ifndef HangarTorre
+#define HangarTorre
+
+#include "Auxiliar.h"
 
 void desenhaTorre(GLUquadric * quad);
 
@@ -20,6 +24,7 @@ GLfloat textpoints2[4][2] = {	{ 0.0, 0.0},
 // definicoes do hangar
 float deslHangarX = 6.0;
 float deslHangarY = 10.0;
+float HangDiv = 150.0;
 
 
 // dimensoes torre de controlo
@@ -27,3 +32,5 @@ float alturaTorre = 9.5;
 float raioTorre = 1.25;
 float raioTorrePlat = 4.5;
 float alturaTorrePlat = 0.7;
+
+#endif

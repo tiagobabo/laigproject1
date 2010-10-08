@@ -1,6 +1,6 @@
 //CPP FILE Heliporto
 
-#include "MainCode.h"
+#include "Heliporto.h"
 
 void desenhaHolofotesAux(GLUquadric * quad)
 {
