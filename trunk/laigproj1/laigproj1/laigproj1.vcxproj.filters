@@ -21,24 +21,6 @@
     <ClCompile Include="RGBpixmap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Chao.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Arvores.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Helicoptero.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Hospital.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Heliporto.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HangarTorre.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="floor.bmp">
@@ -89,27 +71,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MainCode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="helicoptero.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Arvores.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Chao.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Hospital.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Heliporto.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HangarTorre.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Auxiliar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

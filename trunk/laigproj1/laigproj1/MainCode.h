@@ -6,12 +6,6 @@
 #include "RGBpixmap.h"
 #include <iostream>
 #include <string>
-#include "Helicoptero.h"
-#include "Arvores.h"
-#include "Chao.h"
-#include "Hospital.h"
-#include "Heliporto.h"
-#include "HangarTorre.h"
 
 // dimensoes e localizacao da janela
 #define DIMX 800
@@ -46,10 +40,129 @@ float upz3 = -1.0;
 int chaoEArvores = 1;
 int hospital = 2;
 int heliporto = 3;
-int helicoptero = 4;
-int hangarETorre = 5;
 
 float corFundo[3] = {0.41, 0.76, 0.40};
+
+// dimensoes do chao
+float PosChaoZ1 = 0.0;
+float PosChaoZ2 = -30.0;
+float PosChaoEX1 = 0.0;
+float PosChaoEX2 = 15.0;
+float PosChaoCX1 = 15.0;
+float PosChaoCX2 = 30.0;
+float PosChaoDX1 = 30.0;
+float PosChaoDX2 = 45.0;
+
+//posicao das arvores e alturas desenhadas
+float arv1X = 5.0;
+float arv1Z = -25.0;
+float heightA1 = 7.0;
+float arv2X = 10.0;
+float arv2Z = -15.0;
+float heightA2 = 5.0;
+float arv3X = 5.0;
+float arv3Z = -10.0;
+float heightA3 = 5.5;
+float arv4X = 7.5;
+float arv4Z = -20.0;
+float heightA4 = 6.5;
+float normal1AT2[3] = {0.0,0.0,1.0};
+float normal2AT2[3] = {1.0,0.0,1.0};
+
+// escala das texturas
+float escala = 15.0;
+float escalaT = 2.0;
+
+// dimensoes dos holofotes
+float raioPoste = 0.15;
+float alturaPoste = 4.7;
+float raioHolo1 = 0.65;
+float raioHolo2 = 0.35;
+float alturaHolo = 0.7;
+
+// dimensoes do heliporto
+float heliComp = 10.5;
+float heliLarg = 7.5;
+float heliDiv = 150.0;
+float helipRatio= heliComp/heliLarg;
+GLfloat ctrlpoints[4][3] = {	{  -heliComp/2, 0.0, heliLarg/2},
+								{  -heliComp/2, 0.0, -heliLarg/2},
+								{  heliComp/2, 0.0, heliLarg/2},
+								{  heliComp/2, 0.0, -heliLarg/2}};
+
+GLfloat ctrlpointsHangar[2][4][3] = {  {{ -4.65, 0.0, -7.25},{-4.65, 4.65, -7.25},{4.65, 4.65, -7.25},{4.65, 0.0, -7.25}},
+										{{-4.65, 0.0, 7.25},{-4.65, 4.65, 7.25},{4.65, 4.65, 7.25},{4.65, 0.0, 7.25}}
+										};
+
+
+GLfloat nrmlcompon[4][3] = {	{  0.0, 1.0, 0.0},
+								{  0.0, 1.0, 0.0}, 
+								{  0.0, 1.0, 0.0},
+								{  0.0, 1.0, 0.0} };
+
+GLfloat nrmlcomponHangar[2][4][3] = {	{{  0.0, 1.0, 0.0},{  0.0, 1.0, 0.0}, {  0.0, 1.0, 0.0},{  0.0, 1.0, 0.0}}, 
+								{{  0.0, 1.0, 0.0},{  0.0, 1.0, 0.0}, {  0.0, 1.0, 0.0},{  0.0, 1.0, 0.0}}
+};
+
+GLfloat textpoints[4][2] = {	{ 0.0, 0.0},
+								{ 0.0, 1.0}, 
+								{ 1.0, 0.0},
+								{ 1.0, 1.0} };
+
+GLfloat textpoints2[4][2] = {	{ 0.0, 0.0},
+								{ 0.0, 1.0}, 
+								{ 1.0, 0.0},
+								{ 1.0, 1.0} };
+// definicoes do hangar
+float deslHangarX = 6.0;
+float deslHangarY = 10.0;
+
+// posicao dos holofotes
+float holo1X = ((PosChaoCX1+PosChaoCX2)/2)-heliComp/2;
+float holo1Z = (PosChaoZ2/4)+heliLarg/2;
+float holo2X = ((PosChaoCX1+PosChaoCX2)/2)+heliComp/2;
+float holo2Z = (PosChaoZ2/4)-heliLarg/2;;
+
+// vectores direccionais das luzes dos holofotes
+float angLuz = 35.0;
+float spot0[] = {helipRatio,-2.5,-helipRatio};
+float spot1[] = {-helipRatio,-2.5,-helipRatio};
+float spot2[] = {-helipRatio,-2.5,helipRatio};
+float spot3[] = {helipRatio,-2.5,helipRatio};
+
+// dimensoes do helicoptero
+float escalaHeli = 0.6;
+float raioHeliCabine = 2.0*escalaHeli;
+float raioHeliCaudaS = 0.3*escalaHeli;
+float raioHeliCaudaI = 0.6*escalaHeli;
+float compHeliCauda = 5.0*escalaHeli;
+float raioIMotorT = 0.2*escalaHeli;
+float raioEMotorT = 1.2*escalaHeli;
+float largHeliceT = 0.2*escalaHeli;
+float compHeliceT = 0.9*escalaHeli;
+float largHeliceF = 0.3*escalaHeli;
+float compHeliceF = 6.0*escalaHeli;
+float raioMotorF = 0.5*escalaHeli;
+float alturaMotorF = 0.5*escalaHeli;
+float MotorAng = 0.0;
+float angCauda = 10*escalaHeli;
+float largSuporteAterr = 0.3*escalaHeli;
+float compSuporteAterr = (2*raioHeliCabine+(2*raioHeliCabine/4))*escalaHeli;
+float alturaHeli = (2*(raioHeliCabine+(raioHeliCabine/4)+largSuporteAterr));
+float heliY = 0;
+float heliX = 0;
+float heliZ = 0;
+float heliXang = 0;
+float heliZang = 0;
+float rodaHeliang = 0.0;
+float curvHeli = 0.0;
+float rotCenX = 0.0;
+float rotCenY = 0.0;
+float rotCenZ = 0.0;
+float rotX = 0.0;
+float rotY = 0.0;
+float rotZ = 0.0;
+float rotAng = 0.0;
 
 // declarações para animacao
 #define RADIUS_SPEED  5.0  // unidades de comprimento por segundo
@@ -79,6 +192,46 @@ float xRaioRota = -5.0;
 float stepRota = RADIUS_SPEED*(mili_secs/10)/(abs(xRaioRota)*PI/2);
 float rotacaoTeta = -atan(limZtras/limXesq);
 float razaoZXAnda = limZtras/limXesq;
+
+// dimensoes torre de controlo
+float alturaTorre = 9.5;
+float raioTorre = 1.25;
+float raioTorrePlat = 4.5;
+float alturaTorrePlat = 0.7;
+
+// dimensoes da arvore de tipo 1
+float raioTInf = 0.3;
+float raioTSup = 0.0;
+float slicesT1 = 20.0;
+float stacksT1 = 20.0;
+float alturaA1 = 2.0;
+float escalaTB = 4.0;
+
+// dimensoes da arvore de tipo 2
+float tamFolhaX = 1.0;
+float tamFolhaY = 4.0;
+float razTroncFolha = 1.2;
+float rAltuLargA2 = 3.0;
+
+
+// dimensoes e cor do hospital
+float corHospital[3] = {1.0,0.9,0.61};
+float corPorta[3] = {0.54,0.27,0.0};
+float corLetreiro[3] = {0.0,1.0,0.0};
+float hospAlt = 11.5;
+float hospLarg = 11.5;
+float hospProf = 7.0;
+float alturaPorta = 3.0;
+float larguraPorta = 2.0;
+float alturaJanela = 2.0;
+float larguraJanela = 10.0;
+float larguraJanelaL = 6.0;
+float telhadoLarg = 8.5;
+float telhadoComp = 13.0;
+float telhadoAresta = 6.5;
+float telhadoAlt = 1.0;
+float escalaLetr = 0.02;
+float tamanhoLetr = 3.0;
 
 const int TRUE  = 1;
 const int FALSE = 0;
@@ -206,6 +359,76 @@ GLUI  *glui2;
 
 
 RGBpixmap pixmap;
+
+ class Material 
+   {
+   private:
+		float* shininess; 
+		float* specular;	/* specular reflection. */
+		float* diffuse;	/* diffuse reflection. */
+		float* ambient;	/* ambient reflection. */   
+   public:
+	    Material(float* shininess, float* specular,
+						float* diffuse, float* ambient);
+		 void activate();
+   };
+
+Material::Material(float* shininess, float* specular, float* diffuse, float* ambient)
+{
+	this->shininess = shininess;
+	this->specular = specular;
+	this->diffuse = diffuse;
+	this->ambient = ambient;
+}
+ void Material::activate()
+{
+	glDisable(GL_COLOR_MATERIAL);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shininess);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  specular);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   diffuse);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   ambient);
+}
+
+// declaracoes para as paredes e chao
+float mat1_shininess[] = {128.0}; 
+float mat1_specular[] = {0.3, 0.3, 0.3, 1.0};	/* specular reflection. */
+float mat1_diffuse[] =  {0.7, 0.7, 0.7, 1.0};	/* diffuse reflection. */
+float mat1_ambient[] =  {0.7, 0.7, 0.7, 1.0};	/* ambient reflection. */
+
+Material parede(mat1_shininess, mat1_specular, mat1_diffuse, mat1_ambient);
+Material chao(mat1_shininess, mat1_specular, mat1_diffuse, mat1_ambient);
+
+// declaracoes para o cockpit
+float cockpit_shininess[] = {128.0}; 
+float cockpit_specular[] = {0.0, 0.0, 0.3, 0.4};	/* specular reflection. */
+float cockpit_diffuse[] =  {0.0, 0.0, 1.0, 0.4};	/* diffuse reflection. */
+float cockpit_ambient[] =  {0.0, 0.0, 1.0, 0.4};	/* ambient reflection. */
+
+Material cockpit(cockpit_shininess, cockpit_specular, cockpit_diffuse, cockpit_ambient);
+
+// declaracoes para as folhas das árvores
+float arv_shininess[] = {128.0}; 
+float arv_specular[] = {0.4, 0.4, 0.4, 1.0};	/* specular reflection. */
+float arv_diffuse[] =  {0.8, 0.8, 0.8, 1.0};	/* diffuse reflection. */
+float arv_ambient[] =  {0.8, 0.8, 0.8, 1.0};	/* ambient reflection. */
+
+Material arvore(arv_shininess, arv_specular, arv_diffuse, arv_ambient);
+
+// declaracoes para o material do helicoptero
+float heli_shininess[] = {128.0}; 
+float heli_specular[] = {0.2, 0.2, 0.2, 1.0};	/* specular reflection. */
+float heli_diffuse[] =  {0.4, 0.4, 0.4, 1.0};	/* diffuse reflection. */
+float heli_ambient[] =  {0.8, 0.8, 0.8, 1.0};	/* ambient reflection. */
+
+Material heli(heli_shininess, heli_specular, heli_diffuse, heli_ambient);
+
+// declaracoes para o material do hangar
+float hangar_shininess[] = {128.0}; 
+float hangar_specular[] = {0.4, 0.4, 0.4, 1.0};	/* specular reflection. */
+float hangar_diffuse[] =  {0.8, 0.8, 0.8, 1.0};	/* diffuse reflection. */
+float hangar_ambient[] =  {0.8, 0.8, 0.8, 1.0};	/* ambient reflection. */
+
+Material hangar(hangar_shininess, hangar_specular, hangar_diffuse, hangar_ambient);
 
 GLUI_Rotation *view_rot;
 GLUI_Translation *trans_z;
