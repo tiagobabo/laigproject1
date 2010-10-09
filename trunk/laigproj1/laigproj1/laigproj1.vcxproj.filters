@@ -62,7 +62,7 @@
     <None Include="hangar.bmp">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="torre.bmp">
+    <None Include="chopper.bmp">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="chaoplat.bmp" />
+    <None Include="chopper.bmp" />
     <None Include="door.bmp" />
     <None Include="floor.bmp" />
     <None Include="grass.bmp" />
@@ -94,7 +95,6 @@
     <None Include="leaf2.bmp" />
     <None Include="metal.bmp" />
     <None Include="tile.bmp" />
-    <None Include="torre.bmp" />
     <None Include="tree_base.bmp" />
     <None Include="windows.bmp" />
   </ItemGroup>
