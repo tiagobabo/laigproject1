@@ -438,3 +438,4 @@ Material hangar(hangar_shininess, hangar_specular, hangar_diffuse, hangar_ambien
 
 GLUI_Rotation *view_rot;
 GLUI_Translation *trans_z;
+GLUI_Button* animacao;
