@@ -683,30 +683,61 @@ void desenhaHelicoptero(GLUquadric * quad)
 	
 }
 
+void startAnimacao(int ID)
+{
+	if(ID == ANIMACAO_ID)
+	{
+		statusHelice = 0;
+		firstTime = 1;
+	}
+}
+
 void myInitTransforms()
 {
 	delta_rotate = (double) mili_secs/1000.0 * ANGULAR_SPEED *360.0;
 	delta_radius = (double) mili_secs/1000.0 * RADIUS_SPEED;
 }
-float factori = 0.01;
-void animacaoHelice(int dummy)
+
+void animacaoHelice(int status)
 {
-	if(MotorAng == 360)
-		MotorAng = 0;
-	else
+	switch(status) // inicialmente statusHelice == 1
 	{
-		if(factori < 1.0)
-		{
-			MotorAng += delta_rotate*factori;
-			factori += 0.01;
-		}
-		else
-		{
-			MotorAng += delta_rotate*factori;
-			if(animation == 0) animation = 1;
-		}
-	}	
-	glutTimerFunc(mili_secs, animacaoHelice, 0);
+		case 0:
+			if(MotorAng == 360)
+				MotorAng = 0;
+			else
+			{
+				if(factori < 1.0)
+				{
+					MotorAng += delta_rotate*factori;
+					factori += 0.01;
+				}
+				else
+				{
+					MotorAng += delta_rotate*factori;
+					if(animation == 0) animation = 1;
+				}
+			}	
+			glutTimerFunc(mili_secs, animacaoHelice, statusHelice);
+			break;
+		case 1:
+			if(MotorAng == 360)
+				MotorAng = 0;
+			else
+			{
+				if(factori > 0.0)
+				{
+					MotorAng += delta_rotate*factori;
+					factori -= 0.01;
+				}
+				else
+					if(animation == 1) animation = 0;
+			}	
+			glutTimerFunc(mili_secs, animacaoHelice, statusHelice);
+			break;
+		default:
+			break;
+	}
 }
 
 
@@ -770,7 +801,10 @@ void animacaoVermelha(int status)
 			glutTimerFunc(mili_secs, animacaoVermelha, status);
 		}
 		else
+		{
+			statusHelice = 1;
 			glutTimerFunc(mili_secs, animacaoVermelha, ++status);
+		}
 		break;
 	default:
 		break;
@@ -1078,8 +1112,7 @@ void display(void)
 	glCallList(hospital);
 	glCallList(heliporto);
 	desenhaHelicoptero(glQ);
-	desenhaTorre(glQ);
-	desenhaHangar();
+	glCallList(HangarTorre);
 	// swapping the buffers causes the rendering above to be shown
 	if(camera == 1)  showCamera("1");
 	else if(camera == 2) showCamera("2");
@@ -1365,8 +1398,14 @@ void inicializacao()
 	desenhaHolofotes(glQ);
 	desenhaHeliporto();
 	glEndList();
+
+	glNewList(HangarTorre, GL_COMPILE);
+	desenhaTorre(glQ);
+	desenhaHangar();
+	glEndList();
 	myInitTransforms();
-	glutTimerFunc(0, animacaoHelice, 0);
+	glutTimerFunc(0, animacaoHelice, statusHelice);
+	
 
 }
 
@@ -1417,7 +1456,7 @@ int main(int argc, char* argv[])
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowSize (DIMX, DIMY);
 	glutInitWindowPosition (INITIALPOS_X, INITIALPOS_Y);
-	main_window = glutCreateWindow (argv[0]);
+	main_window = glutCreateWindow (WINDOWTITLE);
  
 	glutDisplayFunc(display);
 	GLUI_Master.set_glutReshapeFunc(reshape);
@@ -1449,6 +1488,10 @@ int main(int argc, char* argv[])
 				LIGHT2_ENABLED_ID, control_cb );
 	glui2->add_checkbox("Luz 4", &light3_enabled,
 				LIGHT3_ENABLED_ID, control_cb );
+	
+	glui2->add_column( false );
+
+	glui2->add_button("Animacao", ANIMACAO_ID, startAnimacao);
 
 	/* We register the idle callback with GLUI, not with GLUT */
 	GLUI_Master.set_glutIdleFunc( myGlutIdle );

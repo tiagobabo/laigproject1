@@ -7,6 +7,9 @@
 #include <iostream>
 #include <string>
 
+// titulo da janela
+const char *WINDOWTITLE = { "Projecto 1 - LAIG" };
+
 // dimensoes e localizacao da janela
 #define DIMX 800
 #define DIMY 600
@@ -18,6 +21,7 @@
 #define LIGHT1_ENABLED_ID    201
 #define LIGHT2_ENABLED_ID    202
 #define LIGHT3_ENABLED_ID    203
+#define ANIMACAO_ID			 204
 
 //posicao de visualizacao
 float VposX = 20.0;
@@ -40,6 +44,8 @@ float upz3 = -1.0;
 int chaoEArvores = 1;
 int hospital = 2;
 int heliporto = 3;
+int helicoptero = 4;
+int HangarTorre = 5;
 
 float corFundo[3] = {0.41, 0.76, 0.40};
 
@@ -168,12 +174,12 @@ float rotAng = 0.0;
 #define RADIUS_SPEED  5.0  // unidades de comprimento por segundo
 #define ANGULAR_SPEED 2.0 // rotacoes por segundo
 float PI = acos(-1.0);
-unsigned int mili_secs = 20;
-double  obj_radius, obj_rotate, delta_radius, delta_rotate;
 int animation = 0;
 int firstTime = 1;
-int step = 1;
-int step2 = 1;
+int statusHelice = 1;
+float factori = 0.01;
+unsigned int mili_secs = 20;
+double  obj_radius, obj_rotate, delta_radius, delta_rotate;
 float speedTurn = 2.0;
 float alturaMAXanim = 12.0;
 float alturaMINanim = 9.0;
