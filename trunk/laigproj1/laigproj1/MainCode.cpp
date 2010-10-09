@@ -1123,6 +1123,8 @@ void display(void)
 		firstTime = 0;
 		animacaoVerde(0);
 	}
+	if(animation == 1) animacao->disable();
+	else if(animation == 0) animacao->enable();
 
 	glutSwapBuffers();
 	glFlush();
@@ -1491,7 +1493,7 @@ int main(int argc, char* argv[])
 	
 	glui2->add_column( false );
 
-	glui2->add_button("Animacao", ANIMACAO_ID, startAnimacao);
+	animacao = glui2->add_button("Animacao", ANIMACAO_ID, startAnimacao);
 
 	/* We register the idle callback with GLUI, not with GLUT */
 	GLUI_Master.set_glutIdleFunc( myGlutIdle );
