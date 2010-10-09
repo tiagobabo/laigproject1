@@ -79,7 +79,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="MainCode.cpp" />
+    <ClCompile Include="Funcoes.cpp" />
     <ClCompile Include="RGBpixmap.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -99,7 +99,12 @@
     <None Include="windows.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MainCode.h" />
+    <ClInclude Include="Arvores.h" />
+    <ClInclude Include="ChaoEEdificios.h" />
+    <ClInclude Include="Helicoptero.h" />
+    <ClInclude Include="Luzes.h" />
+    <ClInclude Include="Funcoes.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="RGBpixmap.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

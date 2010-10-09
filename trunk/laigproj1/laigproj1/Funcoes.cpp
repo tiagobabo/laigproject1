@@ -1,12 +1,19 @@
-#include "MainCode.h"
+#include "Funcoes.h"
 
-void disableColors()
+Material::Material(float* shininess, float* specular, float* diffuse, float* ambient)
+{
+	this->shininess = shininess;
+	this->specular = specular;
+	this->diffuse = diffuse;
+	this->ambient = ambient;
+}
+ void Material::activate()
 {
 	glDisable(GL_COLOR_MATERIAL);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat1_shininess);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  mat1_specular);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   mat1_diffuse);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat1_ambient);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shininess);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  specular);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   diffuse);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   ambient);
 }
 
 void desenhaRecXZ(float x1, float z1, float x2, float z2, int imagem)
@@ -128,7 +135,7 @@ void desenhaHospital(GLUquadric * quad)
 	glDisable(GL_LINE_SMOOTH);
 	glPopMatrix();
 	glDisable(GL_NORMALIZE);
-	disableColors();
+	parede.activate();
 
 	glEnable(GL_TEXTURE_2D);
 
@@ -160,14 +167,6 @@ void desenhaHospital(GLUquadric * quad)
 	desenhaRecXZ2(-telhadoComp/2, telhadoLarg/2, telhadoComp/2, -telhadoLarg/2, 7);
 	glPopMatrix();
 	
-	
-	//triangulos
-	//calcular o vector normal dos triângulos
-	float vTri1[3] = {0.0, 0.0, 1.0};
-	float vTri2[3] = {(telhadoComp-telhadoAresta)/2, telhadoAlt, telhadoLarg/2};
-	float vTriNor[3] = {vTri1[1]*vTri2[2]-vTri1[2]*vTri2[1], vTri1[2]*vTri2[0]-vTri1[0]*vTri2[2], vTri1[0]*vTri2[1]-vTri1[1]*vTri2[0]}; 
-	float normaVec = sqrt(vTriNor[0]*vTriNor[0]+vTriNor[1]*vTriNor[1]+vTriNor[2]*vTriNor[2]);
-	int i = 0;
 	for(i; i < 3; i++) vTriNor[i] = vTriNor[i]/normaVec;
 
 	glPushMatrix();
@@ -190,13 +189,6 @@ void desenhaHospital(GLUquadric * quad)
 	glEnd();
 	glPopMatrix();
 	
-
-	//quadrilateros
-	//calcular o vector normal dos quadrilateros
-	float vQuad1[3] = {1.0, 0.0, 0.0};
-	float vQuad2[3] = {-(telhadoComp-telhadoAresta)/2-telhadoComp/2, telhadoAlt, -telhadoLarg/2};
-	float vQuadNor[3] = {vQuad1[1]*vQuad2[2]-vQuad1[2]*vQuad2[1], vQuad1[2]*vQuad2[0]-vQuad1[0]*vQuad2[2], vQuad1[0]*vQuad2[1]-vQuad1[1]*vQuad2[0]}; 
-	float normaVecQuad = sqrt(vQuadNor[0]*vQuadNor[0]+vQuadNor[1]*vQuadNor[1]+vQuadNor[2]*vQuadNor[2]);
 	for(i=0; i < 3; i++) vQuadNor[i] = vQuadNor[i]/normaVecQuad;
 
 	glPushMatrix();
@@ -222,8 +214,6 @@ void desenhaHospital(GLUquadric * quad)
 	glPopMatrix();
 	
 	glDisable(GL_TEXTURE_2D);
-	//glEnable(GL_DEPTH_TEST);
-	
 }
 
 void desenhaHolofotesAux(GLUquadric * quad)
@@ -632,7 +622,6 @@ void desenhaHelicoptero(GLUquadric * quad)
 	glPushMatrix();
 	glClipPlane(GL_CLIP_PLANE0, plane0);
 	glEnable(GL_CLIP_PLANE0);
-	//glTranslatef(0.0,-0.1,0.1);
 	glEnable(GL_NORMALIZE);	
 	glScalef(1.0,1.0,2.0);	
 	gluSphere(quad, raioHeliCabine , slicesT1, stacksT1);
@@ -657,7 +646,6 @@ void desenhaHelicoptero(GLUquadric * quad)
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
-	//cockpit
 	glPushMatrix();
 	cockpit.activate();
 	glClipPlane(GL_CLIP_PLANE0, plane1);
@@ -974,7 +962,7 @@ void desenhaTorre(GLUquadric * quad)
 	glEnable(GL_CLIP_PLANE0);
 	gluSphere(quad,raioTorrePlat,slicesT1,stacksT1);
 	glDisable(GL_CLIP_PLANE0);
-	disableColors();
+	parede.activate();
 	glPopMatrix();
 	glDisable(GL_BLEND);
 	glPopMatrix();
@@ -984,8 +972,6 @@ void display(void)
 {
 	
 	// ****** declaracoes internas 'a funcao display() ******
-	
-	//float temp;
 
 	GLUquadric* glQ;	// nec. p/ criar sup. quadraticas (cilindros, esferas...)
 
@@ -1009,9 +995,6 @@ void display(void)
 	// afasta a cena de 25 unidades mais a distância que...
 	// ...decorre da utilizacao do botao de afastamento (pseudo-zoom)
     glTranslatef( obj_pos[0]-VposX, obj_pos[1]-VposY, -obj_pos[2]-zoom );
-		// tambem se poderia ter feito:
-		//glTranslated(0.0,0.0,-25.0);
-		//glTranslatef( obj_pos[0], obj_pos[1], -obj_pos[2] );
 
 	// roda a cena para ficar em perspectiva
 	glRotated( VangleX, 1.0,0.0,0.0 );		// 20 graus em torno de X
@@ -1105,7 +1088,7 @@ void display(void)
 	glLightf(GL_LIGHT3, GL_SPOT_CUTOFF, angLuz);
 	glLightfv(GL_LIGHT3, GL_SPOT_DIRECTION, spot3);
 	
-	disableColors();
+	parede.activate();
 	
 	//chamada das funções
 	glCallList(chaoEArvores);
