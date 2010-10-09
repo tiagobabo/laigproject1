@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MainCode.cpp">
+    <ClCompile Include="RGBpixmap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RGBpixmap.cpp">
+    <ClCompile Include="Funcoes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -70,7 +70,22 @@
     <ClInclude Include="RGBpixmap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MainCode.h">
+    <ClInclude Include="Material.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Arvores.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChaoEEdificios.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Helicoptero.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Luzes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Funcoes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
